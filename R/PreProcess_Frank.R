@@ -4,7 +4,11 @@ library(directPA)
 library(PhosR)
 library(tibble)
 
-PreProcess_Frank <- function(x_list, y_list, contrast = NULL, gene_number = 50) {
+PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, combinationMethod = "OSP") {
+
+    if(!combinationMethod %in% c("Stouffer", "OSP", "Fisher", "maxP")){
+      stop(print("Available methods are Stouffer, OSP, Fisher, or maxP"))
+    }
 
     # Transpose x_list
     x_list <- lapply(x_list, t)
@@ -37,7 +41,7 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, gene_number = 50) 
         # Add a column with the gene names
         tT[[i]]$gene <- rownames(tT[[i]])
     }
-    # merge a the tT list into a single data frame by gene 
+    # merge a the tT list into a single data frame by gene
     suppressWarnings(
         tT <- Reduce(function(x, y) merge(x, y, by = "gene", all = TRUE), tT)
     )
@@ -50,9 +54,11 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, gene_number = 50) 
     # Run directPA
     Z.Scores.All <- apply(tT, 2, function(x){qnorm(rank(x)/(nrow(tT)+1))})
     data(Pathways)
-    gene.pvalues <- apply(Z.Scores.All, 1, geneStats)
+    gene.pvalues <- apply(Z.Scores.All, 1, function(x){
+      geneStats(x, method=combinationMethod)
+      })
     gene.zscores <- qnorm(gene.pvalues, lower.tail = FALSE)
     pvalue2sided=2*pnorm(-abs(gene.zscores))
-    sig.genes <- names(pvalue2sided %>% sort())[1:gene_number]
+    sig.genes <- names(pvalue2sided %>% sort())[1:nFeatures]
     return(sig.genes)
 }

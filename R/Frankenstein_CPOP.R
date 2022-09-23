@@ -2,7 +2,7 @@ library(dplyr)
 library(CPOP)
 library(glmnet)
 
-Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights = NULL, sample_weights = FALSE) {
+Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights = NULL, sample_weights = FALSE, optimiseExponent = FALSE) {
 
   # Catching some errors.
   # y must be a factor or else it will break.
@@ -38,7 +38,7 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
       data.frame() %>%
       mutate(Organ = as.character(.),
              weight = 1)
-    for(i in 1:nrow(un_weights)) { # nolint
+    for(i in 1:nrow(un_weights)) {
       idx <- which(un_weights$Organ[i] == sample.weights$Organ)
       un_weights$weight[i] <- sample.weights$freq[idx]
     }
@@ -95,10 +95,16 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   }
 
   # Using selectExponent to determine best exponent
-  print("Determining Best Exponent")
-  exponent <- selectExponent(lasso_x, lasso_y, weights_lasso, sample.weights = sample.weights)
-  weights_lasso <- 1/(moderated_test)^(exponent)
-  print(paste("The best exponent was: ",exponent))
+  if(optimiseExponent = TRUE){
+    print("Determining Best Exponent")
+    exponent <- selectExponent(lasso_x, lasso_y, weights_lasso, sample.weights = sample.weights)
+    weights_lasso <- 1/(moderated_test)^(exponent)
+    print(paste("The best exponent was: ",exponent))
+  }
+
+  else if(optimiseExponent = FALSE){
+    weights_lasso <- 1/(moderated_test)^(1/2)
+  }
 
   # Lasso model for all datasets with updated weights
   if(!is.null(dataset_weights)) {
