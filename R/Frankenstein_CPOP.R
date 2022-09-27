@@ -95,14 +95,14 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   }
 
   # Using selectExponent to determine best exponent
-  if(optimiseExponent = TRUE){
+  if(optimiseExponent == TRUE){
     print("Determining Best Exponent")
-    exponent <- selectExponent(lasso_x, lasso_y, weights_lasso, sample.weights = sample.weights)
+    exponent <- selectExponent(lasso_x, lasso_y, moderated_test, sample.weights = sample.weights)
     weights_lasso <- 1/(moderated_test)^(exponent)
     print(paste("The best exponent was: ",exponent))
   }
 
-  else if(optimiseExponent = FALSE){
+  else if(optimiseExponent == FALSE){
     weights_lasso <- 1/(moderated_test)^(1/2)
   }
 
