@@ -2,7 +2,7 @@ library(dplyr)
 library(CPOP)
 library(glmnet)
 
-Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights = NULL, sample_weights = FALSE, optimiseExponent = FALSE) {
+Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights = NULL, sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1) {
 
   # Catching some errors.
   # y must be a factor or else it will break.
@@ -12,13 +12,13 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   }
 
   # Convert counts to ratios
-  print("Calculating Pairwise Ratios of Features")
+  message("Calculating Pairwise Ratios of Features")
   x_list <- lapply(x_list, as.matrix)
   z_list <- lapply(x_list, CPOP::pairwise_col_diff)
 
   # Calculating the log fold change of each gene between conditions
   lfc <- list()
-  print("Calculating Fold Changes of Pairwise Ratios")
+  message("Calculating Fold Changes of Pairwise Ratios")
   for(i in seq_along(z_list)) {
     lfc[[i]] <- lfc_calculate(z_list[[i]], y_list[[i]])
   }
@@ -27,7 +27,7 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   ## If there is some weights supplied
   if(!is.null(dataset_weights)) {
     # Sample weights
-    print("Calculating Weights for each Dataset")
+    message("Calculating Weights for each Dataset")
     sample.weights <- unlist(dataset_weights) %>%
       data.frame() %>%
       mutate(Organ = as.character(.)) %>%
@@ -48,7 +48,7 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   # We want to account for datasets that do not have equal sample numbers
   ## If there are sample weights.
   if(sample_weights == TRUE) {
-    print("Modifing Fold Change of Ratios based on sample_weights")
+    message("Modifing Fold Change of Ratios based on sample_weights")
     lfc <- do.call("cbind", lfc)
 
     freq_samples <- sapply(x_list, dim)[1,] %>%
@@ -70,7 +70,7 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   fudge <- quantile(fudge_vector, 0.05, na.rm = TRUE)
 
   # Take a moderated test statistic
-  print("Calculating Final Weights")
+  message("Calculating Final Weights")
   moderated_test <- aggregate_lfc/(variance_lfc + fudge)
 
   # Preparring data for lasso model.
@@ -79,7 +79,7 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
 
   # Adding covariates to the model.
   if(!is.null(covariates)) {
-    print("Fitting covariates into the model")
+    message("Fitting covariates into the model")
     covariates <- do.call("rbind", covariates)
     covariates <- covariates %>%
       data.frame()
@@ -96,10 +96,10 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
 
   # Using selectExponent to determine best exponent
   if(optimiseExponent == TRUE){
-    print("Determining Best Exponent")
+    message("Determining Best Exponent")
     exponent <- selectExponent(lasso_x, lasso_y, moderated_test, sample.weights = sample.weights)
     weights_lasso <- 1/(moderated_test)^(exponent)
-    print(paste("The best exponent was: ",exponent))
+    message(paste("The best exponent was: ",exponent))
   }
 
   else if(optimiseExponent == FALSE){
@@ -108,23 +108,29 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
 
   # Lasso model for all datasets with updated weights
   if(!is.null(dataset_weights)) {
-    print("Fitting final lasso model")
+    message("Fitting final lasso model")
+    stopifnot(require(doParallel))
+    registerDoParallel(nCores)
     model <- glmnet::cv.glmnet(
       x = as.matrix(lasso_x),
       y = lasso_y,
       family = "binomial",
       weights = sample.weights,
       penalty.factor = weights_lasso,
-      alpha = 1)
+      alpha = 1,
+      parallel = TRUE)
   }
   else if(is.null(dataset_weights)) {
-    print("Fitting final lasso model")
+    message("Fitting final lasso model")
+    stopifnot(require(doParallel))
+    registerDoParallel(nCores)
     model <- glmnet::cv.glmnet(
       x = as.matrix(lasso_x),
       y = lasso_y,
       family = "binomial",
       penalty.factor = weights_lasso,
-      alpha = 1)
+      alpha = 1,
+      parallel = TRUE)
   }
 
   result = list(models = model,
