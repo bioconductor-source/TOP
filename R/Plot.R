@@ -24,11 +24,11 @@
 #' fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
 #' CPOP_coefPlot(fCPOP_model)
 
-CPOP_coefPlot <- function(CPOP_model, nFeatures = 20){
+CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
   library(dplyr)
   library(ggplot2)
   library(tibble)
-  as.matrix(glmnet::coef.glmnet(CPOP_model$model, s = "lambda.min")) |>
+  as.matrix(glmnet::coef.glmnet(CPOP_model$model, s = s)) |>
     data.frame() |>
     tibble::rownames_to_column("Features") |>
     filter(lambda.min != 0) %>%
