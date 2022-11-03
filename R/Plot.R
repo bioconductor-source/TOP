@@ -31,9 +31,49 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
   as.matrix(glmnet::coef.glmnet(CPOP_model$model, s = s)) |>
     data.frame() |>
     tibble::rownames_to_column("Features") |>
-    filter(lambda.min != 0) %>%
-    filter(Features != "(Intercept)") %>%
-    top_n(Features, n = nFeatures) %>%
+    filter(lambda.min != 0) |>
+    filter(Features != "(Intercept)") |>
+    top_n(Features, n = nFeatures) |>
     ggplot(aes(x = lambda.min, y = reorder(Features, abs(lambda.min)), fill = abs(lambda.min))) + geom_bar(stat = "identity") +
     theme_bw() + ylab("Features") + xlab("") + scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
+}
+
+CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
+  model <- CPOP_model
+
+  lambda <- model$models$lambda
+  lambda.min <- model$models$lambda.min
+  
+  c <- as.matrix(model$models$glmnet.fit$beta) %>%
+    data.frame() %>%
+    filter(rowSums(.) > 0) %>%
+    rownames_to_column("Feature") %>%
+    reshape2::melt() 
+  
+  names(lambda) <- levels(c$variable)
+
+  library(latex2exp)
+  df <- c %>%
+    mutate(lambda = lambda[variable]) %>%
+    mutate(log = log(lambda))
+  
+  topfeatures <- df %>%
+    filter(lambda == lambda.min) %>%
+    arrange(desc(abs(value))) %>%
+    top_n(abs(value), n = nFeatures)
+  
+  p <- df %>%
+    filter(Feature %in% topfeatures$Feature) %>%
+    ggplot(aes(x = log, y = value, color = Feature, text = Feature)) + geom_line(size = 1.3) + theme_bw() +
+    theme(legend.position = 'none') + geom_vline(xintercept = log(lambda.min), linetype = 'dashed') +
+    geom_text(aes(x=log(lambda.min), label="lambda.min", y=max(c$value)), 
+              angle=0, color = 'black', text = element_text(face = NULL), size = 6, hjust = -0.1) 
+  
+  if(interactive){
+    library(plotly)
+    return(ggplotly(p, tooltip = 'text'))
+  }
+  else{
+    return(p +  xlab(latex2exp::TeX("log(${\\lambda}$)")) + ylab(latex2exp::TeX("${\\beta}$ Value")))
+  }
 }
