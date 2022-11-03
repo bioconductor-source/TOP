@@ -65,7 +65,7 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
 #' fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
 #' CPOP_coefPlot(fCPOP_model)
 
-CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
+CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE){
   model <- CPOP_model
 
   lambda <- model$models$lambda
@@ -88,16 +88,19 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
     arrange(desc(abs(value))) %>%
     top_n(abs(value), n = nFeatures)
 
-  library(ggrepel)
   p <- df %>%
     filter(Feature %in% topfeatures$Feature) %>%
     ggplot(aes(x = log, y = value, color = Feature, text = Feature)) + geom_line(size = 1.3) + theme_bw() +
     theme(legend.position = 'none') + geom_vline(xintercept = log(lambda.min), linetype = 'dashed') +
-    geom_text(aes(x=log(lambda.min), label="lambda.min", y=max(c$value)), 
-              angle=0, color = 'black', text = element_text(face = NULL), size = 6, hjust = -0.1)  +
-    ggrepel::geom_label_repel(data = topfeatures, aes(label = Feature), size = 3.5, 
-                              hjust = -0.1, nudge_x = 0.1, nudge_y = 0.1)
-  
+    geom_text(aes(x=log(lambda.min), label="lambda.min", y=max(c$value)),
+              angle=0, color = 'black', text = element_text(face = NULL), size = 6, hjust = -0.1)
+
+  if(label){
+    library(ggrepel)
+    p <- p + ggrepel::geom_label_repel(data = topfeatures, aes(label = Feature), size = 3.5,
+                                         hjust = -0.1, nudge_x = 0.1, nudge_y = 0.1)
+  }
+
   if(interactive){
     library(plotly)
     return(ggplotly(p, tooltip = 'text'))
