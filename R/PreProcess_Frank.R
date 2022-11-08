@@ -49,7 +49,9 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
     # Keep unique genes
     tT <- tT[!duplicated(tT$gene), ]
     # Move gene column to rownames
-    tT <- tibble::column_to_rownames(tT, var = "gene")
+    tT <- tT %>%
+      tibble::remove_rownames() %>%
+      tibble::column_to_rownames(var = "gene")
 
     # Run directPA
     Z.Scores.All <- apply(tT, 2, function(x){qnorm(rank(x)/(nrow(tT)+1))})
