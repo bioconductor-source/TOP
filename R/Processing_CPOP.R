@@ -1,6 +1,21 @@
 library(CCA)
 
 # Calculate the cononical correlation for a list of datasets
+#' Title
+#'
+#' @param x_list a list of data.frames with identical features as columns.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' x1 = cpop_data_binary$x1
+#' x2 = cpop_data_binary$x2
+#' x3 = cpop_data_binary$x3
+#'
+#' x_list <- list(x1,x2,x3)
+#' calculateCCA(x_list)
+
 calculateCCA <- function(x_list){
   if(ncol(x_list[[1]]) > 1000){
     warning("The number of features is > 1000, CCA will take a while to calculate.")
