@@ -133,3 +133,5 @@ CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min")
     geom_node_text(aes(label=name), repel=T) + theme_void() + ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 
 }
+
+# I will need to add a complexNetworkPlot function. Using the enrichr package to plot the network.
