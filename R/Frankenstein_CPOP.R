@@ -109,8 +109,6 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   # Lasso model for all datasets with updated weights
   if(!is.null(dataset_weights)) {
     message("Fitting final lasso model")
-    stopifnot(require(doParallel))
-    registerDoParallel(nCores)
     model <- glmnet::cv.glmnet(
       x = as.matrix(lasso_x),
       y = lasso_y,
@@ -122,15 +120,12 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
   }
   else if(is.null(dataset_weights)) {
     message("Fitting final lasso model")
-    stopifnot(require(doParallel))
-    registerDoParallel(nCores)
     model <- glmnet::cv.glmnet(
       x = as.matrix(lasso_x),
       y = lasso_y,
       family = "binomial",
       penalty.factor = weights_lasso,
-      alpha = 1,
-      parallel = TRUE)
+      alpha = 1)
   }
 
   result = list(models = model,

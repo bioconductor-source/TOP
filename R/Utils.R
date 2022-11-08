@@ -30,3 +30,9 @@ selectExponent <- function(lasso_x, lasso_y, sample.weights, moderated_test){
   best_exponent <- exponents[which.min(resub_error)]
   return(best_exponent)
 }
+
+# Convinient string split function.
+str_split_n <- function(string, pattern, n) {
+  out <- stringr::str_split(string, pattern, simplify = TRUE)
+  apply(out, 1, `[`, i = n)
+}

@@ -33,7 +33,7 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min"){
     tibble::rownames_to_column("Features") |>
     filter(lambda.min != 0) |>
     filter(Features != "(Intercept)") |>
-    top_n(Features, n = nFeatures) |>
+    top_n(lambda.min, n = nFeatures) |>
     ggplot(aes(x = lambda.min, y = reorder(Features, abs(lambda.min)), fill = abs(lambda.min))) + geom_bar(stat = "identity") +
     theme_bw() + ylab("Features") + xlab("") + scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
 }
@@ -108,4 +108,28 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
   else{
     return(p +  xlab(latex2exp::TeX("log(${\\lambda}$)")) + ylab(latex2exp::TeX("${\\beta}$ Value")))
   }
+}
+
+# Network plot of the CPOP model
+CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min"){
+  # Create network and edge tables.
+  network_tbl <- as.matrix(glmnet::coef.glmnet(fCPOP_Model$models, s = s)) %>%
+    data.frame() %>%
+    tibble::rownames_to_column("Features") %>%
+    filter(Features != "(Intercept)") %>%
+    filter(lambda.min != 0) %>%
+    mutate(Direction = ifelse(lambda.min > 0, "Pos", "Neg"),
+           coef_abs = abs(lambda.min)) %>%
+    top_n(coef_abs, n = nFeatures)
+
+  edges_tbl <- network_tbl %>%
+    tidyr::separate(col = "Features", into = c("from", "to")) 
+  # Create a network plot in ggplot
+  library(ggraph)
+  edges_tbl %>%
+    dplyr::select(from, to, lambda.min) %>%
+    tidygraph::as_tbl_graph(directed = TRUE) %>%
+    ggraph(layout = "kk")  + geom_edge_link(color='black') + geom_node_point(colour="lightblue", size=3) + 
+    geom_node_text(aes(label=name), repel=T) + theme_void() + ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
+
 }
