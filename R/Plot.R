@@ -111,6 +111,16 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
 }
 
 # Network plot of the CPOP model
+#' Title
+#'
+#' @param CPOP_model A CPOP model
+#' @param nFeatures The number of features that will be plotted
+#' @param s lambda value. Default is "lambda.min"
+#'
+#' @return
+#' @export
+#'
+#' @examples
 CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min"){
   # Create network and edge tables.
   network_tbl <- as.matrix(glmnet::coef.glmnet(fCPOP_Model$models, s = s)) %>%
@@ -123,15 +133,20 @@ CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min")
     top_n(coef_abs, n = nFeatures)
 
   edges_tbl <- network_tbl %>%
-    tidyr::separate(col = "Features", into = c("from", "to")) 
+    tidyr::separate(col = "Features", into = c("from", "to"))
   # Create a network plot in ggplot
   library(ggraph)
   edges_tbl %>%
     dplyr::select(from, to, lambda.min) %>%
     tidygraph::as_tbl_graph(directed = TRUE) %>%
-    ggraph(layout = "kk")  + geom_edge_link(color='black') + geom_node_point(colour="lightblue", size=3) + 
+    ggraph(layout = "kk")  + geom_edge_link(color='black') + geom_node_point(colour="lightblue", size=3) +
     geom_node_text(aes(label=name), repel=T) + theme_void() + ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 
 }
 
 # I will need to add a complexNetworkPlot function. Using the enrichr package to plot the network.
+
+# Plot the survival curves for the CPOP model
+CPOP_KaplanMeierPlot <- function(CPOP_model, s = "lambda.min"){
+  # 
+}
