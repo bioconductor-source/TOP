@@ -1,7 +1,7 @@
 library(CCA)
 
-# Calculate the cononical correlation for a list of datasets
-#' Title
+#' calculateCCA
+#' Returns a matrix of canonical correlation coefficients for a list of data.frames.
 #'
 #' @param x_list a list of data.frames with identical features as columns.
 #'
