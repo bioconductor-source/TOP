@@ -1,12 +1,12 @@
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param x_list PARAM_DESCRIPTION
-#' @param y_list PARAM_DESCRIPTION
-#' @param contrast PARAM_DESCRIPTION, Default: NULL
-#' @param nFeatures PARAM_DESCRIPTION, Default: 50
-#' @param combinationMethod PARAM_DESCRIPTION, Default: 'OSP'
-#' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
+#' @title PreProcess_Frank
+#' @description A function that implements feature selection from a list of data frames with corresponding labels. 
+#' @param x_list A list of data frames, with columns corresponding to features and rows corresponding to observations.
+#' @param y_list A list of factor labels. 
+#' @param contrast A character vector describing which order of levels to contrast in y_list ("disease - control"), Default: NULL
+#' @param nFeatures Number of features to return, Default: 50
+#' @param combinationMethod Which p-value combination method to use, Default: 'OSP'
+#' @return A vector of feature names.
+#' @details contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
 #' @examples
 #'  #EXAMPLE1
 #' @rdname PreProcess_Frank
