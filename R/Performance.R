@@ -20,10 +20,10 @@ performance_cpop2 <- function(
   newz <- CPOP::pairwise_col_diff(newx)
   if (!is.null(covariates)) {
     w3 <- glmnet::makeX(cbind(newz, covariates))
-    result_response <- predict(object = cpop_result, newx = w3, s = s,
+    result_response <- stats::predict(object = cpop_result, newx = w3, s = s,
                               type = "class")
   } else {
-    result_response <- predict(object = cpop_result, newx = newz, s = s,
+    result_response <- stats::predict(object = cpop_result, newx = newz, s = s,
                               type = "class")
   }
 

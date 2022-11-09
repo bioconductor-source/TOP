@@ -29,24 +29,24 @@
 #' @importFrom ggthemes scale_color_tableau
 ROC_Plot <- function(roc_list) {
     data.labels <- roc_list %>%
-        purrr::map(~ tibble(AUC = .x$auc)) %>%
+        purrr::map(~ tibble::tibble(AUC = .x$auc)) %>%
         dplyr::bind_rows(.id = "name") %>%
         dplyr::mutate(
             label_long = paste0(name, " , AUC = ", paste(round(AUC, 2))),
             label_AUC = paste0("AUC = ", paste(round(AUC, 2)))
         )
 
-    ggroc(roc_list, size = 1.5) + theme_bw() +
+    pROC::ggroc(roc_list, size = 1.5) + ggplot2::theme_bw() +
         ggthemes::scale_color_tableau(
             name = "Model", labels = data.labels$label_long
         ) +
-        geom_segment(
-            aes(x = 1, xend = 0, y = 0, yend = 1),
+        ggplot2::geom_segment(
+            ggplot2::aes(x = 1, xend = 0, y = 0, yend = 1),
             color = "grey50", linetype = "dashed"
         ) +
-        theme(
-            legend.title = element_text(size = 14)) +
-            theme(legend.text = element_text(size = 12)
+        ggplot2::theme(
+            legend.title = ggplot2::element_text(size = 14)) +
+            ggplot2::theme(legend.text = ggplot2::element_text(size = 12)
         ) +
-        ggtitle("")
+        ggplot2::ggtitle("")
 }

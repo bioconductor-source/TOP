@@ -52,7 +52,7 @@ Surv_Frank <- function(x_list, y_list) {
     # Calculate the average & sd of the coefficients across Datasets
     mean_coefficients <- abs(rowMeans(coefficients))
     sd_coefficients <- apply(coefficients, 1, sd)
-    fudge <- quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
+    fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
 
     # Calculate the final weights
     weights <- mean_coefficients / (sd_coefficients + fudge)
@@ -97,7 +97,7 @@ Surv_Frank_Pred <- function(coxnet_model, newx) {
     z <- CPOP::pairwise_col_diff(newx)
 
     # Predict the survival time
-    survScores <- predict(
+    survScores <- stats::predict(
         coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset
     )
 
@@ -123,10 +123,10 @@ Surv_Frank_CI <- function(coxnet_model, newx, newy) {
     z <- CPOP::pairwise_col_diff(newx)
 
     # Predict the survival time
-    survScores <- predict(coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset)
+    survScores <- stats::predict(coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset)
 
     # Calculate the concordance index
-    CI <- survival::concordance(Surv(newy[, 1], newy[, 2]) ~ survScores)
+    CI <- survival::concordance(survival::Surv(newy[, 1], newy[, 2]) ~ survScores)
 
     return(CI)
 }
@@ -165,12 +165,12 @@ colCoxTests_combine <- function(colCoxTests_list) {
 
     # Perform directPA
     ZScore_output <- apply(outputs, 2, function(x) {
-        qnorm(rank(x) / (nrow(outputs) + 1))
+        stats::qnorm(rank(x) / (nrow(outputs) + 1))
     })
-    data(Pathways)
+    utils::data(Pathways)
     comb.pvalues <- apply(ZScore_output, 1, geneStats)
-    comb.zscores <- qnorm(comb.pvalues, lower.tail = FALSE)
-    pvalue2sided <- 2 * pnorm(-abs(comb.zscores))
+    comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
+    pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
     sig.genes <- names(sort(pvalue2sided))[1:100]
     return(sig.genes)
 }

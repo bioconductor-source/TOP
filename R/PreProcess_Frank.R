@@ -37,7 +37,7 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
         x_list[[i]] <- as.matrix(x_list[[i]])
 
         # Set up a design matrix according to y_list
-        des <- model.matrix(~ 0 + y_list[[i]]) # nolint
+        des <- stats::model.matrix(~ 0 + y_list[[i]]) # nolint
         # Make the names of the columns in the design matrix the same as the levels of y_list
         colnames(des) <- levels(y_list[[i]])
 
@@ -67,14 +67,14 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
 
     # Run directPA
     Z.Scores.All <- apply(tT, 2, function(x) {
-        qnorm(rank(x) / (nrow(tT) + 1))
+        stats::qnorm(rank(x) / (nrow(tT) + 1))
     })
-    data(Pathways)
+    utils::data(Pathways)
     gene.pvalues <- apply(Z.Scores.All, 1, function(x) {
         directPA::geneStats(x, method = combinationMethod)
     })
-    gene.zscores <- qnorm(gene.pvalues, lower.tail = FALSE)
-    pvalue2sided <- 2 * pnorm(-abs(gene.zscores))
+    gene.zscores <- stats::qnorm(gene.pvalues, lower.tail = FALSE)
+    pvalue2sided <- 2 * stats::pnorm(-abs(gene.zscores))
     sig.genes <- names(pvalue2sided %>% sort())[1:nFeatures]
     return(sig.genes)
 }

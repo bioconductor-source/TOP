@@ -38,15 +38,15 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min") {
         dplyr::filter(lambda.min != 0) |>
         dplyr::filter(Features != "(Intercept)") |>
         dplyr::top_n(lambda.min, n = nFeatures) |>
-        ggplot(
-            aes(x = lambda.min, y = reorder(Features, abs(lambda.min)),
+        ggplot2::ggplot(
+            ggplot2::aes(x = lambda.min, y = stats::reorder(Features, abs(lambda.min)),
             fill = abs(lambda.min))
         ) +
-            geom_bar(stat = "identity") +
-            theme_bw() +
-            ylab("Features") +
-            xlab("") +
-            scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
+            ggplot2::geom_bar(stat = "identity") +
+            ggplot2::theme_bw() +
+            ggplot2::ylab("Features") +
+            ggplot2::xlab("") +
+            ggplot2::scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
 }
 
 #' Title
@@ -101,25 +101,25 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
 
     topfeatures <- df %>%
         dplyr::filter(lambda == lambda.min) %>%
-        dplyr::arrange(desc(abs(value))) %>%
+        dplyr::arrange(dplyr::desc(abs(value))) %>%
         dplyr::top_n(abs(value), n = nFeatures)
 
     p <- df %>%
         dplyr::filter(Feature %in% topfeatures$Feature) %>%
-            ggplot(aes(x = log, y = value, color = Feature, text = Feature)) +
-            geom_line(size = 1.3) +
-            theme_bw() +
-            theme(legend.position = "none") +
-            geom_vline(xintercept = log(lambda.min), linetype = "dashed") +
-            geom_text(
-                aes(x = log(lambda.min), label = "lambda.min", y = max(c$value)),
-                angle = 0, color = "black", text = element_text(face = NULL),
+            ggplot2::ggplot(ggplot2::aes(x = log, y = value, color = Feature, text = Feature)) +
+            ggplot2::geom_line(size = 1.3) +
+            ggplot2::theme_bw() +
+            ggplot2::theme(legend.position = "none") +
+            ggplot2::geom_vline(xintercept = log(lambda.min), linetype = "dashed") +
+            ggplot2::geom_text(
+                ggplot2::aes(x = log(lambda.min), label = "lambda.min", y = max(c$value)),
+                angle = 0, color = "black", text = ggplot2::element_text(face = NULL),
                 size = 6, hjust = -0.1
             )
 
     if (label) {
         p <- p + ggrepel::geom_label_repel(
-            data = topfeatures, aes(label = Feature), size = 3.5,
+            data = topfeatures, ggplot2::aes(label = Feature), size = 3.5,
             hjust = -0.1, nudge_x = 0.1, nudge_y = 0.1
         )
     }
@@ -128,8 +128,8 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
         return(plotly::ggplotly(p, tooltip = "text"))
     } else {
         return(
-            p + xlab(latex2exp::TeX("log(${\\lambda}$)")) +
-                ylab(latex2exp::TeX("${\\beta}$ Value"))
+            p + ggplot2::xlab(latex2exp::TeX("log(${\\lambda}$)")) +
+                ggplot2::ylab(latex2exp::TeX("${\\beta}$ Value"))
         )
     }
 }
@@ -174,9 +174,9 @@ CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min")
     edges_tbl %>%
         dplyr::select(from, to, lambda.min) %>%
         tidygraph::as_tbl_graph(directed = TRUE) %>%
-        ggraph::ggraph(layout = "kk") + geom_edge_link(color = "black") +
-            geom_node_point(colour = "lightblue", size = 3) +
-            geom_node_text(aes(label = name), repel = T) + theme_void() +
+        ggraph::ggraph(layout = "kk") + ggraph::geom_edge_link(color = "black") +
+            ggraph::geom_node_point(colour = "lightblue", size = 3) +
+            ggraph::geom_node_text(ggplot2::aes(label = name), repel = T) + ggplot2::theme_void() +
             ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 }
 

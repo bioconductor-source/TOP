@@ -54,7 +54,7 @@ Frankenstein_CPOP <- function(
             data.frame() |>
             dplyr::mutate(Organ = as.character(.)) |>
             dplyr::group_by(Organ) |>
-            dplyr::summarise(n = n()) |>
+            dplyr::summarise(n = dplyr::n()) |>
             dplyr::mutate(freq = n / sum(n))
         un_weights <- unlist(dataset_weights) |>
             data.frame() |>
@@ -81,7 +81,7 @@ Frankenstein_CPOP <- function(
             dplyr::mutate(inv_freq = sum(.) / .)
 
         aggregate_lfc <- abs(
-            apply(lfc, 1, function(x) weighted.mean(x, freq_samples$inv_freq))
+            apply(lfc, 1, function(x) stats::weighted.mean(x, freq_samples$inv_freq))
         )
         variance_lfc <- sqrt(
             apply(lfc, 1, function(x) Hmisc::wtd.var(x, freq_samples$inv_freq))
@@ -95,7 +95,7 @@ Frankenstein_CPOP <- function(
     }
 
     fudge_vector <- variance_lfc[variance_lfc != 0]
-    fudge <- quantile(fudge_vector, 0.05, na.rm = TRUE)
+    fudge <- stats::quantile(fudge_vector, 0.05, na.rm = TRUE)
 
     # Take a moderated test statistic
     message("Calculating Final Weights")
@@ -114,11 +114,11 @@ Frankenstein_CPOP <- function(
 
         # Adding covariates to the final matrix.
         lasso_x <- cbind(lasso_x, covariates)
-        lasso_x <- glmnet::makeX(as(lasso_x, "data.frame"))
+        lasso_x <- glmnet::makeX(methods::as(lasso_x, "data.frame"))
 
         # Altering the wights of the final lasso model
         covariate_weights <- rep(
-            Inf, ncol(glmnet::makeX(as(covariates, "data.frame")))
+            Inf, ncol(glmnet::makeX(methods::as(covariates, "data.frame")))
         )
         moderated_test <- append(moderated_test, covariate_weights)
         names(moderated_test) <- colnames(lasso_x)
@@ -189,12 +189,12 @@ predict_cpop2 <- function(cpop_result, newx, covariates = NULL, s = "lambda.min"
     newz <- CPOP::pairwise_col_diff(newx)
     if (!is.null(covariates)) {
         w3 <- glmnet::makeX(cbind(newz, covariates))
-        result_response <- predict(
+        result_response <- stats::predict(
             object = cpop_result, newx = w3, s = s,
             type = "response"
         )
     } else {
-        result_response <- predict(
+        result_response <- stats::predict(
             object = cpop_result, newx = newz, s = s,
             type = "response"
         )
