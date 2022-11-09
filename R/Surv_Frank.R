@@ -1,13 +1,28 @@
-library(survival)
-library(ClassifyR)
-library(dplyr)
-
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param x_list PARAM_DESCRIPTION
+#' @param y_list PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#'  #EXAMPLE1
+#' @rdname Surv_Frank
+#' @export
+#' @importFrom ClassifyR colCoxTests
+#' @importFrom CPOP pairwise_col_diff
+#' @importFrom dplyr select
+#' @importFrom tibble rownames_to_column column_to_rownames
+#' @importFrom purrr reduce
+#' @importFrom survival Surv
+#' @importFrom glmnet cv.glmnet
 Surv_Frank <- function(x_list, y_list) {
     # create a loop to run through all datasets
     output <- list()
     for (i in seq_along(x_list)) {
         # Perform colCoxTests on each dataset
-        output[[i]] <- ClassifyR::colCoxTests(as.matrix(x_list[[i]]), y_list[[i]], option = "fast")
+        output[[i]] <- ClassifyR::colCoxTests(
+            as.matrix(x_list[[i]]), y_list[[i]], option = "fast"
+        )
     }
 
     sig.genes <- sort(colCoxTests_combine(output))
@@ -21,7 +36,9 @@ Surv_Frank <- function(x_list, y_list) {
         z_subset <- CPOP::pairwise_col_diff(x_subset)
 
         # Run colCoxTests on z_subset
-        pairwise_coefficients[[i]] <- ClassifyR::colCoxTests(z_subset, y_list[[i]], option = "fast") %>%
+        pairwise_coefficients[[i]] <- ClassifyR::colCoxTests(
+            z_subset, y_list[[i]], option = "fast"
+        ) %>%
             dplyr::select(coef) %>%
             data.frame() %>%
             tibble::rownames_to_column(var = "Gene")
@@ -35,7 +52,7 @@ Surv_Frank <- function(x_list, y_list) {
     # Calculate the average & sd of the coefficients across Datasets
     mean_coefficients <- abs(rowMeans(coefficients))
     sd_coefficients <- apply(coefficients, 1, sd)
-    fudge <- quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
+    fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
 
     # Calculate the final weights
     weights <- mean_coefficients / (sd_coefficients + fudge)
@@ -48,7 +65,9 @@ Surv_Frank <- function(x_list, y_list) {
 
     # Cleaning the outcome variable
     survival_y <- do.call("rbind", y_list)
-    Surv_y <- Surv(time = survival_y[, 1], event = survival_y[, 2], type = "right")
+    Surv_y <- survival::Surv(
+        time = survival_y[, 1], event = survival_y[, 2], type = "right"
+    )
 
     # Run a coxnet model with the final_weights as penalty factors
     coxnet_model <- glmnet::cv.glmnet(
@@ -61,33 +80,74 @@ Surv_Frank <- function(x_list, y_list) {
     return(coxnet_model)
 }
 
-# Create a prediction function
+
+#' @title Create a prediction function.
+#' @description FUNCTION_DESCRIPTION
+#' @param coxnet_model PARAM_DESCRIPTION
+#' @param newx PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @examples
+#'  #EXAMPLE1
+#' @rdname Surv_Frank_Pred
+#' @export
+#' @importFrom CPOP pairwise_col_diff
 Surv_Frank_Pred <- function(coxnet_model, newx) {
     # Calculate the pairwise differences of x
     newx <- newx[, coxnet_model[[2]]]
     z <- CPOP::pairwise_col_diff(newx)
 
     # Predict the survival time
-    survScores <- predict(coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset)
+    survScores <- stats::predict(
+        coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset
+    )
 
     return(survScores)
 }
 
-# Create a function to calculate the concordance index
+
+#' @title Create a function to calculate the concordance index.
+#' @description FUNCTION_DESCRIPTION
+#' @param coxnet_model PARAM_DESCRIPTION
+#' @param newx PARAM_DESCRIPTION
+#' @param newy PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @examples
+#'  # EXAMPLE1
+#' @rdname Surv_Frank_CI
+#' @export
+#' @importFrom CPOP pairwise_col_diff
+#' @importFrom survival concordance
 Surv_Frank_CI <- function(coxnet_model, newx, newy) {
     # Calculate the pairwise differences of x
     newx <- newx[, coxnet_model[[2]]]
     z <- CPOP::pairwise_col_diff(newx)
 
     # Predict the survival time
-    survScores <- predict(coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset)
+    survScores <- stats::predict(coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset)
 
     # Calculate the concordance index
-    CI <- survival::concordance(Surv(newy[, 1], newy[, 2]) ~ survScores)
+    CI <- survival::concordance(survival::Surv(newy[, 1], newy[, 2]) ~ survScores)
 
     return(CI)
 }
 
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param coxnet_model PARAM_DESCRIPTION
+#' @param newx PARAM_DESCRIPTION
+#' @param newy PARAM_DESCRIPTION
+#' @return OUTPUT_DESCRIPTION
+#' @examples
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname Surv_Frank_CI
+#' @export
+#' @importFrom dplyr select
+#' @importFrom tibble rownames_to_column column_to_rownames
+#' @importFrom purrr reduce
 colCoxTests_combine <- function(colCoxTests_list) {
     # Extract the p-values from each dataset
     cox_list <- list()
@@ -105,12 +165,12 @@ colCoxTests_combine <- function(colCoxTests_list) {
 
     # Perform directPA
     ZScore_output <- apply(outputs, 2, function(x) {
-        qnorm(rank(x) / (nrow(outputs) + 1))
+        stats::qnorm(rank(x) / (nrow(outputs) + 1))
     })
-    data(Pathways)
+    utils::data(Pathways)
     comb.pvalues <- apply(ZScore_output, 1, geneStats)
-    comb.zscores <- qnorm(comb.pvalues, lower.tail = FALSE)
-    pvalue2sided <- 2 * pnorm(-abs(comb.zscores))
+    comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
+    pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
     sig.genes <- names(sort(pvalue2sided))[1:100]
     return(sig.genes)
 }

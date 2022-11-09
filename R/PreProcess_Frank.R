@@ -1,9 +1,20 @@
-library(limma)
-library(dplyr)
-library(directPA)
-library(PhosR)
-library(tibble)
-
+#' @title FUNCTION_TITLE
+#' @description FUNCTION_DESCRIPTION
+#' @param x_list PARAM_DESCRIPTION
+#' @param y_list PARAM_DESCRIPTION
+#' @param contrast PARAM_DESCRIPTION, Default: NULL
+#' @param nFeatures PARAM_DESCRIPTION, Default: 50
+#' @param combinationMethod PARAM_DESCRIPTION, Default: 'OSP'
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples
+#'  #EXAMPLE1
+#' @rdname PreProcess_Frank
+#' @export 
+#' @importFrom limma lmFit makeContrasts contrasts.fit eBayes topTable
+#' @importFrom dplyr select
+#' @importFrom tibble remove_rownames column_to_rownames
+#' @importFrom directPA geneStats
 PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, combinationMethod = "OSP") {
     if (!combinationMethod %in% c("Stouffer", "OSP", "Fisher", "maxP")) {
         stop(print("Available methods are Stouffer, OSP, Fisher, or maxP"))
@@ -26,16 +37,16 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
         x_list[[i]] <- as.matrix(x_list[[i]])
 
         # Set up a design matrix according to y_list
-        des <- model.matrix(~ 0 + y_list[[i]]) # nolint
+        des <- stats::model.matrix(~ 0 + y_list[[i]]) # nolint
         # Make the names of the columns in the design matrix the same as the levels of y_list
         colnames(des) <- levels(y_list[[i]])
 
         # Run limma
-        fit <- lmFit(x_list[[i]], design = des)
-        CM <- makeContrasts(contrasts = contrast, levels = des)
-        fit2 <- contrasts.fit(fit, CM)
-        efit <- eBayes(fit2, robust = TRUE)
-        tT[[i]] <- topTable(efit, coef = contrast, n = Inf) %>%
+        fit <- limma::lmFit(x_list[[i]], design = des)
+        CM <- limma::makeContrasts(contrasts = contrast, levels = des)
+        fit2 <- limma::contrasts.fit(fit, CM)
+        efit <- limma::eBayes(fit2, robust = TRUE)
+        tT[[i]] <- limma::topTable(efit, coef = contrast, n = Inf) %>%
             dplyr::select(t) %>%
             data.frame() # nolint
 
@@ -56,14 +67,14 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
 
     # Run directPA
     Z.Scores.All <- apply(tT, 2, function(x) {
-        qnorm(rank(x) / (nrow(tT) + 1))
+        stats::qnorm(rank(x) / (nrow(tT) + 1))
     })
-    data(Pathways)
+    utils::data(Pathways)
     gene.pvalues <- apply(Z.Scores.All, 1, function(x) {
-        geneStats(x, method = combinationMethod)
+        directPA::geneStats(x, method = combinationMethod)
     })
-    gene.zscores <- qnorm(gene.pvalues, lower.tail = FALSE)
-    pvalue2sided <- 2 * pnorm(-abs(gene.zscores))
+    gene.zscores <- stats::qnorm(gene.pvalues, lower.tail = FALSE)
+    pvalue2sided <- 2 * stats::pnorm(-abs(gene.zscores))
     sig.genes <- names(pvalue2sided %>% sort())[1:nFeatures]
     return(sig.genes)
 }
