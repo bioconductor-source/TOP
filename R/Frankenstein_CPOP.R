@@ -19,10 +19,14 @@
 #' @rdname Frankenstein_CPOP
 #' @export 
 #' @importFrom CPOP pairwise_col_diff
+#' @importFrom dplyr mutate group_by summarise
 #' @importFrom tibble rownames_to_column
 #' @importFrom Hmisc wtd.var
 #' @importFrom glmnet makeX cv.glmnet
-Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights = NULL, sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1) {
+Frankenstein_CPOP <- function(
+    x_list, y_list, covariates = NULL, dataset_weights = NULL,
+    sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1
+) {
     # Catching some errors.
     # y must be a factor or else it will break.
     if (sum(!unlist(lapply(y_list, is.factor))) > 0) {
@@ -47,19 +51,19 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
     if (!is.null(dataset_weights)) {
         # Sample weights
         message("Calculating Weights for each Dataset")
-        sample.weights <- unlist(dataset_weights) %>%
-            data.frame() %>%
-            mutate(Organ = as.character(.)) %>%
-            group_by(Organ) %>%
-            summarise(n = n()) %>%
-            mutate(freq = n / sum(n))
-        un_weights <- unlist(dataset_weights) %>%
-            data.frame() %>%
-            mutate(
+        sample.weights <- unlist(dataset_weights) |>
+            data.frame() |>
+            dplyr::mutate(Organ = as.character(.)) |>
+            dplyr::group_by(Organ) |>
+            dplyr::summarise(n = n()) |>
+            dplyr::mutate(freq = n / sum(n))
+        un_weights <- unlist(dataset_weights) |>
+            data.frame() |>
+            dplyr::mutate(
                 Organ = as.character(.),
                 weight = 1
             )
-        for (i in 1:nrow(un_weights)) {
+        for (i in seq_len(nrow(un_weights))) {
             idx <- which(un_weights$Organ[i] == sample.weights$Organ)
             un_weights$weight[i] <- sample.weights$freq[idx]
         }
@@ -72,13 +76,17 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
         message("Modifing Fold Change of Ratios based on sample_weights")
         lfc <- do.call("cbind", lfc)
 
-        freq_samples <- sapply(x_list, dim)[1, ] %>%
-            data.frame() %>%
-            tibble::rownames_to_column() %>%
-            mutate(inv_freq = sum(.) / .)
+        freq_samples <- sapply(x_list, dim)[1, ] |>
+            data.frame() |>
+            tibble::rownames_to_column() |>
+            dplyr::mutate(inv_freq = sum(.) / .)
 
-        aggregate_lfc <- abs(apply(lfc, 1, function(x) weighted.mean(x, freq_samples$inv_freq)))
-        variance_lfc <- sqrt(apply(lfc, 1, function(x) Hmisc::wtd.var(x, freq_samples$inv_freq)))
+        aggregate_lfc <- abs(
+            apply(lfc, 1, function(x) weighted.mean(x, freq_samples$inv_freq))
+        )
+        variance_lfc <- sqrt(
+            apply(lfc, 1, function(x) Hmisc::wtd.var(x, freq_samples$inv_freq))
+        )
     }
     ## If there are none supplied.
     else if (sample_weights == FALSE) {
@@ -102,7 +110,7 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
     if (!is.null(covariates)) {
         message("Fitting covariates into the model")
         covariates <- do.call("rbind", covariates)
-        covariates <- covariates %>%
+        covariates <- covariates |>
             data.frame()
 
         # Adding covariates to the final matrix.
@@ -110,7 +118,9 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
         lasso_x <- glmnet::makeX(as(lasso_x, "data.frame"))
 
         # Altering the wights of the final lasso model
-        covariate_weights <- rep(Inf, ncol(glmnet::makeX(as(covariates, "data.frame"))))
+        covariate_weights <- rep(
+            Inf, ncol(glmnet::makeX(as(covariates, "data.frame")))
+        )
         moderated_test <- append(moderated_test, covariate_weights)
         names(moderated_test) <- colnames(lasso_x)
     }
@@ -118,7 +128,9 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
     # Using selectExponent to determine best exponent
     if (optimiseExponent == TRUE) {
         message("Determining Best Exponent")
-        exponent <- selectExponent(lasso_x, lasso_y, moderated_test, sample.weights = sample.weights)
+        exponent <- selectExponent(
+            lasso_x, lasso_y, moderated_test, sample.weights = sample.weights
+        )
         weights_lasso <- 1 / (moderated_test)^(exponent)
         message(paste("The best exponent was: ", exponent))
     } else if (optimiseExponent == FALSE) {
