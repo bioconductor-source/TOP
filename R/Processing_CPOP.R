@@ -1,5 +1,3 @@
-library(CCA)
-
 #' calculateCCA
 #' Returns a matrix of canonical correlation coefficients for a list of data.frames.
 #'
