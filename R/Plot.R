@@ -156,7 +156,7 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
 #' @importFrom ggnewscale new_scale_fill new_scale_color
 CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min") {
     # Create network and edge tables.
-    network_tbl <- as.matrix(glmnet::coef.glmnet(fCPOP_Model$models, s = s)) %>%
+    network_tbl <- as.matrix(glmnet::coef.glmnet(CPOP_model$models, s = s)) %>%
         data.frame() %>%
         tibble::rownames_to_column("Features") %>%
         dplyr::filter(Features != "(Intercept)") %>%
@@ -169,7 +169,7 @@ CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min")
 
     edges_tbl <- network_tbl %>%
         tidyr::separate(col = "Features", into = c("from", "to"))
-        
+
     # Create a network plot in ggplot
 
     edges_tbl %>%
