@@ -75,7 +75,7 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min") {
 #' fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
 #' CPOP_coefPlot(fCPOP_model)
 #'
-#' @import ggplot
+#' @import ggplot2
 #' @importFrom tibble rownames_to_column
 #' @importFrom reshape2 melt
 #' @importFrom dplyr mutate filter arrange top_n
