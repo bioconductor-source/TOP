@@ -5,9 +5,8 @@
 #' @param covariates PARAM_DESCRIPTION, Default: NULL
 #' @param s PARAM_DESCRIPTION, Default: 'lambda.min'
 #' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
 #' @examples
-#'
+#'  # TODO
 #' @rdname performance_cpop2
 #' @export
 #' @importFrom CPOP pairwise_col_diff
