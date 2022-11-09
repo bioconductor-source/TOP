@@ -1,8 +1,8 @@
-#' Title
+#' CPOP_coefPlot
 #'
 #' @param CPOP_Model A CPOP model
 #' @param nFeatures The number of features that will be plotted. Default: 20
-#' @param s PARAM_DESCRIPTION, Default: 'lambda.min'
+#' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #'
 #' @return
 #' @export
@@ -49,11 +49,11 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min") {
             ggplot2::scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
 }
 
-#' Title
+#' CPOP_lambdaPlot
 #'
 #' @param CPOP_model A CPOP model
-#' @param nFeatures The number of features to plot, features are ranked beta's for lambda.min
-#' @param s lambda value. Default is "lambda.min"
+#' @param nFeatures The number of features to plot, features are ranked beta's for lambda.min. Default: 20
+#' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
 #' @return
 #' @export
@@ -135,11 +135,11 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
 }
 
 # Network plot of the CPOP model
-#' Title
+#' CPOP_simplenetworkPlot
 #'
 #' @param CPOP_model A CPOP model
-#' @param nFeatures The number of features that will be plotted
-#' @param s lambda value. Default is "lambda.min"
+#' @param nFeatures The number of features that will be plotted. Default: 20
+#' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
 #' @return
 #' @export
@@ -169,6 +169,7 @@ CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min")
 
     edges_tbl <- network_tbl %>%
         tidyr::separate(col = "Features", into = c("from", "to"))
+        
     # Create a network plot in ggplot
 
     edges_tbl %>%
