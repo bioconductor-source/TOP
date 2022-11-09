@@ -7,7 +7,7 @@ lfc_calculate <- function(df, y) {
 # Loop through possible exponents of weights_lasso
 selectExponent <- function(lasso_x, lasso_y, sample.weights, moderated_test) {
     # Assign possible exponents of weights_lasso
-    exponents <- 2^(seq(-5, 5, by = 1))
+    exponents <- 2^(seq(-3, 3, by = 0.5))
     resub_error <- list()
 
     for (i in seq_along(exponents)) {
