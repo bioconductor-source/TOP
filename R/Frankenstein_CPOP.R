@@ -8,7 +8,6 @@
 #' @param optimiseExponent PARAM_DESCRIPTION, Default: FALSE
 #' @param nCores PARAM_DESCRIPTION, Default: 1
 #' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -175,7 +174,6 @@ Frankenstein_CPOP <- function(
 #' @param covariates PARAM_DESCRIPTION, Default: NULL
 #' @param s PARAM_DESCRIPTION, Default: 'lambda.min'
 #' @return OUTPUT_DESCRIPTION
-#' @details DETAILS
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
