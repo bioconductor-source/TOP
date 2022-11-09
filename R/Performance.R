@@ -3,7 +3,7 @@
 #' @param cpop_result A model of class CPOP2. This is the output of the function Frankenstein_CPOP.
 #' @param newx A matrix of the new data to be predicted. With the same number of feature columns as the original data.
 #' @param covariates A data.frame of the same covariates as the original model, Default: NULL
-#' @param s Lambda, Default: 'lambda.min'
+#' @param s Lambda used in the lasso model, Default: 'lambda.min'
 #' @return OUTPUT_DESCRIPTION
 #' @examples
 #'  # TODO
