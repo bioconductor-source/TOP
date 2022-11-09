@@ -1,7 +1,27 @@
-library(dplyr)
-library(CPOP)
-library(glmnet)
-
+#' @title Run Frankenstein CPOP
+#' @description FUNCTION_DESCRIPTION
+#' @param x_list PARAM_DESCRIPTION
+#' @param y_list PARAM_DESCRIPTION
+#' @param covariates PARAM_DESCRIPTION, Default: NULL
+#' @param dataset_weights PARAM_DESCRIPTION, Default: NULL
+#' @param sample_weights PARAM_DESCRIPTION, Default: FALSE
+#' @param optimiseExponent PARAM_DESCRIPTION, Default: FALSE
+#' @param nCores PARAM_DESCRIPTION, Default: 1
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#'
+#' @rdname Frankenstein_CPOP
+#' @export 
+#' @importFrom CPOP pairwise_col_diff
+#' @importFrom tibble rownames_to_column
+#' @importFrom Hmisc wtd.var
+#' @importFrom glmnet makeX cv.glmnet
 Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights = NULL, sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1) {
     # Catching some errors.
     # y must be a factor or else it will break.
@@ -136,7 +156,24 @@ Frankenstein_CPOP <- function(x_list, y_list, covariates = NULL, dataset_weights
 }
 
 
-
+#' @title Prectict using the CPOP2 results.
+#' @description FUNCTION_DESCRIPTION
+#' @param cpop_result PARAM_DESCRIPTION
+#' @param newx PARAM_DESCRIPTION
+#' @param covariates PARAM_DESCRIPTION, Default: NULL
+#' @param s PARAM_DESCRIPTION, Default: 'lambda.min'
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  #EXAMPLE1
+#'  }
+#' }
+#' @rdname predict_cpop2
+#' @export 
+#' @importFrom CPOP pairwise_col_diff
+#' @importFrom glmnet makeX
 predict_cpop2 <- function(cpop_result, newx, covariates = NULL, s = "lambda.min") {
     # Determine z for the new x
     newz <- CPOP::pairwise_col_diff(newx)
