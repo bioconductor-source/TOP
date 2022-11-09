@@ -3,7 +3,7 @@
 #'
 #' @param x_list a list of data.frames with identical features as columns.
 #'
-#' @return TODO
+#' @return A matrix of canonical correlation coefficients.
 #' @export
 #'
 #' @examples
