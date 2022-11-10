@@ -33,6 +33,13 @@ Frankenstein_CPOP <- function(
         stop("The outcome in positiion ", factor_rank, " is not a factor")
     }
 
+    parallel <- FALSE
+    # register parallel cluster
+    if (nCores > 1) {
+        parallel <- TRUE
+        doParallel::registerDoParallel(nCores)
+    }
+
     # Convert counts to ratios
     message("Calculating Pairwise Ratios of Features")
     x_list <- lapply(x_list, as.matrix)
@@ -145,7 +152,7 @@ Frankenstein_CPOP <- function(
             weights = sample.weights,
             penalty.factor = weights_lasso,
             alpha = 1,
-            parallel = TRUE
+            parallel = parallel
         )
     } else if (is.null(dataset_weights)) {
         message("Fitting final lasso model")
@@ -154,7 +161,8 @@ Frankenstein_CPOP <- function(
             y = lasso_y,
             family = "binomial",
             penalty.factor = weights_lasso,
-            alpha = 1
+            alpha = 1,
+            parallel = parallel
         )
     }
 

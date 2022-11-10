@@ -6,6 +6,14 @@ lfc_calculate <- function(df, y) {
 
 # Loop through possible exponents of weights_lasso
 selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_test, nCores = nCores) {
+
+    parallel <- FALSE
+    # register parallel cluster
+    if (nCores > 1) {
+        parallel <- TRUE
+        doParallel::registerDoParallel(nCores)
+    }
+
     # Assign possible exponents of weights_lasso
     exponents <- 2^(seq(-3, 3, by = 0.5))
     resub_error <- list()
@@ -19,7 +27,7 @@ selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_te
                 weights = sample.weights,
                 penalty.factor = weights_lasso,
                 alpha = 1,
-                parallel = TRUE
+                parallel = parallel
             )
         } else if (is.null(sample.weights)) {
             model <- glmnet::cv.glmnet(
@@ -28,7 +36,7 @@ selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_te
                 family = "binomial",
                 penalty.factor = weights_lasso,
                 alpha = 1,
-                parallel = TRUE
+                parallel = parallel
             )
         }
         resub_error[[exponent]] <- model$cvm

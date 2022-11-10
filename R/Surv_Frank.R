@@ -17,6 +17,14 @@
 #' @importFrom survival Surv
 #' @importFrom glmnet cv.glmnet
 Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, sample_weights = FALSE, nCores = 1) {
+
+    parallel <- FALSE
+    # register parallel cluster
+    if (nCores > 1) {
+        parallel <- TRUE
+        doParallel::registerDoParallel(nCores)
+    }
+
     # create a loop to run through all datasets
     output <- list()
     for (i in seq_along(x_list)) {
@@ -115,7 +123,8 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
     coxnet_model <- glmnet::cv.glmnet(
         x = as.matrix(z_list),
         y = Surv_y, family = "cox", type.measure = "C",
-        penalty.factor = final_weights
+        penalty.factor = final_weights,
+        parallel = parallel
     )
     coxnet_model <- list(coxnet_model, sig.genes)
 
