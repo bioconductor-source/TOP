@@ -73,6 +73,29 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
         fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
     }
 
+    ## If there is some weights supplied
+    if (!is.null(dataset_weights)) {
+        # Sample weights
+        message("Calculating Weights for each Dataset")
+        sample.weights <- unlist(dataset_weights) |>
+            data.frame() |>
+            dplyr::mutate(Organ = as.character(.)) |>
+            dplyr::group_by(Organ) |>
+            dplyr::summarise(n = dplyr::n()) |>
+            dplyr::mutate(freq = n / sum(n))
+        un_weights <- unlist(dataset_weights) |>
+            data.frame() |>
+            dplyr::mutate(
+                Organ = as.character(.),
+                weight = 1
+            )
+        for (i in seq_len(nrow(un_weights))) {
+            idx <- which(un_weights$Organ[i] == sample.weights$Organ)
+            un_weights$weight[i] <- sample.weights$freq[idx]
+        }
+        sample.weights <- un_weights$weight
+    }
+
     # Calculate the final weights
     weights <- mean_coefficients / (sd_coefficients + fudge)
     final_weights <- 1 / (weights)^(1 / 2)
