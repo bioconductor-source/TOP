@@ -16,6 +16,7 @@
 #' @importFrom purrr reduce
 #' @importFrom survival Surv
 #' @importFrom glmnet cv.glmnet
+#' @importFrom doParallel registerDoParallel
 Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, sample_weights = FALSE, nCores = 1) {
 
     parallel <- FALSE

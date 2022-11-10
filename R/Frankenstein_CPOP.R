@@ -22,6 +22,7 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom Hmisc wtd.var
 #' @importFrom glmnet makeX cv.glmnet
+#' @importFrom doParallel registerDoParallel
 Frankenstein_CPOP <- function(
     x_list, y_list, covariates = NULL, dataset_weights = NULL,
     sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1
