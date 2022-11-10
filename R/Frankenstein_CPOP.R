@@ -45,7 +45,6 @@ Frankenstein_CPOP <- function(
         lfc[[i]] <- lfc_calculate(z_list[[i]], y_list[[i]])
     }
 
-    # Taking the average lfc across all datasets
     ## If there is some weights supplied
     if (!is.null(dataset_weights)) {
         # Sample weights
