@@ -5,26 +5,33 @@ lfc_calculate <- function(df, y) {
 }
 
 # Loop through possible exponents of weights_lasso
-selectExponent <- function(lasso_x, lasso_y, sample.weights, moderated_test) {
+selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_test, nCores = nCores) {
     # Assign possible exponents of weights_lasso
     exponents <- 2^(seq(-3, 3, by = 0.5))
     resub_error <- list()
-
-    for (i in seq_along(exponents)) {
-        weights_lasso <- 1 / (moderated_test)^(exponents)
-
-        # Fit the model
-        model <- glmnet::cv.glmnet(
-            x = as.matrix(lasso_x),
-            y = lasso_y,
-            family = "binomial",
-            weights = sample.weights,
-            penalty.factor = weights_lasso,
-            alpha = 1
-        )
-
-        # Calculate resubstitution error of model
-        resub_error[[i]] <- model$cvm[which.min(model$cvm)]
+    for (exponent in exponents) {
+        weights_lasso <- 1 / (moderated_test)^(exponent)
+        if (!is.null(sample.weights)) {
+            model <- glmnet::cv.glmnet(
+                x = as.matrix(lasso_x),
+                y = lasso_y,
+                family = "binomial",
+                weights = sample.weights,
+                penalty.factor = weights_lasso,
+                alpha = 1,
+                parallel = TRUE
+            )
+        } else if (is.null(sample.weights)) {
+            model <- glmnet::cv.glmnet(
+                x = as.matrix(lasso_x),
+                y = lasso_y,
+                family = "binomial",
+                penalty.factor = weights_lasso,
+                alpha = 1,
+                parallel = TRUE
+            )
+        }
+        resub_error[[exponent]] <- model$cvm
     }
 
     # Which exponent gives the lowest resubstitution error?
