@@ -7,12 +7,16 @@
 #' @export
 #'
 #' @examples
-#' x1 = cpop_data_binary$x1
-#' x2 = cpop_data_binary$x2
-#' x3 = cpop_data_binary$x3
 #'
-#' x_list <- list(x1,x2,x3)
-#' calculateCCA(x_list)
+#'  data(cpop_data_binary, package = "CPOP")
+#'
+#'  x1 = cpop_data_binary$x1
+#'  x2 = cpop_data_binary$x2
+#'  x3 = cpop_data_binary$x3
+#'
+#'  x_list <- list(x1,x2,x3)
+#'  calculateCCA(x_list)
+#'
 #' @importFrom CCA cc
 calculateCCA <- function(x_list) {
   if (ncol(x_list[[1]]) > 1000) {
