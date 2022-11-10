@@ -2,7 +2,7 @@
 % Please edit documentation in R/PreProcess_Frank.R
 \name{PreProcess_Frank}
 \alias{PreProcess_Frank}
-\title{FUNCTION_TITLE}
+\title{PreProcess_Frank}
 \usage{
 PreProcess_Frank(
   x_list,
@@ -13,24 +13,24 @@ PreProcess_Frank(
 )
 }
 \arguments{
-\item{x_list}{PARAM_DESCRIPTION}
+\item{x_list}{A list of data frames, with columns corresponding to features and rows corresponding to observations.}
 
-\item{y_list}{PARAM_DESCRIPTION}
+\item{y_list}{A list of factor labels.}
 
-\item{contrast}{PARAM_DESCRIPTION, Default: NULL}
+\item{contrast}{A character vector describing which order of levels to contrast in y_list ("disease - control"), Default: NULL}
 
-\item{nFeatures}{PARAM_DESCRIPTION, Default: 50}
+\item{nFeatures}{Number of features to return, Default: 50}
 
-\item{combinationMethod}{PARAM_DESCRIPTION, Default: 'OSP'}
+\item{combinationMethod}{Which p-value combination method to use, Default: 'OSP'}
 }
 \value{
-OUTPUT_DESCRIPTION
+A vector of feature names.
 }
 \description{
-FUNCTION_DESCRIPTION
+A function that implements feature selection from a list of data frames with corresponding labels.
 }
 \details{
-DETAILS
+contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
 }
 \examples{
  #EXAMPLE1

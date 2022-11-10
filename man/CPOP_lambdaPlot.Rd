@@ -2,7 +2,7 @@
 % Please edit documentation in R/Plot.R
 \name{CPOP_lambdaPlot}
 \alias{CPOP_lambdaPlot}
-\title{Title}
+\title{CPOP_lambdaPlot}
 \usage{
 CPOP_lambdaPlot(
   CPOP_model,
@@ -15,12 +15,12 @@ CPOP_lambdaPlot(
 \arguments{
 \item{CPOP_model}{A CPOP model}
 
-\item{nFeatures}{The number of features to plot, features are ranked beta's for lambda.min}
+\item{nFeatures}{The number of features to plot, features are ranked beta's for lambda.min. Default: 20}
 
-\item{s}{lambda value. Default is "lambda.min"}
+\item{s}{Lambda value for the lasso model. Default is "lambda.min"}
 }
 \description{
-Title
+CPOP_lambdaPlot
 }
 \examples{
 data(cpop_data_binary, package = "CPOP")

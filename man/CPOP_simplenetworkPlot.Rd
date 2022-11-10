@@ -2,19 +2,19 @@
 % Please edit documentation in R/Plot.R
 \name{CPOP_simplenetworkPlot}
 \alias{CPOP_simplenetworkPlot}
-\title{Title}
+\title{CPOP_simplenetworkPlot}
 \usage{
 CPOP_simplenetworkPlot(CPOP_model, nFeatures = 50, s = "lambda.min")
 }
 \arguments{
 \item{CPOP_model}{A CPOP model}
 
-\item{nFeatures}{The number of features that will be plotted}
+\item{nFeatures}{The number of features that will be plotted. Default: 20}
 
-\item{s}{lambda value. Default is "lambda.min"}
+\item{s}{Lambda value for the lasso model. Default is "lambda.min"}
 }
 \description{
-Title
+CPOP_simplenetworkPlot
 }
 \examples{
  # TODO: add examples.

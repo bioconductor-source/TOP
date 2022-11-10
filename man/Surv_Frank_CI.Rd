@@ -2,12 +2,9 @@
 % Please edit documentation in R/Surv_Frank.R
 \name{Surv_Frank_CI}
 \alias{Surv_Frank_CI}
-\alias{colCoxTests_combine}
 \title{Create a function to calculate the concordance index.}
 \usage{
 Surv_Frank_CI(coxnet_model, newx, newy)
-
-colCoxTests_combine(colCoxTests_list)
 }
 \arguments{
 \item{coxnet_model}{PARAM_DESCRIPTION}
@@ -18,19 +15,10 @@ colCoxTests_combine(colCoxTests_list)
 }
 \value{
 OUTPUT_DESCRIPTION
-
-OUTPUT_DESCRIPTION
 }
 \description{
-FUNCTION_DESCRIPTION
-
 FUNCTION_DESCRIPTION
 }
 \examples{
  # EXAMPLE1
-\dontrun{
-if(interactive()){
- #EXAMPLE1
- }
-}
 }

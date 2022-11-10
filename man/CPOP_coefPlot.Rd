@@ -2,19 +2,19 @@
 % Please edit documentation in R/Plot.R
 \name{CPOP_coefPlot}
 \alias{CPOP_coefPlot}
-\title{Title}
+\title{CPOP_coefPlot}
 \usage{
 CPOP_coefPlot(CPOP_model, nFeatures = 20, s = "lambda.min")
 }
 \arguments{
 \item{nFeatures}{The number of features that will be plotted. Default: 20}
 
-\item{s}{PARAM_DESCRIPTION, Default: 'lambda.min'}
+\item{s}{Lambda value for the lasso model, Default: 'lambda.min'}
 
 \item{CPOP_Model}{A CPOP model}
 }
 \description{
-Title
+CPOP_coefPlot
 }
 \examples{
 data(cpop_data_binary, package = "CPOP")

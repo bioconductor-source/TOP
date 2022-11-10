@@ -2,24 +2,24 @@
 % Please edit documentation in R/Performance.R
 \name{performance_cpop2}
 \alias{performance_cpop2}
-\title{FUNCTION_TITLE}
+\title{performance_cpop2}
 \usage{
 performance_cpop2(cpop_result, newx, covariates = NULL, s = "lambda.min")
 }
 \arguments{
-\item{cpop_result}{PARAM_DESCRIPTION}
+\item{cpop_result}{A model of class CPOP2. This is the output of the function Frankenstein_CPOP.}
 
-\item{newx}{PARAM_DESCRIPTION}
+\item{newx}{A matrix of the new data to be predicted. With the same number of feature columns as the original data.}
 
-\item{covariates}{PARAM_DESCRIPTION, Default: NULL}
+\item{covariates}{A data.frame of the same covariates as the original model, Default: NULL}
 
-\item{s}{PARAM_DESCRIPTION, Default: 'lambda.min'}
+\item{s}{Lambda used in the lasso model, Default: 'lambda.min'}
 }
 \value{
 OUTPUT_DESCRIPTION
 }
 \description{
-FUNCTION_DESCRIPTION
+A function to calculate the external performance of the CPOP2 model.
 }
 \examples{
  # TODO

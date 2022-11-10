@@ -10,7 +10,7 @@ ROC_Plot(roc_list)
 \item{roc_list}{A list of roc object from the pROC package}
 }
 \description{
-ROC_Plot
+A function visualises the performance of a classifier by plotting the Receiver Operating Characteristic (ROC) curve.
 }
 \examples{
 data(cpop_data_binary, package = "CPOP")

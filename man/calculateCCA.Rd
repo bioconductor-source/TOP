@@ -2,8 +2,7 @@
 % Please edit documentation in R/Processing_CPOP.R
 \name{calculateCCA}
 \alias{calculateCCA}
-\title{calculateCCA
-Returns a matrix of canonical correlation coefficients for a list of data.frames.}
+\title{calculateCCA}
 \usage{
 calculateCCA(x_list)
 }
@@ -11,10 +10,9 @@ calculateCCA(x_list)
 \item{x_list}{a list of data.frames with identical features as columns.}
 }
 \value{
-TODO
+A matrix of canonical correlation coefficients.
 }
 \description{
-calculateCCA
 Returns a matrix of canonical correlation coefficients for a list of data.frames.
 }
 \examples{

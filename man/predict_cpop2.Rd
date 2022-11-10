@@ -7,19 +7,19 @@
 predict_cpop2(cpop_result, newx, covariates = NULL, s = "lambda.min")
 }
 \arguments{
-\item{cpop_result}{PARAM_DESCRIPTION}
+\item{cpop_result}{The output from the Frankenstein_CPOP function.}
 
-\item{newx}{PARAM_DESCRIPTION}
+\item{newx}{A matrix of the new data to be predicted. The columns should be features and the rows should be samples.}
 
-\item{covariates}{PARAM_DESCRIPTION, Default: NULL}
+\item{covariates}{A data frame of the same covariates that were used in the CPOP2 model, Default: NULL}
 
-\item{s}{PARAM_DESCRIPTION, Default: 'lambda.min'}
+\item{s}{Lambda value for the lasso model, Default: 'lambda.min'}
 }
 \value{
-OUTPUT_DESCRIPTION
+A vector of predictions for the new data.
 }
 \description{
-FUNCTION_DESCRIPTION
+A prediction function for the CPOP2 model.
 }
 \examples{
 \dontrun{

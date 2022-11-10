@@ -4,10 +4,10 @@
 \alias{Surv_Frank}
 \title{FUNCTION_TITLE}
 \usage{
-Surv_Frank(x_list, y_list)
+Surv_Frank(x_list, y_list, nFeatures = 50, nCores = 1)
 }
 \arguments{
-\item{x_list}{PARAM_DESCRIPTION}
+\item{x_list}{a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.}
 
 \item{y_list}{PARAM_DESCRIPTION}
 }

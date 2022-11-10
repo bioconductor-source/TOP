@@ -2,7 +2,7 @@
 % Please edit documentation in R/Frankenstein_CPOP.R
 \name{Frankenstein_CPOP}
 \alias{Frankenstein_CPOP}
-\title{Run Frankenstein CPOP}
+\title{Frankenstein CPOP}
 \usage{
 Frankenstein_CPOP(
   x_list,
@@ -15,22 +15,22 @@ Frankenstein_CPOP(
 )
 }
 \arguments{
-\item{x_list}{PARAM_DESCRIPTION}
+\item{x_list}{a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.}
 
-\item{y_list}{PARAM_DESCRIPTION}
+\item{y_list}{a list of factors, each containing the labels for a single batch or dataset. The length of this list should be the same as the length of x_list.}
 
-\item{covariates}{PARAM_DESCRIPTION, Default: NULL}
+\item{covariates}{a list of data frames with the covariates that should be included in the model, Default: NULL}
 
-\item{dataset_weights}{PARAM_DESCRIPTION, Default: NULL}
+\item{dataset_weights}{a list of data frames that refer to any grouping structure in the batches, Default: NULL}
 
-\item{sample_weights}{PARAM_DESCRIPTION, Default: FALSE}
+\item{sample_weights}{Should each batch we weighted equally? This is important in unequal sample sizes, Default: FALSE}
 
-\item{optimiseExponent}{PARAM_DESCRIPTION, Default: FALSE}
+\item{optimiseExponent}{Should the exponent used to modufy the lasso weights be optimised using resubstitution?, Default: FALSE}
 
-\item{nCores}{PARAM_DESCRIPTION, Default: 1}
+\item{nCores}{A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1}
 }
 \value{
-OUTPUT_DESCRIPTION
+Returns a list with the following elements: models, which is a glmnet object and features, which is a list of the features used in each model.
 }
 \description{
 FUNCTION_DESCRIPTION
