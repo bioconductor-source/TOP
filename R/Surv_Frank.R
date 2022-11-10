@@ -38,15 +38,15 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, nCores = 1) {
         # Run colCoxTests on z_subset
         pairwise_coefficients[[i]] <- ClassifyR::colCoxTests(
             z_subset, y_list[[i]], option = "fast"
-        ) %>%
-            dplyr::select(coef) %>%
-            data.frame() %>%
+        ) |>
+            dplyr::select(coef) |>
+            data.frame() |>
             tibble::rownames_to_column(var = "Gene")
     }
 
     # Merging pairwise_coefficients
-    coefficients <- pairwise_coefficients %>%
-        purrr::reduce(left_join, by = "Gene") %>%
+    coefficients <- pairwise_coefficients |>
+        purrr::reduce(left_join, by = "Gene") |>
         tibble::column_to_rownames(var = "Gene")
 
     # Calculate the average & sd of the coefficients across Datasets
