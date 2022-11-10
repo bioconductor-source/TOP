@@ -46,8 +46,8 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
         CM <- limma::makeContrasts(contrasts = contrast, levels = des)
         fit2 <- limma::contrasts.fit(fit, CM)
         efit <- limma::eBayes(fit2, robust = TRUE)
-        tT[[i]] <- limma::topTable(efit, coef = contrast, n = Inf) %>%
-            dplyr::select(t) %>%
+        tT[[i]] <- limma::topTable(efit, coef = contrast, n = Inf) |>
+            dplyr::select(t) |>
             data.frame() # nolint
 
         # Add a column with the gene names
@@ -61,8 +61,8 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
     # Keep unique genes
     tT <- tT[!duplicated(tT$gene), ]
     # Move gene column to rownames
-    tT <- tT %>%
-        tibble::remove_rownames() %>%
+    tT <- tT |>
+        tibble::remove_rownames() |>
         tibble::column_to_rownames(var = "gene")
 
     # Run directPA
@@ -75,6 +75,6 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
     })
     gene.zscores <- stats::qnorm(gene.pvalues, lower.tail = FALSE)
     pvalue2sided <- 2 * stats::pnorm(-abs(gene.zscores))
-    sig.genes <- names(pvalue2sided %>% sort())[1:nFeatures]
+    sig.genes <- names(pvalue2sided |> sort())[1:nFeatures]
     return(sig.genes)
 }

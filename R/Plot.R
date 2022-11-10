@@ -1,6 +1,6 @@
 #' CPOP_coefPlot
 #'
-#' @param CPOP_Model A CPOP model
+#' @param CPOP_model A CPOP model
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #'
@@ -38,15 +38,15 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min") {
         dplyr::filter(lambda.min != 0) |>
         dplyr::filter(Features != "(Intercept)") |>
         dplyr::top_n(lambda.min, n = nFeatures) |>
-        ggplot2::ggplot(
-            ggplot2::aes(x = lambda.min, y = stats::reorder(Features, abs(lambda.min)),
+        ggplot(
+            aes(x = lambda.min, y = stats::reorder(Features, abs(lambda.min)),
             fill = abs(lambda.min))
         ) +
-            ggplot2::geom_bar(stat = "identity") +
-            ggplot2::theme_bw() +
-            ggplot2::ylab("Features") +
-            ggplot2::xlab("") +
-            ggplot2::scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
+            geom_bar(stat = "identity") +
+            theme_bw() +
+            ylab("Features") +
+            xlab("") +
+            scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
 }
 
 #' CPOP_lambdaPlot
@@ -54,6 +54,8 @@ CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min") {
 #' @param CPOP_model A CPOP model
 #' @param nFeatures The number of features to plot, features are ranked beta's for lambda.min. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
+#' @param interactive A boolean indicaitng whether the plot should be interactive. Defaults to FALSE .
+#' @param label 
 #'
 #' @return
 #' @export
@@ -88,38 +90,38 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
     lambda <- model$models$lambda
     lambda.min <- model$models$lambda.min
 
-    c <- as.matrix(model$models$glmnet.fit$beta) %>%
-        data.frame() %>%
-        tibble::rownames_to_column("Feature") %>%
+    c <- as.matrix(model$models$glmnet.fit$beta) |>
+        data.frame() |>
+        tibble::rownames_to_column("Feature") |>
         reshape2::melt()
 
     names(lambda) <- levels(c$variable)
 
-    df <- c %>%
-        dplyr::mutate(lambda = lambda[variable]) %>%
+    df <- c |>
+        dplyr::mutate(lambda = lambda[variable]) |>
         dplyr::mutate(log = log(lambda))
 
-    topfeatures <- df %>%
-        dplyr::filter(lambda == lambda.min) %>%
-        dplyr::arrange(dplyr::desc(abs(value))) %>%
+    topfeatures <- df |>
+        dplyr::filter(lambda == lambda.min) |>
+        dplyr::arrange(dplyr::desc(abs(value))) |>
         dplyr::top_n(abs(value), n = nFeatures)
 
-    p <- df %>%
-        dplyr::filter(Feature %in% topfeatures$Feature) %>%
-            ggplot2::ggplot(ggplot2::aes(x = log, y = value, color = Feature, text = Feature)) +
-            ggplot2::geom_line(size = 1.3) +
-            ggplot2::theme_bw() +
-            ggplot2::theme(legend.position = "none") +
-            ggplot2::geom_vline(xintercept = log(lambda.min), linetype = "dashed") +
-            ggplot2::geom_text(
-                ggplot2::aes(x = log(lambda.min), label = "lambda.min", y = max(c$value)),
-                angle = 0, color = "black", text = ggplot2::element_text(face = NULL),
+    p <- df |>
+        dplyr::filter(Feature %in% topfeatures$Feature) |>
+            ggplot(aes(x = log, y = value, color = Feature, text = Feature)) +
+            geom_line(size = 1.3) +
+            theme_bw() +
+            theme(legend.position = "none") +
+            geom_vline(xintercept = log(lambda.min), linetype = "dashed") +
+            geom_text(
+                aes(x = log(lambda.min), label = "lambda.min", y = max(c$value)),
+                angle = 0, color = "black", text = element_text(face = NULL),
                 size = 6, hjust = -0.1
             )
 
     if (label) {
         p <- p + ggrepel::geom_label_repel(
-            data = topfeatures, ggplot2::aes(label = Feature), size = 3.5,
+            data = topfeatures, aes(label = Feature), size = 3.5,
             hjust = -0.1, nudge_x = 0.1, nudge_y = 0.1
         )
     }
@@ -128,8 +130,8 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
         return(plotly::ggplotly(p, tooltip = "text"))
     } else {
         return(
-            p + ggplot2::xlab(latex2exp::TeX("log(${\\lambda}$)")) +
-                ggplot2::ylab(latex2exp::TeX("${\\beta}$ Value"))
+            p + xlab(latex2exp::TeX("log(${\\lambda}$)")) +
+                ylab(latex2exp::TeX("${\\beta}$ Value"))
         )
     }
 }
@@ -156,28 +158,28 @@ CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", intera
 #' @importFrom ggnewscale new_scale_fill new_scale_color
 CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min") {
     # Create network and edge tables.
-    network_tbl <- as.matrix(glmnet::coef.glmnet(CPOP_model$models, s = s)) %>%
-        data.frame() %>%
-        tibble::rownames_to_column("Features") %>%
-        dplyr::filter(Features != "(Intercept)") %>%
-        dplyr::filter(lambda.min != 0) %>%
+    network_tbl <- as.matrix(glmnet::coef.glmnet(CPOP_model$models, s = s)) |>
+        data.frame() |>
+        tibble::rownames_to_column("Features") |>
+        dplyr::filter(Features != "(Intercept)") |>
+        dplyr::filter(lambda.min != 0) |>
         dplyr::mutate(
             Direction = ifelse(lambda.min > 0, "Pos", "Neg"),
             coef_abs = abs(lambda.min)
-        ) %>%
+        ) |>
         dplyr::top_n(coef_abs, n = nFeatures)
 
-    edges_tbl <- network_tbl %>%
+    edges_tbl <- network_tbl |>
         tidyr::separate(col = "Features", into = c("from", "to"))
 
     # Create a network plot in ggplot
 
-    edges_tbl %>%
-        dplyr::select(from, to, lambda.min) %>%
-        tidygraph::as_tbl_graph(directed = TRUE) %>%
+    edges_tbl |>
+        dplyr::select(from, to, lambda.min) |>
+        tidygraph::as_tbl_graph(directed = TRUE) |>
         ggraph::ggraph(layout = "kk") + ggraph::geom_edge_link(color = "black") +
             ggraph::geom_node_point(colour = "lightblue", size = 3) +
-            ggraph::geom_node_text(ggplot2::aes(label = name), repel = T) + ggplot2::theme_void() +
+            ggraph::geom_node_text(aes(label = name), repel = T) + theme_void() +
             ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 }
 

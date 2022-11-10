@@ -29,7 +29,7 @@ performance_cpop2 <- function(
 
   # Using caret to perform performance evaluation.
   cm <- caret::confusionMatrix(as.factor(result_response), y3)
-  cm <- cm$byClass %>%
+  cm <- cm$byClass |>
     tibble::enframe()
   colnames(cm) <- c("Evaluation", "Value")
 
