@@ -1,13 +1,13 @@
-#' @title Run Frankenstein CPOP
+#' @title Frankenstein CPOP
 #' @description FUNCTION_DESCRIPTION
-#' @param x_list PARAM_DESCRIPTION
-#' @param y_list PARAM_DESCRIPTION
-#' @param covariates PARAM_DESCRIPTION, Default: NULL
-#' @param dataset_weights PARAM_DESCRIPTION, Default: NULL
-#' @param sample_weights PARAM_DESCRIPTION, Default: FALSE
-#' @param optimiseExponent PARAM_DESCRIPTION, Default: FALSE
-#' @param nCores PARAM_DESCRIPTION, Default: 1
-#' @return OUTPUT_DESCRIPTION
+#' @param x_list a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
+#' @param y_list a list of factors, each containing the labels for a single batch or dataset. The length of this list should be the same as the length of x_list.
+#' @param covariates a list of data frames with the covariates that should be included in the model, Default: NULL
+#' @param dataset_weights a list of data frames that refer to any grouping structure in the batches, Default: NULL
+#' @param sample_weights Should each batch we weighted equally? This is important in unequal sample sizes, Default: FALSE
+#' @param optimiseExponent Should the exponent used to modufy the lasso weights be optimised using resubstitution?, Default: FALSE
+#' @param nCores A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1
+#' @return Returns a list with the following elements: models, which is a glmnet object and features, which is a list of the features used in each model.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
@@ -168,12 +168,12 @@ Frankenstein_CPOP <- function(
 
 
 #' @title Prectict using the CPOP2 results.
-#' @description FUNCTION_DESCRIPTION
-#' @param cpop_result PARAM_DESCRIPTION
-#' @param newx PARAM_DESCRIPTION
-#' @param covariates PARAM_DESCRIPTION, Default: NULL
-#' @param s PARAM_DESCRIPTION, Default: 'lambda.min'
-#' @return OUTPUT_DESCRIPTION
+#' @description A prediction function for the CPOP2 model.
+#' @param cpop_result The output from the Frankenstein_CPOP function.
+#' @param newx A matrix of the new data to be predicted. The columns should be features and the rows should be samples.
+#' @param covariates A data frame of the same covariates that were used in the CPOP2 model, Default: NULL
+#' @param s Lambda value for the lasso model, Default: 'lambda.min'
+#' @return A vector of predictions for the new data.
 #' @examples 
 #' \dontrun{
 #' if(interactive()){
