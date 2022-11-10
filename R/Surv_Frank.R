@@ -25,7 +25,7 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, nCores = 1) {
         )
     }
 
-    sig.genes <- sort(colCoxTests_combine(output))
+    sig.genes <- sort(colCoxTests_combine(output, nFeatures = nFeatures))
 
     pairwise_coefficients <- list()
     for (i in seq_along(x_list)) {
