@@ -18,6 +18,10 @@ CPOP_lambdaPlot(
 \item{nFeatures}{The number of features to plot, features are ranked beta's for lambda.min. Default: 20}
 
 \item{s}{Lambda value for the lasso model. Default is "lambda.min"}
+
+\item{interactive}{A boolean indicaitng whether the plot should be interactive. Defaults to FALSE .}
+
+\item{label}{}
 }
 \description{
 CPOP_lambdaPlot

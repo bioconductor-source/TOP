@@ -28,7 +28,7 @@ y_list <- list(factor(y1), factor(y2))
 
 fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
 pred <- predict_cpop2(fCPOP_model$models, newx = x3)
-roc_fCPOP <- roc(y3, pred)
+roc_fCPOP <- pROC::roc(y3, pred)
 ROC_Plot(list(roc_fCPOP))
 
 }

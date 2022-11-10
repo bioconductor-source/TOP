@@ -7,11 +7,11 @@
 CPOP_coefPlot(CPOP_model, nFeatures = 20, s = "lambda.min")
 }
 \arguments{
+\item{CPOP_model}{A CPOP model}
+
 \item{nFeatures}{The number of features that will be plotted. Default: 20}
 
 \item{s}{Lambda value for the lasso model, Default: 'lambda.min'}
-
-\item{CPOP_Model}{A CPOP model}
 }
 \description{
 CPOP_coefPlot
