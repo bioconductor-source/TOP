@@ -38,6 +38,10 @@ str_split_n <- function(string, pattern, n) {
     apply(out, 1, `[`, i = n)
 }
 
+#' @title colCoxTests_combine
+#' @importFrom dplyr select
+#' @importFrom tibble rownames_to_column column_to_rownames
+#' @importFrom purrr reduce
 colCoxTests_combine <- function(colCoxTests_list) {
     # Extract the p-values from each dataset
     cox_list <- list()
