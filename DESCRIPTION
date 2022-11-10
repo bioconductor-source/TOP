@@ -39,4 +39,5 @@ Imports:
     tibble,
     tidygraph,
     tidyr,
-    utils
+    utils,
+    doParallel
