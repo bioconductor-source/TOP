@@ -15,7 +15,7 @@
 #' @importFrom purrr reduce
 #' @importFrom survival Surv
 #' @importFrom glmnet cv.glmnet
-Surv_Frank <- function(x_list, y_list, nFeatures = 50, nCores = 1) {
+Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, sample_weights = FALSE, nCores = 1) {
     # create a loop to run through all datasets
     output <- list()
     for (i in seq_along(x_list)) {
@@ -24,6 +24,8 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, nCores = 1) {
             as.matrix(x_list[[i]]), y_list[[i]], option = "fast"
         )
     }
+
+    plot("black")
 
     sig.genes <- sort(colCoxTests_combine(output, nFeatures = nFeatures))
 
