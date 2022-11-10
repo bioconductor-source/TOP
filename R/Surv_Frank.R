@@ -11,6 +11,7 @@
 #' @importFrom ClassifyR colCoxTests
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr select
+#' @importFrom Hmisc wtd.var
 #' @importFrom tibble rownames_to_column column_to_rownames
 #' @importFrom purrr reduce
 #' @importFrom survival Surv
@@ -49,10 +50,29 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
         purrr::reduce(left_join, by = "Gene") |>
         tibble::column_to_rownames(var = "Gene")
 
-    # Calculate the average & sd of the coefficients across Datasets
-    mean_coefficients <- abs(rowMeans(coefficients))
-    sd_coefficients <- apply(coefficients, 1, sd)
-    fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
+    # If there are sample weights.
+    if (sample_weights == TRUE){
+
+        freq_samples <- sapply(x_list, dim)[1, ] |>
+            data.frame() |>
+            tibble::rownames_to_column() |>
+            dplyr::mutate(inv_freq = sum(.) / .)
+
+        mean_coefficients <- abs(
+            apply(coefficients, 1, function(x) stats::weighted.mean(x, freq_samples$inv_freq))
+        )
+        sd_coefficients <- sqrt(
+            apply(coefficients, 1, function(x) Hmisc::wtd.var(x, freq_samples$inv_freq))
+        )
+        fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
+    }
+
+    else if (sample_weights == FALSE) {
+         # Calculate the average & sd of the coefficients across Datasets
+        mean_coefficients <- abs(rowMeans(coefficients))
+        sd_coefficients <- apply(coefficients, 1, sd)
+        fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
+    }
 
     # Calculate the final weights
     weights <- mean_coefficients / (sd_coefficients + fudge)
