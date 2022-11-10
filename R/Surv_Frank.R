@@ -148,29 +148,4 @@ Surv_Frank_CI <- function(coxnet_model, newx, newy) {
 #' @importFrom dplyr select
 #' @importFrom tibble rownames_to_column column_to_rownames
 #' @importFrom purrr reduce
-colCoxTests_combine <- function(colCoxTests_list) {
-    # Extract the p-values from each dataset
-    cox_list <- list()
-    for (i in seq_along(colCoxTests_list)) {
-        cox_list[[i]] <- colCoxTests_list[[i]] %>%
-            dplyr::select(coef) %>%
-            data.frame() %>%
-            tibble::rownames_to_column(var = "Gene")
-    }
 
-    # Combine the p-values from each dataset
-    outputs <- cox_list %>%
-        purrr::reduce(left_join, by = "Gene") %>%
-        tibble::column_to_rownames(var = "Gene")
-
-    # Perform directPA
-    ZScore_output <- apply(outputs, 2, function(x) {
-        stats::qnorm(rank(x) / (nrow(outputs) + 1))
-    })
-    utils::data(Pathways)
-    comb.pvalues <- apply(ZScore_output, 1, geneStats)
-    comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
-    pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
-    sig.genes <- names(sort(pvalue2sided))[1:100]
-    return(sig.genes)
-}
