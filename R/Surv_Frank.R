@@ -25,8 +25,6 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
         )
     }
 
-    plot("black")
-
     sig.genes <- sort(colCoxTests_combine(output, nFeatures = nFeatures))
 
     pairwise_coefficients <- list()
