@@ -1,6 +1,6 @@
 #' @title FUNCTION_TITLE
 #' @description FUNCTION_DESCRIPTION
-#' @param x_list PARAM_DESCRIPTION
+#' @param x_list a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
 #' @param y_list PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
