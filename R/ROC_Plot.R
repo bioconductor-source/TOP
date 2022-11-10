@@ -1,5 +1,5 @@
-#' ROC_Plot
-#'
+#' @title ROC_Plot
+#' @description A function visualises the performance of a classifier by plotting the Receiver Operating Characteristic (ROC) curve.
 #' @param roc_list A list of roc object from the pROC package
 #'
 #' @export
