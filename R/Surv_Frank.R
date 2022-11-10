@@ -15,7 +15,7 @@
 #' @importFrom purrr reduce
 #' @importFrom survival Surv
 #' @importFrom glmnet cv.glmnet
-Surv_Frank <- function(x_list, y_list) {
+Surv_Frank <- function(x_list, y_list, nFeatures = 50, nCores = 1) {
     # create a loop to run through all datasets
     output <- list()
     for (i in seq_along(x_list)) {
