@@ -52,7 +52,6 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
 
     # If there are sample weights.
     if (sample_weights == TRUE){
-
         freq_samples <- sapply(x_list, dim)[1, ] |>
             data.frame() |>
             tibble::rownames_to_column() |>
