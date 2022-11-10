@@ -130,22 +130,3 @@ Surv_Frank_CI <- function(coxnet_model, newx, newy) {
 
     return(CI)
 }
-
-#' @title FUNCTION_TITLE
-#' @description FUNCTION_DESCRIPTION
-#' @param coxnet_model PARAM_DESCRIPTION
-#' @param newx PARAM_DESCRIPTION
-#' @param newy PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
-#' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
-#' @rdname Surv_Frank_CI
-#' @export
-#' @importFrom dplyr select
-#' @importFrom tibble rownames_to_column column_to_rownames
-#' @importFrom purrr reduce
-
