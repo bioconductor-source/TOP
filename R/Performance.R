@@ -14,7 +14,7 @@
 #' @importFrom caret confusionMatrix
 #' @importFrom tibble enframe
 performance_cpop2 <- function(
-  cpop_result, newx, covariates = NULL, s = "lambda.min"
+  cpop_result, newx, newy, covariates = NULL, s = "lambda.min"
 ) {
   # Go through and make predictions
   newz <- CPOP::pairwise_col_diff(newx)
@@ -28,7 +28,7 @@ performance_cpop2 <- function(
   }
 
   # Using caret to perform performance evaluation.
-  cm <- caret::confusionMatrix(as.factor(result_response), y3)
+  cm <- caret::confusionMatrix(as.factor(result_response), newy)
   cm <- cm$byClass |>
     tibble::enframe()
   colnames(cm) <- c("Evaluation", "Value")
