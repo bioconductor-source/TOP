@@ -58,15 +58,15 @@ Frankenstein_CPOP <- function(
         # Sample weights
         message("Calculating Weights for each Dataset")
         sample.weights <- unlist(dataset_weights) |>
-            data.frame() |>
-            dplyr::mutate(Organ = as.character(.)) |>
+            tibble::enframe() |>
+            dplyr::mutate(Organ = as.character(value)) |>
             dplyr::group_by(Organ) |>
             dplyr::summarise(n = dplyr::n()) |>
             dplyr::mutate(freq = n / sum(n))
         un_weights <- unlist(dataset_weights) |>
-            data.frame() |>
+            tibble::enframe() |>
             dplyr::mutate(
-                Organ = as.character(.),
+                Organ = as.character(value),
                 weight = 1
             )
         for (i in seq_len(nrow(un_weights))) {
