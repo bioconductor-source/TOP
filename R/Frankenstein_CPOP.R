@@ -85,7 +85,8 @@ Frankenstein_CPOP <- function(
         freq_samples <- sapply(x_list, dim)[1, ] |>
             data.frame() |>
             tibble::rownames_to_column() |>
-            dplyr::mutate(inv_freq = sum(.) / .)
+            dplyr::mutate(freq = ./sum(.)) |>
+            dplyr::mutate(inv_freq = 1 / freq)
 
         aggregate_lfc <- abs(
             apply(lfc, 1, function(x) stats::weighted.mean(x, freq_samples$inv_freq))
