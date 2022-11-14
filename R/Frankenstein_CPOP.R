@@ -20,6 +20,7 @@
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr mutate group_by summarise
 #' @importFrom tibble rownames_to_column
+#' @importFrom tibble enframe
 #' @importFrom Hmisc wtd.var
 #' @importFrom glmnet makeX cv.glmnet
 #' @importFrom doParallel registerDoParallel
