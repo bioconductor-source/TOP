@@ -76,7 +76,7 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     ZScore_output <- apply(outputs, 2, function(x) {
         stats::qnorm(rank(x) / (nrow(outputs) + 1))
     })
-    utils::data(Pathways)
+    utils::data(Pathways, package = "directPA")
     comb.pvalues <- apply(ZScore_output, 1, geneStats)
     comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
     pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
