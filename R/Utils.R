@@ -83,3 +83,18 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     sig.genes <- names(sort(pvalue2sided))[1:nFeatures]
     return(sig.genes)
 }
+
+extractAUC <- function(roc_list){
+  auc <- lapply(roc_list, function(x){
+    x$auc
+  })
+  auc <- auc |>
+    data.frame() |>
+    reshape2::melt() |>
+        dplyr::mutate(
+            label_long = paste0(variable, " , AUC = ", paste(round(value, 2))),
+            label_AUC = paste0("AUC = ", paste(round(value, 2)))
+        )
+  return(auc)
+  auc$variable <- names(roc_list)
+}
