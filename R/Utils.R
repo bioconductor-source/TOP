@@ -84,6 +84,10 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     return(sig.genes)
 }
 
+#' @title extractAUC
+#' @importFrom dplyr mutate
+#' @importFrom reshape2 melt
+
 extractAUC <- function(roc_list){
   auc <- lapply(roc_list, function(x){
     x$auc
