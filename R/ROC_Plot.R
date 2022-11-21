@@ -28,13 +28,7 @@
 #' @importFrom dplyr bind_rows mutate
 #' @importFrom ggthemes scale_color_tableau
 ROC_Plot <- function(roc_list) {
-    data.labels <- roc_list |>
-        purrr::map(~tibble::tibble(AUC = .x$auc)) |>
-        dplyr::bind_rows(.id = "name") |>
-        dplyr::mutate(
-            label_long = paste0(name, " , AUC = ", paste(round(AUC, 2))),
-            label_AUC = paste0("AUC = ", paste(round(AUC, 2)))
-        )
+    data.labels <- extractAUC(roc_list)
 
     pROC::ggroc(roc_list, size = 1.5) + theme_bw() +
         ggthemes::scale_color_tableau(
