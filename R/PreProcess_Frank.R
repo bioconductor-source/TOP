@@ -76,5 +76,5 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
     gene.zscores <- stats::qnorm(gene.pvalues, lower.tail = FALSE)
     pvalue2sided <- 2 * stats::pnorm(-abs(gene.zscores))
     sig.genes <- names(pvalue2sided |> sort())[1:nFeatures]
-    return(sig.genes)
+    return(list(sig.genes, pvalue2sided))
 }
