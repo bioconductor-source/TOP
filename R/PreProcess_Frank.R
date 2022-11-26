@@ -24,7 +24,7 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
     x_list <- lapply(x_list, t)
 
     tT <- list()
-    for (i in 1:length(x_list)) { # nolint
+    for (i in 1:length(x_list)) { 
         # Assign levels to y_list if contrasts are not given.
         if (is.null(contrast)) {
             level <- levels(y_list[[i]])
@@ -37,7 +37,7 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
         x_list[[i]] <- as.matrix(x_list[[i]])
 
         # Set up a design matrix according to y_list
-        des <- stats::model.matrix(~ 0 + y_list[[i]]) # nolint
+        des <- stats::model.matrix(~ 0 + y_list[[i]])
         # Make the names of the columns in the design matrix the same as the levels of y_list
         colnames(des) <- levels(y_list[[i]])
 
@@ -48,7 +48,7 @@ PreProcess_Frank <- function(x_list, y_list, contrast = NULL, nFeatures = 50, co
         efit <- limma::eBayes(fit2, robust = TRUE)
         tT[[i]] <- limma::topTable(efit, coef = contrast, n = Inf) |>
             dplyr::select(t) |>
-            data.frame() # nolint
+            data.frame() 
 
         # Add a column with the gene names
         tT[[i]]$gene <- rownames(tT[[i]])
