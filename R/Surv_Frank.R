@@ -1,8 +1,8 @@
-#' @title FUNCTION_TITLE
+#' @title TOP_surv
 #' @description FUNCTION_DESCRIPTION
-#' @param x_list a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
-#' @param y_list PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
+#' @param x_list A list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
+#' @param y_list A list of data frames, where the first columns in each data frame is the time and the second column is the event status. The length of this list should be the same as the length of x_list.
+#' @return A cox net model
 #' @details DETAILS
 #' @examples
 #'  #EXAMPLE1
