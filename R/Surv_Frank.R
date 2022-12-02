@@ -18,7 +18,10 @@
 #' @importFrom survival Surv
 #' @importFrom glmnet cv.glmnet
 #' @importFrom doParallel registerDoParallel
-Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, sample_weights = FALSE, nCores = 1) {
+Surv_Frank <- function(
+    x_list, y_list, nFeatures = 50, dataset_weights = NULL, 
+    sample_weights = FALSE, nCores = 1
+    ) {
 
     parallel <- FALSE
     # register parallel cluster
@@ -36,7 +39,7 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
         )
     }
 
-    sig.genes <- sort(colCoxTests_combine(output, nFeatures = nFeatures))
+    sig.genes <- colCoxTests_combine(output, nFeatures = nFeatures)
 
     pairwise_coefficients <- list()
     for (i in seq_along(x_list)) {
@@ -57,7 +60,7 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
 
     # Merging pairwise_coefficients
     coefficients <- pairwise_coefficients |>
-        purrr::reduce(left_join, by = "Gene") |>
+        purrr::reduce(dplyr::left_join, by = "Gene") |>
         tibble::column_to_rownames(var = "Gene")
 
     # If there are sample weights.
