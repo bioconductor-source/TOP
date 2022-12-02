@@ -47,7 +47,8 @@ selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_te
     return(best_exponent)
 }
 
-# Convinient string split function.
+#' @title str_split_n
+#' @importFrom stringr str_split
 str_split_n <- function(string, pattern, n) {
     out <- stringr::str_split(string, pattern, simplify = TRUE)
     apply(out, 1, `[`, i = n)
