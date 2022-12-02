@@ -81,7 +81,7 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     comb.pvalues <- apply(ZScore_output, 1, geneStats)
     comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
     pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
-    sig.genes <- names(sort(pvalue2sided))[1:nFeatures]
+    sig.genes <- names(pvalue2sided[pvalue2sided != 0] |> sort())[1:nFeatures]
     return(sig.genes)
 }
 
