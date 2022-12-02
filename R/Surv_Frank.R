@@ -12,6 +12,7 @@
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr select
 #' @importFrom Hmisc wtd.var
+#' @importFrom tibble enframe
 #' @importFrom tibble rownames_to_column column_to_rownames
 #' @importFrom purrr reduce
 #' @importFrom survival Surv
@@ -62,9 +63,9 @@ Surv_Frank <- function(x_list, y_list, nFeatures = 50, dataset_weights = NULL, s
     # If there are sample weights.
     if (sample_weights == TRUE){
         freq_samples <- sapply(x_list, dim)[1, ] |>
-            data.frame() |>
-            tibble::rownames_to_column() |>
-            dplyr::mutate(inv_freq = sum(.) / .)
+            tibble::enframe() |>
+            dplyr::mutate(freq = value/sum(value)) |>
+            dplyr::mutate(inv_freq = 1 / freq)
 
         mean_coefficients <- abs(
             apply(coefficients, 1, function(x) stats::weighted.mean(x, freq_samples$inv_freq))
