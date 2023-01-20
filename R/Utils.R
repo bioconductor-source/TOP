@@ -1,7 +1,7 @@
 # Calculate the fold changes for each dataset.
 lfc_calculate <- function(df, y) {
     outcome <- levels(y)
-    return(colSums(df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ])) # nolint
+    return(colSums(df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ])) 
 }
 
 # Loop through possible exponents of weights_lasso
