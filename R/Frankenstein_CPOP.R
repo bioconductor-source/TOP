@@ -1,4 +1,4 @@
-#' @title Frankenstein CPOP
+#' @title TOP_model
 #' @description FUNCTION_DESCRIPTION
 #' @param x_list a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
 #' @param y_list a list of factors, each containing the labels for a single batch or dataset. The length of this list should be the same as the length of x_list.
@@ -15,7 +15,7 @@
 #'  }
 #' }
 #'
-#' @rdname Frankenstein_CPOP
+#' @rdname TOP_model
 #' @export 
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr mutate group_by summarise
