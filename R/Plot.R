@@ -156,9 +156,9 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
 #' @importFrom tidygraph as_tbl_graph
 #' @importFrom ggraph ggraph
 #' @importFrom ggnewscale new_scale_fill new_scale_color
-simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min") {
+simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
     # Create network and edge tables.
-    network_tbl <- as.matrix(glmnet::coef.glmnet(CPOP_model$models, s = s)) |>
+    network_tbl <- as.matrix(glmnet::coef.glmnet(TOP_model$models, s = s)) |>
         data.frame() |>
         tibble::rownames_to_column("Features") |>
         dplyr::filter(Features != "(Intercept)") |>
@@ -186,6 +186,6 @@ simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min") {
 # I will need to add a complexNetworkPlot function. Using the enrichr package to plot the network.
 
 # Plot the survival curves for the CPOP model
-CPOP_KaplanMeierPlot <- function(CPOP_model, s = "lambda.min") {
+CPOP_KaplanMeierPlot <- function(TOP_model, s = "lambda.min") {
     # TODO
 }
