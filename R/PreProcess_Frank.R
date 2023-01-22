@@ -8,7 +8,16 @@
 #' @return A vector of feature names.
 #' @details contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
 #' @examples
-#'  #EXAMPLE1
+#'  data(cpop_data_binary, package = "CPOP")
+#'  x1 = cpop_data_binary$x1
+#'  x2 = cpop_data_binary$x2
+#'  x3 = cpop_data_binary$x3
+#' 
+#'  x_list <- list(x1,x2,x3)
+#'  y_list <- list(cpop_data_binary$y1, cpop_data_binary$y2, cpop_data_binary$y3)
+#' 
+#'  filterFeatures(x_list, y_list, contrast = "1 - 0", nFeatures = 50, combinationMethod = "OSP")
+#' 
 #' @rdname filterFeatures
 #' @export 
 #' @importFrom limma lmFit makeContrasts contrasts.fit eBayes topTable
