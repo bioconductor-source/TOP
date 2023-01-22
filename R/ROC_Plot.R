@@ -19,7 +19,7 @@
 #' y_list <- list(factor(y1), factor(y2))
 #'
 #' model <- TOP_model(x_list, y_list)
-#' pred <- predict_cpop2(model$models, newx = x3)
+#' pred <- predict_TOP(model$models, newx = x3)
 #' roc <- pROC::roc(y3, pred)
 #' ROC_Plot(list(roc))
 #'
