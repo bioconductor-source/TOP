@@ -176,9 +176,9 @@ TOP_model <- function(
 }
 
 
-#' @title Prectict using the CPOP2 results.
-#' @description A prediction function for the CPOP2 model.
-#' @param cpop_result The output from the Frankenstein_CPOP function.
+#' @title Prectict using the Trasferable Omics Prediction model.
+#' @description A prediction function for the Trasferable Omics Prediction model.
+#' @param TOP_model The output from the TOP_model function.
 #' @param newx A matrix of the new data to be predicted. The columns should be features and the rows should be samples.
 #' @param covariates A data frame of the same covariates that were used in the CPOP2 model, Default: NULL
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
@@ -189,11 +189,11 @@ TOP_model <- function(
 #'  #EXAMPLE1
 #'  }
 #' }
-#' @rdname predict_cpop2
+#' @rdname predict_TOP
 #' @export 
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom glmnet makeX
-predict_cpop2 <- function(cpop_result, newx, covariates = NULL, s = "lambda.min") {
+predict_TOP <- function(TOP_model, newx, covariates = NULL, s = "lambda.min") {
     # Determine z for the new x
     newz <- CPOP::pairwise_col_diff(newx)
     if (!is.null(covariates)) {
