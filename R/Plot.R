@@ -51,11 +51,11 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 
 #' CPOP_lambdaPlot
 #'
-#' @param CPOP_model A CPOP model
+#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features to plot, features are ranked beta's for lambda.min. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
 #' @param interactive A boolean indicaitng whether the plot should be interactive. Defaults to FALSE .
-#' @param label 
+#' @param label A boolean indicating whether the features should be labeled on the plot. Defaults to FALSE .
 #'
 #' @return
 #' @export
