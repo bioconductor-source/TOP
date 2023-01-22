@@ -1,6 +1,6 @@
 #' CPOP_coefPlot
 #'
-#' @param CPOP_model A CPOP model
+#' @param TOP_Model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #'
@@ -21,8 +21,8 @@
 #' x_list <- list(x1, x2)
 #' y_list <- list(factor(y1), factor(y2))
 #'
-#' fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
-#' CPOP_coefPlot(fCPOP_model)
+#' model <- TOP_model(x_list, y_list)
+#' CPOP_coefPlot(model)
 #'
 #' @rdname CPOP_coefPlot
 #' @export
