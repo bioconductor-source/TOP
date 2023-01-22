@@ -30,9 +30,9 @@
 #' @importFrom glmnet coef.glmnet
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr filter top_n
-CPOP_coefPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min") {
+TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 
-    as.matrix(glmnet::coef.glmnet(CPOP_model$model, s = s)) |>
+    as.matrix(glmnet::coef.glmnet(TOP_model$model, s = s)) |>
         data.frame() |>
         tibble::rownames_to_column("Features") |>
         dplyr::filter(lambda.min != 0) |>
