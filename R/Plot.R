@@ -49,7 +49,7 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
             scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
 }
 
-#' CPOP_lambdaPlot
+#' TOP_lambdaPlot
 #'
 #' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features to plot, features are ranked beta's for lambda.min. Default: 20
@@ -74,8 +74,8 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' x_list <- list(x1, x2)
 #' y_list <- list(factor(y1), factor(y2))
 #'
-#' fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
-#' CPOP_coefPlot(fCPOP_model)
+#' model <- TOP_model(x_list, y_list)
+#' CPOP_coefPlot(model)
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
@@ -84,7 +84,7 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom plotly ggplotly
 #' @importFrom latex2exp TeX
-CPOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE) {
+TOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE) {
     model <- CPOP_model
 
     lambda <- model$models$lambda
