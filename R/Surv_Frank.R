@@ -1,4 +1,4 @@
-#' @title TOP_surv
+#' @title TOP_survival
 #' @description FUNCTION_DESCRIPTION
 #' @param x_list A list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
 #' @param y_list A list of data frames, where the first columns in each data frame is the time and the second column is the event status. The length of this list should be the same as the length of x_list.
@@ -6,7 +6,7 @@
 #' @details DETAILS
 #' @examples
 #'  #EXAMPLE1
-#' @rdname Surv_Frank
+#' @rdname TOP_survival
 #' @export
 #' @importFrom ClassifyR colCoxTests
 #' @importFrom CPOP pairwise_col_diff
@@ -18,7 +18,7 @@
 #' @importFrom survival Surv
 #' @importFrom glmnet cv.glmnet
 #' @importFrom doParallel registerDoParallel
-Surv_Frank <- function(
+TOP_survival <- function(
     x_list, y_list, nFeatures = 50, dataset_weights = NULL, 
     sample_weights = FALSE, nCores = 1
     ) {
@@ -137,17 +137,17 @@ Surv_Frank <- function(
 }
 
 
-#' @title Create a prediction function.
-#' @description FUNCTION_DESCRIPTION
-#' @param coxnet_model PARAM_DESCRIPTION
-#' @param newx PARAM_DESCRIPTION
-#' @return OUTPUT_DESCRIPTION
+#' @title TOP_survivalPrediction
+#' @description A prediction function for TOP_survival
+#' @param TOP_survival A TOP_survival model. See \code{\link{TOP_survival}}.
+#' @param newx A new dataset to predict the survival time.
+#' @return A vector of predicted survival time.
 #' @examples
 #'  #EXAMPLE1
-#' @rdname Surv_Frank_Pred
+#' @rdname TOP_survivalPrediction
 #' @export
 #' @importFrom CPOP pairwise_col_diff
-Surv_Frank_Pred <- function(coxnet_model, newx) {
+TOP_survivalPrediction <- function(TOP_survival, newx) {
     # Calculate the pairwise differences of x
     newx <- newx[, coxnet_model[[2]]]
     z <- CPOP::pairwise_col_diff(newx)
