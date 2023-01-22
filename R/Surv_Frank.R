@@ -149,12 +149,12 @@ TOP_survival <- function(
 #' @importFrom CPOP pairwise_col_diff
 TOP_survivalPrediction <- function(TOP_survival, newx) {
     # Calculate the pairwise differences of x
-    newx <- newx[, coxnet_model[[2]]]
+    newx <- newx[, TOP_survival[[2]]]
     z <- CPOP::pairwise_col_diff(newx)
 
     # Predict the survival time
     survScores <- stats::predict(
-        coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset
+        TOP_survival[[1]], as.matrix(z), type = "response", newoffset = offset
     )
 
     return(survScores)
