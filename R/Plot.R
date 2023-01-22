@@ -32,6 +32,10 @@
 #' @importFrom dplyr filter top_n
 TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 
+    if (nFeatures > ncol(TOP_model$model$beta)) {
+        stop("nFeatures must be less than or equal to the number of features in the model.")
+    }
+
     as.matrix(glmnet::coef.glmnet(TOP_model$model, s = s)) |>
         data.frame() |>
         tibble::rownames_to_column("Features") |>
