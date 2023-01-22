@@ -16,9 +16,10 @@
 #' y2 <- cpop_data_binary$y2
 #' y3 <- cpop_data_binary$y3
 #'
-#' set.seed(23)
 #' x_list <- list(x1, x2)
 #' y_list <- list(factor(y1), factor(y2))
+#' 
+#' set.seed(23)
 #'
 #' model <- TOP_model(x_list, y_list)
 #' performance_TOP(model, newx = x3, newy = y3)
