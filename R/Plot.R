@@ -84,8 +84,8 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom plotly ggplotly
 #' @importFrom latex2exp TeX
-TOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE) {
-    model <- CPOP_model
+TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE) {
+    model <- TOP_model
 
     lambda <- model$models$lambda
     lambda.min <- model$models$lambda.min
@@ -137,9 +137,9 @@ TOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", interac
 }
 
 # Network plot of the CPOP model
-#' CPOP_simplenetworkPlot
+#' simplenetworkPlot
 #'
-#' @param CPOP_model A CPOP model
+#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
@@ -156,7 +156,7 @@ TOP_lambdaPlot <- function(CPOP_model, nFeatures = 20, s = "lambda.min", interac
 #' @importFrom tidygraph as_tbl_graph
 #' @importFrom ggraph ggraph
 #' @importFrom ggnewscale new_scale_fill new_scale_color
-CPOP_simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min") {
+simplenetworkPlot <- function(CPOP_model, nFeatures = 50, s = "lambda.min") {
     # Create network and edge tables.
     network_tbl <- as.matrix(glmnet::coef.glmnet(CPOP_model$models, s = s)) |>
         data.frame() |>
