@@ -1,0 +1,25 @@
+--- 
+title: "Building a Transferable Omics Prediction (TOP) Model"
+author: Harry Robertson, Nicholas Robertson <br>
+date: "2023-24-01"
+output: 
+    BiocStyle::html_document:
+    css: style.css
+    toc: true
+vignette:
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteIndexEntry{Building a Transferable Omics Prediction (TOP) Model}
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+theme_set(theme_bw())
+```
+
+## Installing the TOP package
+Installing the TOP package from github can be achieved using the following command 
+```{r, eval=FALSE}
+devtools::install_github("Harry25R/TOP", dependencies = TRUE)
+```
