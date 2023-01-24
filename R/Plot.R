@@ -1,4 +1,4 @@
-#' CPOP_coefPlot
+#' TOP_coefPlot
 #'
 #' @param TOP_Model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
@@ -22,9 +22,9 @@
 #' y_list <- list(factor(y1), factor(y2))
 #'
 #' model <- TOP_model(x_list, y_list)
-#' CPOP_coefPlot(model)
+#' TOP_coefPlot(model)
 #'
-#' @rdname CPOP_coefPlot
+#' @rdname TOP_coefPlot
 #' @export
 #' @import ggplot2
 #' @importFrom glmnet coef.glmnet

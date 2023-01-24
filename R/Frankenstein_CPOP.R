@@ -1,5 +1,5 @@
 #' @title TOP_model
-#' @description FUNCTION_DESCRIPTION
+#' @description The main function of the TOP package. This function returns a glmnet model .
 #' @param x_list a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
 #' @param y_list a list of factors, each containing the labels for a single batch or dataset. The length of this list should be the same as the length of x_list.
 #' @param covariates a list of data frames with the covariates that should be included in the model, Default: NULL
