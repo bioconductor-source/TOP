@@ -14,8 +14,6 @@ vignette:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-theme_set(theme_bw())
 ```
 
 ## Installing the TOP package
@@ -23,3 +21,22 @@ Installing the TOP package from github can be achieved using the following comma
 ```{r, eval=FALSE}
 devtools::install_github("Harry25R/TOP", dependencies = TRUE)
 ```
+
+## Loading the required packages
+```{r}
+library(TOP)
+library(ggplot2)
+library(dplyr)
+library(curatedOvarianData)
+
+theme_set(theme_bw())
+```
+
+## Loading in the example data
+The example data used in this vignette is the curatedOvarianData. Described in the paper from [Benjamin Frederick Ganzfried et al (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3625954/) \n
+```{r}
+data(package = "curatedOvarianData")
+
+
+```
+

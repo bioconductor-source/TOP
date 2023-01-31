@@ -187,7 +187,50 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
             ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 }
 
-# I will need to add a complexNetworkPlot function. Using the enrichr package to plot the network.
+# Network plot of the coefficients in the TOP model
+#' coefNetworkPlot
+#'
+#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
+#' @param nFeatures The number of features that will be plotted. Default: 20
+#' @param s Lambda value for the lasso model. Default is "lambda.min"
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'  # TODO: add examples.
+#' @import ggplot2
+#' @importFrom glmnet coef.glmnet
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr filter mutate top_n select
+#' @importFrom tidyr separate
+#' @importFrom ggraph ggraph
+#' @importFrom igraph graph_from_data_frame
+coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
+    ratio_df <- glmnet::coef.glmnet(TOP_model$model, s = s) |>
+        as.matrix |>
+        data.frame() |>
+        tibble::rownames_to_column("Features") |>
+        dplyr::filter(Features != "(Intercept)") |>
+        dplyr::mutate(score = abs(lambda.min)) |>
+        dplyr::top_n(score, n = nFeatures) 
+
+    edges_tbl = ratio_df %>% 
+        mutate(dir = ifelse(lambda.min > 0, "Pos", "Neg")) %>%
+        tidyr::separate(col = "Features", into = c("from", "to"))
+    
+    ig = igraph::graph_from_data_frame(edges_tbl, directed = FALSE)
+
+    ggraph(ig, layout = "linear", circular = TRUE) +
+        ggraph::geom_edge_arc(aes(
+            start_cap = label_rect(.data$node1.name),
+            end_cap = label_rect(.data$node2.name),
+            width = .data$score,
+            color = .data$dir)) + 
+        theme_void() +
+        ggraph::geom_node_text(aes(label = .data$name), size = 6) +
+        ggraph::scale_edge_colour_brewer(palette = "Set1", direction = -1)
+}
 
 # Plot the survival curves for the CPOP model
 CPOP_KaplanMeierPlot <- function(TOP_model, s = "lambda.min") {
