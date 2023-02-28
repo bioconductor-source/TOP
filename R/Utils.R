@@ -113,7 +113,7 @@ extractAUC <- function(roc_list){
 #' @export
 #'
 #' @examples
-#'
+#'  \dontrun{
 #'  data(cpop_data_binary, package = "CPOP")
 #'
 #'  x1 = cpop_data_binary$x1
@@ -122,7 +122,7 @@ extractAUC <- function(roc_list){
 #'
 #'  x_list <- list(x1,x2,x3)
 #'  calculateCCA(x_list)
-#'
+#'  }
 #' @importFrom CCA cc
 calculateCCA <- function(x_list) {
   if (ncol(x_list[[1]]) > 1000) {
