@@ -11,7 +11,7 @@ BugReports: https://github.com/Harry25R/TOP/issues
 biocViews: Software
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports:
     caret,
     CCA,
@@ -27,6 +27,7 @@ Imports:
     ggthemes,
     glmnet,
     Hmisc,
+    igraph,
     latex2exp,
     limma,
     magrittr,
