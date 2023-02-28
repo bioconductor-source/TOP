@@ -40,7 +40,8 @@ contrast must be a character vector of length 1. If contrast is NULL, the first 
 
  x_list <- list(x1,x2,x3)
  y_list <- list(cpop_data_binary$y1, cpop_data_binary$y2, cpop_data_binary$y3)
+ y_list <- lapply(y_list, function(x){x <- factor(x, levels = c("Yes", "No"))})
 
- filterFeatures(x_list, y_list, contrast = "1 - 0", nFeatures = 50, combinationMethod = "OSP")
+ filterFeatures(x_list, y_list, contrast = "Yes - No", nFeatures = 50, combinationMethod = "OSP")
 
 }

@@ -1,7 +1,7 @@
 #' @title filterFeatures
-#' @description A function that implements feature selection, using limma, from a list of data frames with corresponding labels. 
+#' @description A function that implements feature selection, using limma, from a list of data frames with corresponding labels.
 #' @param x_list A list of data frames, with columns corresponding to features and rows corresponding to observations.
-#' @param y_list A list of factor labels. 
+#' @param y_list A list of factor labels.
 #' @param contrast A character vector describing which order of levels to contrast in y_list ("disease - control"), Default: NULL
 #' @param nFeatures Number of features to return, Default: 50
 #' @param combinationMethod Which p-value combination method to use, Default: 'OSP' Options are 'Stouffer', 'OSP', 'Fisher', 'maxP'.
@@ -12,14 +12,15 @@
 #'  x1 = cpop_data_binary$x1
 #'  x2 = cpop_data_binary$x2
 #'  x3 = cpop_data_binary$x3
-#' 
+#'
 #'  x_list <- list(x1,x2,x3)
 #'  y_list <- list(cpop_data_binary$y1, cpop_data_binary$y2, cpop_data_binary$y3)
-#' 
-#'  filterFeatures(x_list, y_list, contrast = "1 - 0", nFeatures = 50, combinationMethod = "OSP")
-#' 
+#'  y_list <- lapply(y_list, function(x){x <- factor(x, levels = c("Yes", "No"))})
+#'
+#'  filterFeatures(x_list, y_list, contrast = "Yes - No", nFeatures = 50, combinationMethod = "OSP")
+#'
 #' @rdname filterFeatures
-#' @export 
+#' @export
 #' @importFrom limma lmFit makeContrasts contrasts.fit eBayes topTable
 #' @importFrom dplyr select
 #' @importFrom tibble remove_rownames column_to_rownames
@@ -33,7 +34,7 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
     x_list <- lapply(x_list, t)
 
     tT <- list()
-    for (i in 1:length(x_list)) { 
+    for (i in 1:length(x_list)) {
         # Assign levels to y_list if contrasts are not given.
         if (is.null(contrast)) {
             level <- levels(y_list[[i]])
@@ -57,7 +58,7 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
         efit <- limma::eBayes(fit2, robust = TRUE)
         tT[[i]] <- limma::topTable(efit, coef = contrast, n = Inf) |>
             dplyr::select(t) |>
-            data.frame() 
+            data.frame()
 
         # Add a column with the gene names
         tT[[i]]$gene <- rownames(tT[[i]])
