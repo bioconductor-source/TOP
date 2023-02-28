@@ -238,6 +238,7 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
 #' @importFrom ggraph ggraph
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom magrittr %>%
+#' @importFrom ggraph label_rect
 coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
     ratio_df <- glmnet::coef.glmnet(TOP_model$model, s = s) %>%
         as.matrix %>%
@@ -255,8 +256,8 @@ coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
 
     ggraph(ig, layout = "linear", circular = TRUE) +
         ggraph::geom_edge_arc(aes(
-            start_cap = label_rect(.data$node1.name),
-            end_cap = label_rect(.data$node2.name),
+            start_cap = ggraph::label_rect(.data$node1.name),
+            end_cap = ggraph::label_rect(.data$node2.name),
             width = .data$score,
             color = .data$dir)) +
         theme_void() +

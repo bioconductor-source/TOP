@@ -16,7 +16,7 @@ A square matrix of canonical correlation coefficients.
 Returns a matrix of canonical correlation coefficients for a list of data.frames.
 }
 \examples{
-
+ \dontrun{
  data(cpop_data_binary, package = "CPOP")
 
  x1 = cpop_data_binary$x1
@@ -25,5 +25,5 @@ Returns a matrix of canonical correlation coefficients for a list of data.frames
 
  x_list <- list(x1,x2,x3)
  calculateCCA(x_list)
-
+ }
 }
