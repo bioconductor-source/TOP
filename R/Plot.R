@@ -153,7 +153,21 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
 #' @export
 #'
 #' @examples
-#'  # TODO: add examples.
+#' data(cpop_data_binary, package = "CPOP")
+#'
+#' x1 <- cpop_data_binary$x1
+#' x2 <- cpop_data_binary$x2
+#' x3 <- cpop_data_binary$x3
+#' y1 <- cpop_data_binary$y1
+#' y2 <- cpop_data_binary$y2
+#' y3 <- cpop_data_binary$y3
+#'
+#' set.seed(23)
+#' x_list <- list(x1, x2)
+#' y_list <- list(factor(y1), factor(y2))
+#'
+#' model <- TOP_model(x_list, y_list)
+#' simplenetworkPlot(model)
 #' @import ggplot2
 #' @importFrom glmnet coef.glmnet
 #' @importFrom tibble rownames_to_column
@@ -201,8 +215,22 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
 #' @export
 #'
 #' @examples
-#'  # TODO: add examples.
-#' @import ggplot2
+#' data(cpop_data_binary, package = "CPOP")
+#'
+#' x1 <- cpop_data_binary$x1
+#' x2 <- cpop_data_binary$x2
+#' x3 <- cpop_data_binary$x3
+#' y1 <- cpop_data_binary$y1
+#' y2 <- cpop_data_binary$y2
+#' y3 <- cpop_data_binary$y3
+#'
+#' set.seed(23)
+#' x_list <- list(x1, x2)
+#' y_list <- list(factor(y1), factor(y2))
+#'
+#' model <- TOP_model(x_list, y_list)
+#' coefNetworkPlot(model)
+#' #' @import ggplot2
 #' @importFrom glmnet coef.glmnet
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr filter mutate top_n select
