@@ -199,12 +199,12 @@ predict_TOP <- function(TOP_model, newx, covariates = NULL, s = "lambda.min") {
     if (!is.null(covariates)) {
         w3 <- glmnet::makeX(cbind(newz, covariates))
         result_response <- stats::predict(
-            object = TOP_model$models, newx = w3, s = s,
+            object = TOP_model, newx = w3, s = s,
             type = "response"
         )
     } else {
         result_response <- stats::predict(
-            object = TOP_model$models, newx = newz, s = s,
+            object = TOP_model, newx = newz, s = s,
             type = "response"
         )
     }
