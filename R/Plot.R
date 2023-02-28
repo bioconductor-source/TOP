@@ -30,18 +30,19 @@
 #' @importFrom glmnet coef.glmnet
 #' @importFrom tibble rownames_to_column
 #' @importFrom dplyr filter top_n
+#' @importFrom magrittr %>%
 TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 
     if (nFeatures > ncol(TOP_model$model$beta)) {
         stop("nFeatures must be less than or equal to the number of features in the model.")
     }
 
-    as.matrix(glmnet::coef.glmnet(TOP_model$model, s = s)) |>
-        data.frame() |>
-        tibble::rownames_to_column("Features") |>
-        dplyr::filter(lambda.min != 0) |>
-        dplyr::filter(Features != "(Intercept)") |>
-        dplyr::top_n(lambda.min, n = nFeatures) |>
+    as.matrix(glmnet::coef.glmnet(TOP_model$model, s = s)) %>%
+        data.frame() %>%
+        tibble::rownames_to_column("Features") %>%
+        dplyr::filter(lambda.min != 0) %>%
+        dplyr::filter(Features != "(Intercept)") %>%
+        dplyr::top_n(lambda.min, n = nFeatures) %>%
         ggplot(
             aes(x = lambda.min, y = stats::reorder(Features, abs(lambda.min)),
             fill = abs(lambda.min))
@@ -88,30 +89,31 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom plotly ggplotly
 #' @importFrom latex2exp TeX
+#' @importFrom magrittr %>%
 TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE) {
     model <- TOP_model
 
     lambda <- model$models$lambda
     lambda.min <- model$models$lambda.min
 
-    c <- as.matrix(model$models$glmnet.fit$beta) |>
-        data.frame() |>
-        tibble::rownames_to_column("Feature") |>
+    c <- as.matrix(model$models$glmnet.fit$beta) %>%
+        data.frame() %>%
+        tibble::rownames_to_column("Feature") %>%
         reshape2::melt()
 
     names(lambda) <- levels(c$variable)
 
-    df <- c |>
-        dplyr::mutate(lambda = lambda[variable]) |>
+    df <- c %>%
+        dplyr::mutate(lambda = lambda[variable]) %>%
         dplyr::mutate(log = log(lambda))
 
-    topfeatures <- df |>
-        dplyr::filter(lambda == lambda.min) |>
-        dplyr::arrange(dplyr::desc(abs(value))) |>
+    topfeatures <- df %>%
+        dplyr::filter(lambda == lambda.min) %>%
+        dplyr::arrange(dplyr::desc(abs(value))) %>%
         dplyr::top_n(abs(value), n = nFeatures)
 
-    p <- df |>
-        dplyr::filter(Feature %in% topfeatures$Feature) |>
+    p <- df %>%
+        dplyr::filter(Feature %in% topfeatures$Feature) %>%
             ggplot(aes(x = log, y = value, color = Feature, text = Feature)) +
             geom_line(size = 1.3) +
             theme_bw() +
@@ -160,27 +162,28 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
 #' @importFrom tidygraph as_tbl_graph
 #' @importFrom ggraph ggraph
 #' @importFrom ggnewscale new_scale_fill new_scale_color
+#' @importFrom magrittr %>%
 simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
     # Create network and edge tables.
-    network_tbl <- as.matrix(glmnet::coef.glmnet(TOP_model$models, s = s)) |>
-        data.frame() |>
-        tibble::rownames_to_column("Features") |>
-        dplyr::filter(Features != "(Intercept)") |>
-        dplyr::filter(lambda.min != 0) |>
+    network_tbl <- as.matrix(glmnet::coef.glmnet(TOP_model$models, s = s)) %>%
+        data.frame() %>%
+        tibble::rownames_to_column("Features") %>%
+        dplyr::filter(Features != "(Intercept)") %>%
+        dplyr::filter(lambda.min != 0) %>%
         dplyr::mutate(
             Direction = ifelse(lambda.min > 0, "Pos", "Neg"),
             coef_abs = abs(lambda.min)
-        ) |>
+        ) %>%
         dplyr::top_n(coef_abs, n = nFeatures)
 
-    edges_tbl <- network_tbl |>
+    edges_tbl <- network_tbl %>%
         tidyr::separate(col = "Features", into = c("from", "to"))
 
     # Create a network plot in ggplot
 
-    edges_tbl |>
-        dplyr::select(from, to, lambda.min) |>
-        tidygraph::as_tbl_graph(directed = TRUE) |>
+    edges_tbl %>%
+        dplyr::select(from, to, lambda.min) %>%
+        tidygraph::as_tbl_graph(directed = TRUE) %>%
         ggraph::ggraph(layout = "kk") + ggraph::geom_edge_link(color = "black") +
             ggraph::geom_node_point(colour = "lightblue", size = 3) +
             ggraph::geom_node_text(aes(label = name), repel = T) + theme_void() +
@@ -206,19 +209,20 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
 #' @importFrom tidyr separate
 #' @importFrom ggraph ggraph
 #' @importFrom igraph graph_from_data_frame
+#' @importFrom magrittr %>%
 coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
-    ratio_df <- glmnet::coef.glmnet(TOP_model$model, s = s) |>
-        as.matrix |>
-        data.frame() |>
-        tibble::rownames_to_column("Features") |>
-        dplyr::filter(Features != "(Intercept)") |>
-        dplyr::mutate(score = abs(lambda.min)) |>
-        dplyr::top_n(score, n = nFeatures) 
+    ratio_df <- glmnet::coef.glmnet(TOP_model$model, s = s) %>%
+        as.matrix %>%
+        data.frame() %>%
+        tibble::rownames_to_column("Features") %>%
+        dplyr::filter(Features != "(Intercept)") %>%
+        dplyr::mutate(score = abs(lambda.min)) %>%
+        dplyr::top_n(score, n = nFeatures)
 
-    edges_tbl = ratio_df %>% 
+    edges_tbl = ratio_df %>%
         mutate(dir = ifelse(lambda.min > 0, "Pos", "Neg")) %>%
         tidyr::separate(col = "Features", into = c("from", "to"))
-    
+
     ig = igraph::graph_from_data_frame(edges_tbl, directed = FALSE)
 
     ggraph(ig, layout = "linear", circular = TRUE) +
@@ -226,13 +230,9 @@ coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
             start_cap = label_rect(.data$node1.name),
             end_cap = label_rect(.data$node2.name),
             width = .data$score,
-            color = .data$dir)) + 
+            color = .data$dir)) +
         theme_void() +
         ggraph::geom_node_text(aes(label = .data$name), size = 6) +
         ggraph::scale_edge_colour_brewer(palette = "Set1", direction = -1)
 }
 
-# Plot the survival curves for the CPOP model
-CPOP_KaplanMeierPlot <- function(TOP_model, s = "lambda.min") {
-    # TODO
-}

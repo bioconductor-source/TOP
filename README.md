@@ -1,4 +1,4 @@
-# CPOP 2.0
+# TOP
 
 Due to data scale differences between multiple omics data, a model constructed from a training data tends to have poor prediction power on a validation data. While the usual bioinformatics approach is to re-normalise both the training and the validation data, this step may not be possible due to ethics constrains. CPOP avoids re-normalisation of additional data through the use of log-ratio features and thus also enable prediction for single omics samples.
 

@@ -1,13 +1,13 @@
-Package: CPOP2
+Package: TOP
 Title: What the Package Does (One Line, Title Case)
 Version: 0.99.0
 Date: 2022-11-09
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
+    person("Harry", "Robertson", , "harry.robertson@sydney.edu.au", role = c("aut", "cre"))
 Description: What the package does (one paragraph).
 License: GPL-3
-URL: https://github.com/Harry25R/CPOP2
-BugReports: https://github.com/Harry25R/CPOP2/issues
+URL: https://github.com/Harry25R/TOP
+BugReports: https://github.com/Harry25R/TOP/issues
 biocViews: Software
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -29,6 +29,7 @@ Imports:
     Hmisc,
     latex2exp,
     limma,
+    magrittr,
     methods,
     plotly,
     pROC,
