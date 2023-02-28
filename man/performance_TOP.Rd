@@ -22,22 +22,20 @@ A confusion matrix that displays the performance of the classifier.
 A function to calculate the external performance of the Tranferable Omics Prediction model.
 }
 \examples{
- 
+
+
 data(cpop_data_binary, package = "CPOP")
+x1 = cpop_data_binary$x1
+x2 = cpop_data_binary$x2
 
-x1 <- cpop_data_binary$x1
-x2 <- cpop_data_binary$x2
-x3 <- cpop_data_binary$x3
-y1 <- cpop_data_binary$y1
-y2 <- cpop_data_binary$y2
-y3 <- cpop_data_binary$y3
-
-x_list <- list(x1, x2)
-y_list <- list(factor(y1), factor(y2))
-
-set.seed(23)
+x_list <- list(x1,x2)
+y_list <- list(cpop_data_binary$y1, cpop_data_binary$y2)
 
 model <- TOP_model(x_list, y_list)
-performance_TOP(model, newx = x3, newy = y3)
+
+x3 = cpop_data_binary$x3
+y3 = cpop_data_binary$y3
+
+performance_TOP(model$models, newx = x3, newy = y3)
 
 }
