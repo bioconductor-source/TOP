@@ -15,9 +15,9 @@
 #'
 #'  x_list <- list(x1,x2,x3)
 #'  y_list <- list(cpop_data_binary$y1, cpop_data_binary$y2, cpop_data_binary$y3)
-#'  y_list <- lapply(y_list, function(x){x <- factor(x, levels = c("Yes", "No"))})
+#'  y_list <- y_list <- lapply(y_list, function(x){x <- factor(x, levels = c("1", "0"), labels = c("Yes", "No"))})
 #'
-#'  filterFeatures(x_list, y_list, contrast = "Yes - No", nFeatures = 50, combinationMethod = "OSP")
+#'  filterFeatures(x_list, y_list, contrast = "Yes - No", nFeatures = 10, combinationMethod = "OSP")
 #'
 #' @rdname filterFeatures
 #' @export
