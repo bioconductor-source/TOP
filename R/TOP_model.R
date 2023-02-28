@@ -8,7 +8,7 @@
 #' @param optimiseExponent Should the exponent used to modufy the lasso weights be optimised using resubstitution?, Default: FALSE
 #' @param nCores A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1
 #' @return Returns a list with the following elements: models, which is a glmnet object and features, which is a list of the features used in each model.
-#' @examples 
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
@@ -16,7 +16,7 @@
 #' }
 #'
 #' @rdname TOP_model
-#' @export 
+#' @export
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr mutate group_by summarise
 #' @importFrom tibble rownames_to_column
@@ -183,14 +183,14 @@ TOP_model <- function(
 #' @param covariates A data frame of the same covariates that were used in the CPOP2 model, Default: NULL
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #' @return A vector of predictions for the new data.
-#' @examples 
+#' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  #EXAMPLE1
 #'  }
 #' }
 #' @rdname predict_TOP
-#' @export 
+#' @export
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom glmnet makeX
 predict_TOP <- function(TOP_model, newx, covariates = NULL, s = "lambda.min") {
@@ -199,12 +199,12 @@ predict_TOP <- function(TOP_model, newx, covariates = NULL, s = "lambda.min") {
     if (!is.null(covariates)) {
         w3 <- glmnet::makeX(cbind(newz, covariates))
         result_response <- stats::predict(
-            object = cpop_result, newx = w3, s = s,
+            object = TOP_model$models, newx = w3, s = s,
             type = "response"
         )
     } else {
         result_response <- stats::predict(
-            object = cpop_result, newx = newz, s = s,
+            object = TOP_model$models, newx = newz, s = s,
             type = "response"
         )
     }

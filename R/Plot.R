@@ -1,4 +1,4 @@
-#' TOP_coefPlot
+#' @title TOP_coefPlot
 #'
 #' @param TOP_Model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
