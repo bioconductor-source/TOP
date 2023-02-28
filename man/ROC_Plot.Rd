@@ -7,7 +7,7 @@
 ROC_Plot(roc_list)
 }
 \arguments{
-\item{roc_list}{A list of roc object from the pROC package}
+\item{roc_list}{A list of roc objects from the pROC package}
 }
 \description{
 A function visualises the performance of a classifier by plotting the Receiver Operating Characteristic (ROC) curve.
@@ -26,9 +26,9 @@ set.seed(23)
 x_list <- list(x1, x2)
 y_list <- list(factor(y1), factor(y2))
 
-fCPOP_model <- Frankenstein_CPOP(x_list, y_list)
-pred <- predict_cpop2(fCPOP_model$models, newx = x3)
-roc_fCPOP <- pROC::roc(y3, pred)
-ROC_Plot(list(roc_fCPOP))
+model <- TOP_model(x_list, y_list)
+pred <- predict_TOP(model$models, newx = x3)
+roc <- pROC::roc(y3, pred)
+ROC_Plot(list(roc))
 
 }
