@@ -80,7 +80,7 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' y_list <- list(factor(y1), factor(y2))
 #'
 #' model <- TOP_model(x_list, y_list)
-#' CPOP_coefPlot(model)
+#' TOP_lambdaPlot(model)
 #'
 #' @import ggplot2
 #' @importFrom tibble rownames_to_column
