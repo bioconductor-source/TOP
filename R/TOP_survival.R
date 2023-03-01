@@ -5,7 +5,16 @@
 #' @return A cox net model
 #' @details DETAILS
 #' @examples
-#'  #EXAMPLE1
+#' time <- rpois(300, c(600,1000))
+#' surv <- sample(c(0,1), 300, replace = T)
+#' y <- data.frame(time, surv)
+#'
+#' batch <- rep(paste0("y", 1:3), c(100,100,100))
+#' y_list <- y %>% split(batch)
+#'
+#' x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+#'
+#' TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
 #' @rdname TOP_survival
 #' @export
 #' @importFrom ClassifyR colCoxTests
@@ -19,7 +28,7 @@
 #' @importFrom glmnet cv.glmnet
 #' @importFrom doParallel registerDoParallel
 TOP_survival <- function(
-    x_list, y_list, nFeatures = 50, dataset_weights = NULL, 
+    x_list, y_list, nFeatures = 50, dataset_weights = NULL,
     sample_weights = FALSE, nCores = 1
     ) {
 
@@ -143,7 +152,17 @@ TOP_survival <- function(
 #' @param newx A new dataset to predict the survival time.
 #' @return A vector of predicted survival time.
 #' @examples
-#'  #EXAMPLE1
+#' time <- rpois(300, c(600,1000))
+#' surv <- sample(c(0,1), 300, replace = T)
+#' y <- data.frame(time, surv)
+#'
+#' batch <- rep(paste0("y", 1:3), c(100,100,100))
+#' y_list <- y %>% split(batch)
+#'
+#' x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+#'
+#' surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
+#' TOP_survivalPrediction(surv_model, newx = x_list[[3]])
 #' @rdname TOP_survivalPrediction
 #' @export
 #' @importFrom CPOP pairwise_col_diff
@@ -168,12 +187,22 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' @param newy PARAM_DESCRIPTION
 #' @return OUTPUT_DESCRIPTION
 #' @examples
-#'  # EXAMPLE1
+#' time <- rpois(300, c(600,1000))
+#' surv <- sample(c(0,1), 300, replace = T)
+#' y <- data.frame(time, surv)
+#'
+#' batch <- rep(paste0("y", 1:3), c(100,100,100))
+#' y_list <- y %>% split(batch)
+#'
+#' x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+#'
+#' surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
+#' Surv_TOP_CI(surv_model, newx = x_list[[3]])
 #' @rdname Surv_Frank_CI
 #' @export
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom survival concordance
-Surv_Frank_CI <- function(coxnet_model, newx, newy) {
+Surv_TOP_CI <- function(coxnet_model, newx, newy) {
     # Calculate the pairwise differences of x
     newx <- newx[, coxnet_model[[2]]]
     z <- CPOP::pairwise_col_diff(newx)
