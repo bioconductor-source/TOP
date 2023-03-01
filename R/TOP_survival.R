@@ -187,9 +187,9 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 
 #' @title Create a function to calculate the concordance index.
 #' @description FUNCTION_DESCRIPTION
-#' @param coxnet_model PARAM_DESCRIPTION
-#' @param newx PARAM_DESCRIPTION
-#' @param newy PARAM_DESCRIPTION
+#' @param TOP_survival A TOP_survival model. See \code{\link{TOP_survival}}.
+#' @param newx A new data.frame to predict the survival time.
+#' @param newy A data.frame, where the first columns in each data frame is the time and the second column is the event status.
 #' @return OUTPUT_DESCRIPTION
 #' @examples
 #' time <- rpois(300, c(600,1000))
@@ -207,13 +207,13 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' @export
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom survival concordance
-Surv_TOP_CI <- function(coxnet_model, newx, newy) {
+Surv_TOP_CI <- function(TOP_survival, newx, newy) {
     # Calculate the pairwise differences of x
-    newx <- newx[, coxnet_model[[2]]]
+    newx <- newx[, TOP_survival[[2]]]
     z <- CPOP::pairwise_col_diff(newx)
 
     # Predict the survival time
-    survScores <- stats::predict(coxnet_model[[1]], as.matrix(z), type = "response", newoffset = offset)
+    survScores <- stats::predict(TOP_survival[[1]], as.matrix(z), type = "response", newoffset = offset)
 
     # Calculate the concordance index
     CI <- survival::concordance(survival::Surv(newy[, 1], newy[, 2]) ~ survScores)
