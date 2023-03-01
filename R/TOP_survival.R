@@ -158,7 +158,7 @@ TOP_survival <- function(
 #' @return A vector of predicted survival time.
 #' @examples
 #' time <- rpois(300, c(600,1000))
-#' surv <- sample(c(0,1), 300, replace = T)
+#' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
 #'
 #' batch <- rep(paste0("y", 1:3), c(100,100,100))
@@ -193,7 +193,7 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' @return OUTPUT_DESCRIPTION
 #' @examples
 #' time <- rpois(300, c(600,1000))
-#' surv <- sample(c(0,1), 300, replace = T)
+#' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
 #'
 #' batch <- rep(paste0("y", 1:3), c(100,100,100))
