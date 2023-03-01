@@ -41,6 +41,6 @@ x_list <- list(x1, x2)
 y_list <- list(factor(y1), factor(y2))
 
 model <- TOP_model(x_list, y_list)
-CPOP_coefPlot(model)
+TOP_lambdaPlot(model)
 
 }
