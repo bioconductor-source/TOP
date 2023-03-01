@@ -2,7 +2,7 @@
 
 export("%>%")
 export(ROC_Plot)
-export(Surv_Frank_CI)
+export(Surv_TOP_CI)
 export(TOP_coefPlot)
 export(TOP_lambdaPlot)
 export(TOP_model)

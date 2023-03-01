@@ -18,5 +18,15 @@ A vector of predicted survival time.
 A prediction function for TOP_survival
 }
 \examples{
- #EXAMPLE1
+time <- rpois(300, c(600,1000))
+surv <- sample(c(0,1), 300, replace = T)
+y <- data.frame(time, surv)
+
+batch <- rep(paste0("y", 1:3), c(100,100,100))
+y_list <- y \%>\% split(batch)
+
+x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+
+surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
+TOP_survivalPrediction(surv_model, newx = x_list[[3]])
 }
