@@ -9,6 +9,7 @@
 #' @return A cox net model
 #' @details DETAILS
 #' @examples
+#' data(cpop_data_binary, package = "CPOP")
 #' time <- rpois(300, c(600,1000))
 #' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
@@ -157,6 +158,7 @@ TOP_survival <- function(
 #' @param newx A new dataset to predict the survival time.
 #' @return A vector of predicted survival time.
 #' @examples
+#' data(cpop_data_binary, package = "CPOP")
 #' time <- rpois(300, c(600,1000))
 #' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
@@ -192,6 +194,7 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' @param newy A data.frame, where the first columns in each data frame is the time and the second column is the event status.
 #' @return OUTPUT_DESCRIPTION
 #' @examples
+#' data(cpop_data_binary, package = "CPOP")
 #' time <- rpois(300, c(600,1000))
 #' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)

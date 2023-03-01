@@ -19,7 +19,7 @@ A prediction function for TOP_survival
 }
 \examples{
 time <- rpois(300, c(600,1000))
-surv <- sample(c(0,1), 300, replace = T)
+surv <- sample(c(0,1), 300, replace = TRUE)
 y <- data.frame(time, surv)
 
 batch <- rep(paste0("y", 1:3), c(100,100,100))

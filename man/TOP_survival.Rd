@@ -17,6 +17,14 @@ TOP_survival(
 \item{x_list}{A list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.}
 
 \item{y_list}{A list of data frames, where the first columns in each data frame is the time and the second column is the event status. The length of this list should be the same as the length of x_list.}
+
+\item{nFeatures}{Number of features to return, Default: 50}
+
+\item{dataset_weights}{a list of data frames that refer to any grouping structure in the batches, Default: NULL}
+
+\item{sample_weights}{Should each batch we weighted equally? This is important in unequal sample sizes, Default: FALSE}
+
+\item{nCores}{A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1}
 }
 \value{
 A cox net model

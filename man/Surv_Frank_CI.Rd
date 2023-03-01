@@ -4,14 +4,14 @@
 \alias{Surv_TOP_CI}
 \title{Create a function to calculate the concordance index.}
 \usage{
-Surv_TOP_CI(coxnet_model, newx, newy)
+Surv_TOP_CI(TOP_survival, newx, newy)
 }
 \arguments{
-\item{coxnet_model}{PARAM_DESCRIPTION}
+\item{TOP_survival}{A TOP_survival model. See \code{\link{TOP_survival}}.}
 
-\item{newx}{PARAM_DESCRIPTION}
+\item{newx}{A new data.frame to predict the survival time.}
 
-\item{newy}{PARAM_DESCRIPTION}
+\item{newy}{A data.frame, where the first columns in each data frame is the time and the second column is the event status.}
 }
 \value{
 OUTPUT_DESCRIPTION
@@ -21,7 +21,7 @@ FUNCTION_DESCRIPTION
 }
 \examples{
 time <- rpois(300, c(600,1000))
-surv <- sample(c(0,1), 300, replace = T)
+surv <- sample(c(0,1), 300, replace = TRUE)
 y <- data.frame(time, surv)
 
 batch <- rep(paste0("y", 1:3), c(100,100,100))
