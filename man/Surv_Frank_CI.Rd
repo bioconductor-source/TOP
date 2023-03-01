@@ -30,5 +30,5 @@ y_list <- y \%>\% split(batch)
 x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
 
 surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
-Surv_TOP_CI(surv_model, newx = x_list[[3]])
+Surv_TOP_CI(surv_model, newx = x_list[[3]], newy = y_list[[3]])
 }
