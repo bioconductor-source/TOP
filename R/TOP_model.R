@@ -9,11 +9,20 @@
 #' @param nCores A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1
 #' @return Returns a list with the following elements: models, which is a glmnet object and features, which is a list of the features used in each model.
 #' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' data(cpop_data_binary, package = "CPOP")
+#'
+#' x1 <- cpop_data_binary$x1
+#' x2 <- cpop_data_binary$x2
+#' x3 <- cpop_data_binary$x3
+#' y1 <- cpop_data_binary$y1
+#' y2 <- cpop_data_binary$y2
+#' y3 <- cpop_data_binary$y3
+#'
+#' set.seed(23)
+#' x_list <- list(x1, x2)
+#' y_list <- list(factor(y1), factor(y2))
+#'
+#' model <- TOP_model(x_list, y_list)
 #'
 #' @rdname TOP_model
 #' @export
@@ -184,11 +193,21 @@ TOP_model <- function(
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #' @return A vector of predictions for the new data.
 #' @examples
-#' \dontrun{
-#' if(interactive()){
-#'  #EXAMPLE1
-#'  }
-#' }
+#' data(cpop_data_binary, package = "CPOP")
+#'
+#' x1 <- cpop_data_binary$x1
+#' x2 <- cpop_data_binary$x2
+#' x3 <- cpop_data_binary$x3
+#' y1 <- cpop_data_binary$y1
+#' y2 <- cpop_data_binary$y2
+#' y3 <- cpop_data_binary$y3
+#'
+#' set.seed(23)
+#' x_list <- list(x1, x2)
+#' y_list <- list(factor(y1), factor(y2))
+#'
+#' model <- TOP_model(x_list, y_list)
+#' predictions <- predict_TOP(model$models, newx = x3)
 #' @rdname predict_TOP
 #' @export
 #' @importFrom CPOP pairwise_col_diff
