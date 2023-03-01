@@ -33,7 +33,7 @@
 #' @importFrom magrittr %>%
 TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 
-    if (nFeatures > ncol(TOP_model$model$beta)) {
+    if (nFeatures > nrow(glmnet::coef.glmnet(TOP_model$models, s = s))) {
         stop("nFeatures must be less than or equal to the number of features in the model.")
     }
 
