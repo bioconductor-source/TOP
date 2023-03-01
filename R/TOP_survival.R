@@ -20,6 +20,7 @@
 #' @importFrom ClassifyR colCoxTests
 #' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr select
+#' @importFrom dplyr left_join
 #' @importFrom Hmisc wtd.var
 #' @importFrom tibble enframe
 #' @importFrom tibble rownames_to_column column_to_rownames
