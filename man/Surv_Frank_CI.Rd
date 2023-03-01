@@ -20,6 +20,7 @@ OUTPUT_DESCRIPTION
 FUNCTION_DESCRIPTION
 }
 \examples{
+data(cpop_data_binary, package = "CPOP")
 time <- rpois(300, c(600,1000))
 surv <- sample(c(0,1), 300, replace = TRUE)
 y <- data.frame(time, surv)
