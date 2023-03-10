@@ -1,42 +1,210 @@
---- 
-title: "Building a Transferable Omics Prediction (TOP) Model"
-author: Harry Robertson, Nicholas Robertson <br>
-date: "2023-24-01"
+---
+title: "Tranferable Omics Pediction"
+date: "`r BiocStyle::doc_date()`"
+params:
+  test: FALSE
+author:
+- name: Harry Robertson
+  affiliation:  
+  - Centre for Precision Data Science, University of Sydney, Australia
+  - School of Mathematics and Statistics, University of Sydney, Australia
+  - &WIMR Westmead Institute for Medical Research, University of Sydney, Australia
+- name: Nicholas Robertson
+  affiliation:
+  - Centre for Precision Data Science, University of Sydney, Australia
+  - School of Mathematics and Statistics, University of Sydney, Australia
+- name: Ellis Patrick
+  affiliation:
+  - Centre for Precision Data Science, University of Sydney, Australia
+  - School of Mathematics and Statistics, University of Sydney, Australia
+  - &WIMR Westmead Institute for Medical Research, University of Sydney, Australia
+vignette: >
+  %\VignetteIndexEntry{"Introduction to TOP"}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 output: 
-    BiocStyle::html_document:
-    css: style.css
-    toc: true
-vignette:
-    %\VignetteEngine{knitr::rmarkdown}
-    %\VignetteIndexEntry{Building a Transferable Omics Prediction (TOP) Model}
-
+  BiocStyle::html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(BiocStyle)
 ```
 
-## Installing the TOP package
-Installing the TOP package from github can be achieved using the following command 
-```{r, eval=FALSE}
-devtools::install_github("Harry25R/TOP", dependencies = TRUE)
-```
-
-## Loading the required packages
-```{r}
-library(TOP)
-library(ggplot2)
-library(dplyr)
-library(curatedOvarianData)
+```{r, warning = FALSE, message = FALSE}
+# library(TOP)
+suppressPackageStartupMessages({
+  library(tidyverse)
+  library(survival)
+  library(dplyr)
+  library(survminer)
+  library(Biobase)
+  library(ggsci)
+  library(ggbeeswarm)
+  
+  library(curatedOvarianData)
+})
 
 theme_set(theme_bw())
 ```
 
-## Loading in the example data
+# Installation
+```{r eval = FALSE}
+# Install the package from Bioconductor
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+BiocManager::install("TOP")
+```
+
+
+
+# Overview 
+
+The TOP R package provides a transfer learning approach for building predictive models across multiple omics datasets. With the increasing availability of omics data, there is a growing need for methods that can effectively integrate and analyze data from multiple sources. However, merging datasets can be challenging due to batch effects and other sources of variation.
+
+TOP uses transfer learning strategies to build predictive models that can be applied across multiple datasets without the need for extensive batch correction methods. Specifically, TOP employs a lasso regression model to identify important features and construct a transferable predictive model. By leveraging information from multiple datasets, TOP can improve predictive accuracy and identify common biomarkers across different omics datasets.
+
+The package provides several functions for building and evaluating transfer learning models, including options for visualizing results. Additionally, the package includes sample datasets and detailed documentation to help users get started with the package and understand the underlying methods.
+
+Overall, TOP offers a flexible and powerful approach for integrating and analyzing omics data from multiple sources, making it a valuable tool for researchers in a variety of fields.
+
+# Loading example data
 The example data used in this vignette is the curatedOvarianData. Described in the paper from [Benjamin Frederick Ganzfried et al (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3625954/) \n
 ```{r}
 data(package = "curatedOvarianData")
 
+data("GSE12418_eset", package = "curatedOvarianData")
+data("GSE30009_eset", package = "curatedOvarianData")
+```
+
+# Building a classification model
+Within the example datasets loaded, we want to build a classifier that is able to predict overall survival (os). 
+```{r}
+pData(GSE30009_eset)$os_binary
+```
+
+
+# Building a survival model.
+
+```{r japan_a}
+data("GSE32062.GPL6480_eset")
+japan_a = GSE32062.GPL6480_eset
+
+data("GSE9891_eset")
+tothill = GSE9891_eset
+
+data("GSE32063_eset")
+japan_b = GSE32063_eset
+
+data("TCGA.RNASeqV2_eset")
+selection = TCGA.RNASeqV2_eset$tumorstage %in% c(3, 4) & TCGA.RNASeqV2_eset$site_of_tumor_first_recurrence == "metastasis"
+selection[is.na(selection)] = FALSE
+tcgarnaseq = TCGA.RNASeqV2_eset[,selection]
+
+data("E.MTAB.386_eset")
+bentink = E.MTAB.386_eset
+
+data("GSE13876_eset")
+crijns = GSE13876_eset
+crijns = crijns[,crijns$grade %in% c(3, 4)]
+
+data("GSE18520_eset")
+mok = GSE18520_eset
+
+data("GSE17260_eset")
+yoshihara2010 = GSE17260_eset
+
+data("GSE26712_eset")
+bonome = GSE26712_eset
+
+data("GSE19829.GPL8300_eset")
+konst = GSE19829.GPL8300_eset
+```
+
+```{r}
+list_ovarian_eset = lst(
+  japan_a, tothill, japan_b,
+  tcgarnaseq, bonome, mok, yoshihara2010,
+  bentink, crijns)
+
+list_ovarian_eset %>% 
+  sapply(dim)
+```
+
+# Common genes between datasets
+```{r}
+raw_gene_list = purrr::map(list_ovarian_eset, rownames)
+common_genes = Reduce(f = intersect, x = raw_gene_list)
+length(common_genes)
+```
+
+# Survival samples
+```{r}
+ov_pdata = purrr::map(list_ovarian_eset, pData)
+list_pdata =  list_ovarian_eset %>% 
+  purrr::map(pData) %>% 
+  purrr::map(tibble::rownames_to_column, var = "sample_id")
+
+ov_surv_raw = purrr::map(
+  .x = list_pdata, 
+  .f = ~ data.frame(
+    sample_id = .x$sample_id,
+    time = .x$days_to_death %>% as.integer,
+    dead = ifelse(.x$vital_status == "deceased", 1, 0)) %>%
+    na.omit() %>% 
+    dplyr::filter(time > 0, 
+                  !is.nan(time),
+                  !is.nan(dead))
+)
+ov_surv_raw %>% sapply(nrow)
+ov_surv_y = ov_surv_raw %>% 
+  purrr::map(~ .x %>% 
+               dplyr::select(-sample_id)) %>% 
+  purrr::map(~ Surv(time = .x$time, event = .x$dead))
+```
+
+
+# Reduced ovarian cancer
+```{r}
+ov_surv_exprs = purrr::map2(
+  .x = list_ovarian_eset, 
+  .y = ov_surv_raw,
+  .f = ~ exprs(.x[common_genes,.y$sample_id])
+)
+ov_surv_exprs %>% sapply(dim)
+```
+
+# Binary samples 
+
+```{r}
+ov_surv_tbl = ov_surv_raw %>% 
+  bind_rows(.id = "data_source")
+ov_surv_tbl %>% 
+  ggplot(aes(x = time,
+             y = ..density..,
+             fill = data_source)) +
+  geom_density(alpha = 0.2) +
+  scale_fill_d3()
+```
+
+```{r}
+surv_list <- ov_surv_tbl %>%
+  split(ov_surv_tbl$data_source)
+surv_list <- lapply(surv_list, function(x)x[,3:4])
+
+surv_counts <- ov_surv_exprs %>% lapply(t)
+surv_model <- TOP_survival(x_list = surv_counts, y_list = surv_list)
 
 ```
+
+
+
+
+
+
+
 

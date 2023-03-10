@@ -18,6 +18,7 @@ A vector of predicted survival time.
 A prediction function for TOP_survival
 }
 \examples{
+data(cpop_data_binary, package = "CPOP")
 time <- rpois(300, c(600,1000))
 surv <- sample(c(0,1), 300, replace = TRUE)
 y <- data.frame(time, surv)

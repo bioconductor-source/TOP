@@ -1,7 +1,7 @@
 # Calculate the fold changes for each dataset.
 lfc_calculate <- function(df, y) {
     outcome <- levels(y)
-    return(colSums(df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ])) 
+    return(colSums(df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ]))
 }
 
 # Loop through possible exponents of weights_lasso
@@ -58,6 +58,7 @@ str_split_n <- function(string, pattern, n) {
 #' @importFrom dplyr select
 #' @importFrom tibble rownames_to_column column_to_rownames
 #' @importFrom purrr reduce
+#' @importFrom directPA geneStats
 colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     # Extract the p-values from each dataset
     cox_list <- list()
@@ -78,7 +79,7 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
         stats::qnorm(rank(x) / (nrow(outputs) + 1))
     })
     utils::data(Pathways, package = "directPA")
-    comb.pvalues <- apply(ZScore_output, 1, geneStats)
+    comb.pvalues <- apply(ZScore_output, 1, directPA::geneStats)
     comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
     pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
     sig.genes <- names(pvalue2sided[pvalue2sided != 0] |> sort())[1:nFeatures]
@@ -109,7 +110,7 @@ extractAUC <- function(roc_list){
 #'
 #' @param x_list a list of data.frames with identical features as columns.
 #'
-#' @return A square matrix of canonical correlation coefficients. 
+#' @return A square matrix of canonical correlation coefficients.
 #' @export
 #'
 #' @examples
