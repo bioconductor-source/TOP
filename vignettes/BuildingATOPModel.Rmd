@@ -197,14 +197,15 @@ surv_list <- ov_surv_tbl %>%
 surv_list <- lapply(surv_list, function(x)x[,3:4])
 
 surv_counts <- ov_surv_exprs %>% lapply(t)
-surv_model <- TOP_survival(x_list = surv_counts, y_list = surv_list)
-
+surv_list <- surv_list[names(surv_counts)]
+surv_model <- TOP_survival(x_list = surv_counts, y_list = surv_list, nFeatures = 10)
 ```
 
+```{r}
+conf_results <- unlist(lapply(seq_along(surv_counts), function(x){
+  Surv_TOP_CI(surv_model, newx = surv_counts[[x]], newy = surv_list[[x]])$concordance
+}))
 
-
-
-
-
-
-
+ggboxplot(conf_results, ylab = "C-index", xlab = "") + theme_bw() + 
+  geom_jitter(width = 0.3, alpha= 0.7)
+```
