@@ -32,6 +32,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(BiocStyle)
+devtools::load_all()
 ```
 
 ```{r, warning = FALSE, message = FALSE}
@@ -60,8 +61,6 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 BiocManager::install("TOP")
 ```
 
-
-
 # Overview 
 
 The TOP R package provides a transfer learning approach for building predictive models across multiple omics datasets. With the increasing availability of omics data, there is a growing need for methods that can effectively integrate and analyze data from multiple sources. However, merging datasets can be challenging due to batch effects and other sources of variation.
@@ -75,20 +74,12 @@ Overall, TOP offers a flexible and powerful approach for integrating and analyzi
 # Loading example data
 The example data used in this vignette is the curatedOvarianData. Described in the paper from [Benjamin Frederick Ganzfried et al (2013)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3625954/) \n
 ```{r}
-data(package = "curatedOvarianData")
-
 data("GSE12418_eset", package = "curatedOvarianData")
 data("GSE30009_eset", package = "curatedOvarianData")
 ```
 
-# Building a classification model
-Within the example datasets loaded, we want to build a classifier that is able to predict overall survival (os). 
-```{r}
-pData(GSE30009_eset)$os_binary
-```
-
-
 # Building a survival model.
+The transferable omics prediction framework is also able to build survival models. In this section, we will demonstrate how to use TOP to build a survival model using example ovarian cancer datasets. First we utilise nine datasets that were preparred by Ganzfield et al. 
 
 ```{r japan_a}
 data("GSE32062.GPL6480_eset")
@@ -121,11 +112,6 @@ yoshihara2010 = GSE17260_eset
 data("GSE26712_eset")
 bonome = GSE26712_eset
 
-data("GSE19829.GPL8300_eset")
-konst = GSE19829.GPL8300_eset
-```
-
-```{r}
 list_ovarian_eset = lst(
   japan_a, tothill, japan_b,
   tcgarnaseq, bonome, mok, yoshihara2010,
@@ -136,6 +122,8 @@ list_ovarian_eset %>%
 ```
 
 # Common genes between datasets
+In order to apply the TOP framework, it is important that the input matrices have identical feature names, such as gene names, across all datasets. In this example, we will identify the common genes present in all the datasets, as these will be the features used for transfer learning.
+
 ```{r}
 raw_gene_list = purrr::map(list_ovarian_eset, rownames)
 common_genes = Reduce(f = intersect, x = raw_gene_list)
@@ -143,6 +131,7 @@ length(common_genes)
 ```
 
 # Survival samples
+Next, we will prepare the survival data from each of the ovarian cancer datasets. The survival data includes the survival time and the event status (i.e., whether the event of interest, such as death, has occurred)
 ```{r}
 ov_pdata = purrr::map(list_ovarian_eset, pData)
 list_pdata =  list_ovarian_eset %>% 
@@ -167,30 +156,26 @@ ov_surv_y = ov_surv_raw %>%
   purrr::map(~ Surv(time = .x$time, event = .x$dead))
 ```
 
-
-# Reduced ovarian cancer
+# Preparing data for modelling.
+In this section, we will prepare the gene expression data and survival data for visualization. We will subset the gene expression data to include only the common genes and samples with survival information. Then, we will create a combined survival data table, with a data_source column to identify the origin of each sample. Finally we plot the distribution of survival times across datasets.
 ```{r}
 ov_surv_exprs = purrr::map2(
   .x = list_ovarian_eset, 
   .y = ov_surv_raw,
   .f = ~ exprs(.x[common_genes,.y$sample_id])
 )
-ov_surv_exprs %>% sapply(dim)
-```
 
-# Binary samples 
-
-```{r}
 ov_surv_tbl = ov_surv_raw %>% 
   bind_rows(.id = "data_source")
 ov_surv_tbl %>% 
   ggplot(aes(x = time,
              y = ..density..,
              fill = data_source)) +
-  geom_density(alpha = 0.2) +
+  geom_density(alpha = 0.25) +
   scale_fill_d3()
 ```
-
+# Building a TOP survival model.
+In this section, we will build the survival model using the TOP framework. To do this, we will first organize the survival data and gene expression data into appropriate data structures. Then, we will apply the `TOP_survival` function to build the model, specifying the number of features to be selected by the lasso regression.
 ```{r}
 surv_list <- ov_surv_tbl %>%
   split(ov_surv_tbl$data_source)
@@ -201,11 +186,16 @@ surv_list <- surv_list[names(surv_counts)]
 surv_model <- TOP_survival(x_list = surv_counts, y_list = surv_list, nFeatures = 10)
 ```
 
+# Visualising performance. 
+Once we have built the survival model using the TOP framework, it is important to evaluate its performance. In this section, we will visualize the performance of the model by calculating the concordance index (C-index) for each dataset. The C-index measures the agreement between the predicted and observed survival times, with values ranging from 0 to 1,
 ```{r}
 conf_results <- unlist(lapply(seq_along(surv_counts), function(x){
   Surv_TOP_CI(surv_model, newx = surv_counts[[x]], newy = surv_list[[x]])$concordance
 }))
 
-ggboxplot(conf_results, ylab = "C-index", xlab = "") + theme_bw() + 
-  geom_jitter(width = 0.3, alpha= 0.7)
+conf_results %>%
+  tibble::enframe() %>%
+  mutate(Metric = "C-index") %>%
+  ggplot(aes(y = value, x = Metric)) + geom_boxplot(width = 0.5) + ylab("C-index") +
+  geom_jitter(alpha = 0.7, width = 0.1) + theme(axis.text.x = element_blank()) + xlab("Survival Model")
 ```
