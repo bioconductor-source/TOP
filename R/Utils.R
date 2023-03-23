@@ -5,6 +5,8 @@ lfc_calculate <- function(df, y) {
 }
 
 # Loop through possible exponents of weights_lasso
+#' selectExponent
+#' @noRd
 selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_test, nCores = nCores) {
 
     parallel <- FALSE
