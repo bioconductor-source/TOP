@@ -13,6 +13,9 @@ coefNetworkPlot(TOP_model, nFeatures = 20, s = "lambda.min")
 
 \item{s}{Lambda value for the lasso model. Default is "lambda.min"}
 }
+\value{
+A coefNetwork plot
+}
 \description{
 coefNetworkPlot
 }

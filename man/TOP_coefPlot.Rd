@@ -13,6 +13,9 @@ TOP_coefPlot(TOP_model, nFeatures = 20, s = "lambda.min")
 
 \item{s}{Lambda value for the lasso model, Default: 'lambda.min'}
 }
+\value{
+A TOP coeff plot
+}
 \description{
 TOP_coefPlot
 }

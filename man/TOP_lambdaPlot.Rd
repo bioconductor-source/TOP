@@ -23,6 +23,9 @@ TOP_lambdaPlot(
 
 \item{label}{A boolean indicating whether the features should be labeled on the plot. Defaults to FALSE .}
 }
+\value{
+A TOP lambda plot
+}
 \description{
 TOP_lambdaPlot
 }

@@ -9,6 +9,9 @@ ROC_Plot(roc_list)
 \arguments{
 \item{roc_list}{A list of roc objects from the pROC package}
 }
+\value{
+A ROC Plot
+}
 \description{
 A function visualises the performance of a classifier by plotting the Receiver Operating Characteristic (ROC) curve.
 }

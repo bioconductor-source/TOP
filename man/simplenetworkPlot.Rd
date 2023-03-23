@@ -13,6 +13,9 @@ simplenetworkPlot(TOP_model, nFeatures = 50, s = "lambda.min")
 
 \item{s}{Lambda value for the lasso model. Default is "lambda.min"}
 }
+\value{
+A simple network plot
+}
 \description{
 simplenetworkPlot
 }
