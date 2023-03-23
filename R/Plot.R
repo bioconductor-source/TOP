@@ -4,7 +4,7 @@
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #'
-#' @return
+#' @return A TOP coeff plot
 #' @export
 #'
 #' @examples
@@ -62,7 +62,7 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' @param interactive A boolean indicaitng whether the plot should be interactive. Defaults to FALSE .
 #' @param label A boolean indicating whether the features should be labeled on the plot. Defaults to FALSE .
 #'
-#' @return
+#' @return A TOP lambda plot
 #' @export
 #'
 #' @examples
@@ -149,7 +149,7 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
-#' @return
+#' @return A simple network plot
 #' @export
 #'
 #' @examples
@@ -211,7 +211,7 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
-#' @return
+#' @return A coefNetwork plot
 #' @export
 #'
 #' @examples
