@@ -1,6 +1,6 @@
 #' @title TOP_coefPlot
 #'
-#' @param TOP_Model A Transferable Omics Prediction model. THe output from the TOP_model function.
+#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #'
