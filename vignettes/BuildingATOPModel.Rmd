@@ -192,7 +192,7 @@ Once we have built the survival model using the TOP framework, it is important t
 conf_results <- unlist(lapply(seq_along(surv_counts), function(x){
   Surv_TOP_CI(surv_model, newx = surv_counts[[x]], newy = surv_list[[x]])$concordance
 }))
-
+ 
 conf_results %>%
   tibble::enframe() %>%
   mutate(Metric = "C-index") %>%
