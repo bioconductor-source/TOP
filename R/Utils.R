@@ -1,4 +1,6 @@
 # Calculate the fold changes for each dataset.
+#' lfc_calculate
+#' @noRd
 lfc_calculate <- function(df, y) {
     outcome <- levels(y)
     return(colSums(df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ]))
@@ -51,6 +53,7 @@ selectExponent <- function(lasso_x, lasso_y, sample.weights = NULL, moderated_te
 
 #' @title str_split_n
 #' @importFrom stringr str_split
+#' @noRd
 str_split_n <- function(string, pattern, n) {
     out <- stringr::str_split(string, pattern, simplify = TRUE)
     apply(out, 1, `[`, i = n)
@@ -61,6 +64,7 @@ str_split_n <- function(string, pattern, n) {
 #' @importFrom tibble rownames_to_column column_to_rownames
 #' @importFrom purrr reduce
 #' @importFrom directPA geneStats
+#' @noRd
 colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     # Extract the p-values from each dataset
     cox_list <- list()
@@ -91,6 +95,7 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
 #' @title extractAUC
 #' @importFrom dplyr mutate
 #' @importFrom reshape2 melt
+#' @noRd
 
 extractAUC <- function(roc_list){
   auc <- lapply(roc_list, function(x){
