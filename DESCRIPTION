@@ -9,7 +9,7 @@ Description: TOP constructs a transferable model across gene expression platform
 License: GPL-3
 URL: https://github.com/Harry25R/TOP
 BugReports: https://github.com/Harry25R/TOP/issues
-biocViews: Software, Survival, SingleCell
+biocViews: Software, Survival, SingleCell, GeneExpression
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
