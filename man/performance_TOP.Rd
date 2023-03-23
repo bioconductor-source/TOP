@@ -11,6 +11,8 @@ performance_TOP(TOP_model, newx, newy, covariates = NULL, s = "lambda.min")
 
 \item{newx}{A matrix of the new data to be predicted. With the same number of feature columns as the original data.}
 
+\item{newy}{A vector of the true labels that are being predicted. With the same number of samples as newx.}
+
 \item{covariates}{A data.frame of the same covariates as the original model, Default: NULL}
 
 \item{s}{Lambda used in the lasso model, Default: 'lambda.min'}

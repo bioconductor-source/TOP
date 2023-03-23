@@ -200,7 +200,7 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
         tidygraph::as_tbl_graph(directed = TRUE) %>%
         ggraph::ggraph(layout = "kk") + ggraph::geom_edge_link(color = "black") +
             ggraph::geom_node_point(colour = "lightblue", size = 3) +
-            ggraph::geom_node_text(aes(label = name), repel = T) + theme_void() +
+            ggraph::geom_node_text(aes(label = name), repel = TRUE) + theme_void() +
             ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 }
 

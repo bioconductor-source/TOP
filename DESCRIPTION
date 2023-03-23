@@ -5,11 +5,11 @@ Date: 2022-11-09
 Authors@R: c(
     person("Harry", "Robertson", , "harry.robertson@sydney.edu.au", role = c("aut", "cre")),
     person("Nicholas", "Robertson", , "nicholas.robertson@sydney.edu.au", role = c("aut")))
-Description: TOP constructs a transferable model across gene expression platforms and for prospective experiments. Such a transferable model can be trained to make predictions on independent validation data with an accuracy that is similar to a re-substituted model. The TOP procedure also has the flexibility to be adapted to suit the most common clinical response variables, including linear response, binomial and Cox PH models.
+Description: TOP constructs a transferable model across gene expression platforms for prospective experiments. Such a transferable model can be trained to make predictions on independent validation data with an accuracy that is similar to a re-substituted model. The TOP procedure also has the flexibility to be adapted to suit the most common clinical response variables, including linear response, binomial and Cox PH models.
 License: GPL-3
 URL: https://github.com/Harry25R/TOP
 BugReports: https://github.com/Harry25R/TOP/issues
-biocViews: Software
+biocViews: Software, Survival, SingleCell
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
@@ -44,3 +44,5 @@ Imports:
     tidygraph,
     tidyr,
     utils
+Suggests: knitr, rmarkdown, BiocStyle
+VignetteBuilder: knitr 
