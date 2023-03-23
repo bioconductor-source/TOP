@@ -7,11 +7,11 @@
 TOP_coefPlot(TOP_model, nFeatures = 20, s = "lambda.min")
 }
 \arguments{
+\item{TOP_model}{A Transferable Omics Prediction model. THe output from the TOP_model function.}
+
 \item{nFeatures}{The number of features that will be plotted. Default: 20}
 
 \item{s}{Lambda value for the lasso model, Default: 'lambda.min'}
-
-\item{TOP_Model}{A Transferable Omics Prediction model. THe output from the TOP_model function.}
 }
 \description{
 TOP_coefPlot
