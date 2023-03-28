@@ -150,3 +150,13 @@ calculateCCA <- function(x_list) {
   })
   return(cor_mat)
 }
+
+#' @title The expit function
+#' @param x numeric
+#' @rdname logit-expit
+#' @export
+#' @examples
+#' curve(expit, from = -5, to = 5)
+expit = function(x){
+  return(1/(1+exp(-x)))
+}
