@@ -45,3 +45,6 @@ Imports:
     utils
 Suggests: knitr, rmarkdown, BiocStyle
 VignetteBuilder: knitr 
+LazyData: true
+Data:
+  TOP_data_binary.rda
