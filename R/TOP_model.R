@@ -26,7 +26,6 @@
 #'
 #' @rdname TOP_model
 #' @export
-#' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr mutate group_by summarise
 #' @importFrom tibble rownames_to_column
 #' @importFrom tibble enframe
@@ -54,7 +53,7 @@ TOP_model <- function(
     # Convert counts to ratios
     message("Calculating Pairwise Ratios of Features")
     x_list <- lapply(x_list, as.matrix)
-    z_list <- lapply(x_list, CPOP::pairwise_col_diff)
+    z_list <- lapply(x_list, pairwise_col_diff)
 
     # Calculating the log fold change of each gene between conditions
     lfc <- list()
@@ -189,7 +188,7 @@ TOP_model <- function(
 #' @description A prediction function for the Trasferable Omics Prediction model.
 #' @param TOP_model The output from the TOP_model function.
 #' @param newx A matrix of the new data to be predicted. The columns should be features and the rows should be samples.
-#' @param covariates A data frame of the same covariates that were used in the CPOP2 model, Default: NULL
+#' @param covariates A data frame of the same covariates that were used in the TOP model, Default: NULL
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #' @return A vector of predictions for the new data.
 #' @examples
@@ -210,11 +209,10 @@ TOP_model <- function(
 #' predictions <- predict_TOP(model$models, newx = x3)
 #' @rdname predict_TOP
 #' @export
-#' @importFrom CPOP pairwise_col_diff
 #' @importFrom glmnet makeX
 predict_TOP <- function(TOP_model, newx, covariates = NULL, s = "lambda.min") {
     # Determine z for the new x
-    newz <- CPOP::pairwise_col_diff(newx)
+    newz <- pairwise_col_diff(newx)
     if (!is.null(covariates)) {
         w3 <- glmnet::makeX(cbind(newz, covariates))
         result_response <- stats::predict(

@@ -142,7 +142,7 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
     }
 }
 
-# Network plot of the CPOP model
+# Network plot of the TOP model
 #' simplenetworkPlot
 #'
 #' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.

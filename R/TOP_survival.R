@@ -23,7 +23,6 @@
 #' @rdname TOP_survival
 #' @export
 #' @importFrom ClassifyR colCoxTests
-#' @importFrom CPOP pairwise_col_diff
 #' @importFrom dplyr select
 #' @importFrom dplyr left_join
 #' @importFrom Hmisc wtd.var
@@ -62,7 +61,7 @@ TOP_survival <- function(
         x_subset <- x_list[[i]][, sig.genes]
 
         # Calculate the pairwise_col_diff of z_list_subset
-        z_subset <- CPOP::pairwise_col_diff(x_subset)
+        z_subset <- pairwise_col_diff(x_subset)
 
         # Run colCoxTests on z_subset
         pairwise_coefficients[[i]] <- ClassifyR::colCoxTests(
@@ -130,7 +129,7 @@ TOP_survival <- function(
 
     # Extract the pairwise ratios for significant genes
     x_list <- lapply(x_list, function(x) x[, sig.genes])
-    z_list <- lapply(x_list, CPOP::pairwise_col_diff)
+    z_list <- lapply(x_list, pairwise_col_diff)
     z_list <- do.call("rbind", z_list)
 
     # Cleaning the outcome variable
@@ -172,11 +171,10 @@ TOP_survival <- function(
 #' TOP_survivalPrediction(surv_model, newx = x_list[[3]])
 #' @rdname TOP_survivalPrediction
 #' @export
-#' @importFrom CPOP pairwise_col_diff
 TOP_survivalPrediction <- function(TOP_survival, newx) {
     # Calculate the pairwise differences of x
     newx <- newx[, TOP_survival[[2]]]
-    z <- CPOP::pairwise_col_diff(newx)
+    z <- pairwise_col_diff(newx)
 
     # Predict the survival time
     survScores <- stats::predict(
@@ -208,12 +206,11 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' Surv_TOP_CI(surv_model, newx = x_list[[3]], newy = y_list[[3]])
 #' @rdname Surv_Frank_CI
 #' @export
-#' @importFrom CPOP pairwise_col_diff
 #' @importFrom survival concordance
 Surv_TOP_CI <- function(TOP_survival, newx, newy) {
     # Calculate the pairwise differences of x
     newx <- newx[, TOP_survival[[2]]]
-    z <- CPOP::pairwise_col_diff(newx)
+    z <- pairwise_col_diff(newx)
 
     # Predict the survival time
     survScores <- stats::predict(TOP_survival[[1]], as.matrix(z), type = "response", newoffset = offset)
