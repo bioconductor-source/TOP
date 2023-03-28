@@ -9,7 +9,7 @@
 #' @return A cox net model
 #' @details DETAILS
 #' @examples
-#' data(cpop_data_binary, package = "CPOP")
+#' data(TOP_data_binary, package = "TOP")
 #' time <- rpois(300, c(600,1000))
 #' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
@@ -17,7 +17,7 @@
 #' batch <- rep(paste0("y", 1:3), c(100,100,100))
 #' y_list <- y %>% split(batch)
 #'
-#' x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+#' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 #'
 #' TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
 #' @rdname TOP_survival
@@ -157,7 +157,7 @@ TOP_survival <- function(
 #' @param newx A new dataset to predict the survival time.
 #' @return A vector of predicted survival time.
 #' @examples
-#' data(cpop_data_binary, package = "CPOP")
+#' data(TOP_data_binary, package = "TOP")
 #' time <- rpois(300, c(600,1000))
 #' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
@@ -165,7 +165,7 @@ TOP_survival <- function(
 #' batch <- rep(paste0("y", 1:3), c(100,100,100))
 #' y_list <- y %>% split(batch)
 #'
-#' x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+#' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 #'
 #' surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
 #' TOP_survivalPrediction(surv_model, newx = x_list[[3]])
@@ -190,9 +190,9 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' @param TOP_survival A TOP_survival model. See \code{\link{TOP_survival}}.
 #' @param newx A new data.frame to predict the survival time.
 #' @param newy A data.frame, where the first columns in each data frame is the time and the second column is the event status.
-#' @return OUTPUT_DESCRIPTION
+#' @return An object of class concordance
 #' @examples
-#' data(cpop_data_binary, package = "CPOP")
+#' data(TOP_data_binary, package = "TOP")
 #' time <- rpois(300, c(600,1000))
 #' surv <- sample(c(0,1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
@@ -200,7 +200,7 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' batch <- rep(paste0("y", 1:3), c(100,100,100))
 #' y_list <- y %>% split(batch)
 #'
-#' x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+#' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 #'
 #' surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
 #' Surv_TOP_CI(surv_model, newx = x_list[[3]], newy = y_list[[3]])
