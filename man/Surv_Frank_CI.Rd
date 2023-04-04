@@ -14,13 +14,13 @@ Surv_TOP_CI(TOP_survival, newx, newy)
 \item{newy}{A data.frame, where the first columns in each data frame is the time and the second column is the event status.}
 }
 \value{
-OUTPUT_DESCRIPTION
+An object of class concordance
 }
 \description{
 FUNCTION_DESCRIPTION
 }
 \examples{
-data(cpop_data_binary, package = "CPOP")
+data(TOP_data_binary, package = "TOP")
 time <- rpois(300, c(600,1000))
 surv <- sample(c(0,1), 300, replace = TRUE)
 y <- data.frame(time, surv)
@@ -28,7 +28,7 @@ y <- data.frame(time, surv)
 batch <- rep(paste0("y", 1:3), c(100,100,100))
 y_list <- y \%>\% split(batch)
 
-x_list <- list(cpop_data_binary$x1, cpop_data_binary$x2, cpop_data_binary$x3)
+x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 
 surv_model <- TOP_survival(x_list[-3], y_list[-3], nFeatures = 10)
 Surv_TOP_CI(surv_model, newx = x_list[[3]], newy = y_list[[3]])

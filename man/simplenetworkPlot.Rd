@@ -20,14 +20,14 @@ A simple network plot
 simplenetworkPlot
 }
 \examples{
-data(cpop_data_binary, package = "CPOP")
+data(TOP_data_binary, package = "TOP")
 
-x1 <- cpop_data_binary$x1
-x2 <- cpop_data_binary$x2
-x3 <- cpop_data_binary$x3
-y1 <- cpop_data_binary$y1
-y2 <- cpop_data_binary$y2
-y3 <- cpop_data_binary$y3
+x1 <- TOP_data_binary$x1
+x2 <- TOP_data_binary$x2
+x3 <- TOP_data_binary$x3
+y1 <- TOP_data_binary$y1
+y2 <- TOP_data_binary$y2
+y3 <- TOP_data_binary$y3
 
 set.seed(23)
 x_list <- list(x1, x2)

@@ -13,7 +13,7 @@ performance_TOP(TOP_model, newx, newy, covariates = NULL, s = "lambda.min")
 
 \item{newy}{A vector of the true labels that are being predicted. With the same number of samples as newx.}
 
-\item{covariates}{A data.frame of the same covariates as the original model, Default: NULL}
+\item{covariates}{A data.frame of the same covariates as the original TOP model, Default: NULL}
 
 \item{s}{Lambda used in the lasso model, Default: 'lambda.min'}
 }
@@ -26,17 +26,17 @@ A function to calculate the external performance of the Tranferable Omics Predic
 \examples{
 
 
-data(cpop_data_binary, package = "CPOP")
-x1 = cpop_data_binary$x1
-x2 = cpop_data_binary$x2
+data(TOP_data_binary, package = "TOP")
+x1 = TOP_data_binary$x1
+x2 = TOP_data_binary$x2
 
 x_list <- list(x1,x2)
-y_list <- list(cpop_data_binary$y1, cpop_data_binary$y2)
+y_list <- list(TOP_data_binary$y1, TOP_data_binary$y2)
 
 model <- TOP_model(x_list, y_list)
 
-x3 = cpop_data_binary$x3
-y3 = cpop_data_binary$y3
+x3 = TOP_data_binary$x3
+y3 = TOP_data_binary$y3
 
 performance_TOP(model$models, newx = x3, newy = y3)
 
