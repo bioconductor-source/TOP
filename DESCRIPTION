@@ -1,6 +1,6 @@
 Package: TOP
 Title: TOP Constructs Transferable Model Across Gene Expression Platforms
-Version: 0.99.3
+Version: 0.99.4
 Date: 2022-11-09
 Authors@R: c(
     person("Harry", "Robertson", , "harry.robertson@sydney.edu.au", role = c("aut", "cre")),
