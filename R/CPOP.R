@@ -7,6 +7,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom purrr map
 #' @importFrom purrr imap
+#' @importFrom assertthat assert_that
 #' @export
 #' @examples
 #' n = 1
