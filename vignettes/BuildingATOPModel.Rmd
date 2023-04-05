@@ -32,11 +32,9 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(BiocStyle)
-devtools::load_all()
 ```
 
 ```{r, warning = FALSE, message = FALSE}
-# library(TOP)
 suppressPackageStartupMessages({
   library(tidyverse)
   library(survival)
@@ -45,7 +43,7 @@ suppressPackageStartupMessages({
   library(Biobase)
   library(ggsci)
   library(ggbeeswarm)
-  
+  library(TOP)
   library(curatedOvarianData)
 })
 
