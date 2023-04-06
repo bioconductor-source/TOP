@@ -9,6 +9,9 @@ expit(x)
 \arguments{
 \item{x}{numeric}
 }
+\value{
+The expit of x
+}
 \description{
 The expit function
 }

@@ -157,6 +157,7 @@ calculateCCA <- function(x_list) {
 #' @export
 #' @examples
 #' curve(expit, from = -5, to = 5)
+#' @return The expit of x
 expit = function(x){
   return(1/(1+exp(-x)))
 }
