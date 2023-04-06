@@ -197,3 +197,9 @@ conf_results %>%
   ggplot(aes(y = value, x = Metric)) + geom_boxplot(width = 0.5) + ylab("C-index") +
   geom_jitter(alpha = 0.7, width = 0.1) + theme(axis.text.x = element_blank()) + xlab("Survival Model")
 ```
+
+# sessionInfo
+
+```{r}
+sessionInfo()
+```
