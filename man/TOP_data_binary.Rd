@@ -19,6 +19,9 @@ A list with columns:
 \usage{
 TOP_data_binary
 }
+\value{
+The example data.
+}
 \description{
 A simulated binary data
 }

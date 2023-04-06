@@ -41,4 +41,5 @@
 #' TOP_data_binary = tibble::lst(x1, x2, x3, y1, y2, y3, beta)
 #' usethis::use_data(TOP_data_binary)
 #' }
+#' @return The example data.
 "TOP_data_binary"
