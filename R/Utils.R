@@ -142,14 +142,14 @@ calculateCCA <- function(x_list) {
   if (ncol(x_list[[1]]) > 1000) {
     warning("The number of features is > 1000, CCA will take a while to calculate.")
   }
-  # TODO: this needs to be parallelised
-  cor_mat <- sapply(seq_along(x_list), function(i){
-    sapply(seq_along(x_list), function(j){
+  cor_mat <- vapply(seq_along(x_list), function(i){
+    vapply(seq_along(x_list), function(j){
       CCA::cc(t(x_list[[i]]), t(x_list[[j]]))$cor[1]
-    })
-  })
+    }, numeric(length(x_list)))
+  }, numeric(length(x_list)))
   return(cor_mat)
 }
+
 
 #' @title The expit function
 #' @param x numeric
