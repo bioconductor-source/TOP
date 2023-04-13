@@ -64,9 +64,7 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
         tT[[i]]$gene <- rownames(tT[[i]])
     }
     # merge a the tT list into a single data frame by gene
-    suppressWarnings(
-        tT <- Reduce(function(x, y) merge(x, y, by = "gene", all = TRUE), tT)
-    )
+    tT <- Reduce(function(x, y) merge(x, y, by = "gene", all = TRUE, no.dups = TRUE), tT)
 
     # Keep unique genes
     tT <- tT[!duplicated(tT$gene), ]
