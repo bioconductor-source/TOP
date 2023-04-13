@@ -107,18 +107,18 @@ TOP_survival <- function(
         message("Calculating Weights for each Dataset")
         sample.weights <- unlist(dataset_weights) |>
             data.frame() |>
-            dplyr::mutate(Organ = as.character(.)) |>
-            dplyr::group_by(Organ) |>
+            dplyr::mutate(SampleGroup = as.character(.)) |>
+            dplyr::group_by(SampleGroup) |>
             dplyr::summarise(n = dplyr::n()) |>
             dplyr::mutate(freq = n / sum(n))
         un_weights <- unlist(dataset_weights) |>
             data.frame() |>
             dplyr::mutate(
-                Organ = as.character(.),
+                SampleGroup = as.character(.),
                 weight = 1
             )
         for (i in seq_len(nrow(un_weights))) {
-            idx <- which(un_weights$Organ[i] == sample.weights$Organ)
+            idx <- which(un_weights$SampleGroup[i] == sample.weights$SampleGroup)
             un_weights$weight[i] <- sample.weights$freq[idx]
         }
         sample.weights <- un_weights$weight

@@ -27,7 +27,7 @@
 #' @importFrom directPA geneStats
 filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, combinationMethod = "OSP") {
     if (!combinationMethod %in% c("Stouffer", "OSP", "Fisher", "maxP")) {
-        stop(print("Available methods are Stouffer, OSP, Fisher, or maxP"))
+        stop("Available methods are Stouffer, OSP, Fisher, or maxP")
     }
 
     # Transpose x_list
@@ -78,7 +78,6 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
     Z.Scores.All <- apply(tT, 2, function(x) {
         stats::qnorm(rank(x) / (nrow(tT) + 1))
     })
-    utils::data(Pathways, package = "directPA")
     gene.pvalues <- apply(Z.Scores.All, 1, function(x) {
         directPA::geneStats(x, method = combinationMethod)
     })
