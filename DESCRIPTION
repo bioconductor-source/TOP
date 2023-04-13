@@ -48,6 +48,6 @@ Depends:
     statmod
 Suggests: knitr, rmarkdown, BiocStyle
 VignetteBuilder: knitr 
-LazyData: true
+LazyData: false
 Data:
   TOP_data_binary.RData
