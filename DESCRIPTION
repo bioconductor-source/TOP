@@ -47,8 +47,6 @@ Imports:
     utils
 Depends: 
     statmod
-Suggests: knitr, rmarkdown, BiocStyle
+Suggests: knitr, rmarkdown, BiocStyle, Biobase, curatedOvarianData, ggbeeswarm, ggsci, survminer, tidyverse
 VignetteBuilder: knitr 
 LazyData: false
-Data:
-  TOP_data_binary.RData

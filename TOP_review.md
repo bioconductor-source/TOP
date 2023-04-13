@@ -9,18 +9,20 @@ next release.
 
 ## DESCRIPTION
 
-- [ ] SUGGESTION: Consider adding the maintainer's ORCID iD in 'Authors@R' with
+- [x] SUGGESTION: Consider adding the maintainer's ORCID iD in 'Authors@R' with
   'comment=c(ORCID-"...")'.
 Added Harry's ORCID ID.
 - [x] REQUIRED: 'LazyData:' in the 'DESCRIPTION' should be set to false or 
 removed.
 LazyData is set to false.
-- [ ] REQUIRED: The 'Data:' field should be removed as this isn't usual practice
+- [x] REQUIRED: The 'Data:' field should be removed as this isn't usual practice
   for Bioconductor packages.
-- [ ] REQUIRED: The following packages should be added to 'Suggests:' since they
+Removed Data.
+- [x] REQUIRED: The following packages should be added to 'Suggests:' since they
   are called/used in the vignette.
 	'Biobase', 'curatedOvarianData', 'ggbeeswarm', 'ggsci', 'survminer',
         'tidyverse'
+Added suggestions to the Description file.
 
 ## NAMESPACE
 
