@@ -30,8 +30,9 @@ Added suggestions to the Description file.
   from in the NAMESPACE file. This should be added.
 - [x] SUGGESTION: Consider adding `importFrom("stats", "coef", "offset", "sd")`.
 Added importFrom("stats", "coef", "offset", "sd").
-- [ ] REQUIRED: The '%>%' is has both internal and export listed in its
+- [x] REQUIRED: The '%>%' is has both internal and export listed in its
   documentation. I would not export this function.
+Removed export.
 
 ## NEWS
 
