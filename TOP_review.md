@@ -28,7 +28,8 @@ Added suggestions to the Description file.
 
 - [ ] REQUIRED: The package 'statmod' is listed as a Depends but is not imported
   from in the NAMESPACE file. This should be added.
-- [ ] SUGGESTION: Consider adding `importFrom("stats", "coef", "offset", "sd")`.
+- [x] SUGGESTION: Consider adding `importFrom("stats", "coef", "offset", "sd")`.
+Added importFrom("stats", "coef", "offset", "sd").
 - [ ] REQUIRED: The '%>%' is has both internal and export listed in its
   documentation. I would not export this function.
 
