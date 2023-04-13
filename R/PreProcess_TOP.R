@@ -34,7 +34,7 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
     x_list <- lapply(x_list, t)
 
     tT <- list()
-    for (i in 1:length(x_list)) {
+    for (i in seq_along(x_list)) {
         # Assign levels to y_list if contrasts are not given.
         if (is.null(contrast)) {
             level <- levels(y_list[[i]])
