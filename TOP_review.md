@@ -44,9 +44,10 @@ included in Bioconductor release announcements.
 - [ ] SUGGESTION: We encourage having a package man page with an overview of the
   package and links to the main functions. Users should be able to have a
 relevant page display with `?TOP`.
-- [ ] REQURIED: There should be runnable examples to man pages that document
+- [x] REQURIED: There should be runnable examples to man pages that document
   exported objects. The man page for calculateCCA does not have a runnable
 example.
+Added example.
 - [ ] REQUIRED: The use of donttest and dontrun is discouraged and generally not
   allowed; exceptions can be made with proper justification. If this option is
 used it is preferable to use donttest instead of dontrun. donttest requires
