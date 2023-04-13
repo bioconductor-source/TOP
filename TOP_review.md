@@ -11,8 +11,10 @@ next release.
 
 - [ ] SUGGESTION: Consider adding the maintainer's ORCID iD in 'Authors@R' with
   'comment=c(ORCID-"...")'.
-- [ ] REQUIRED: 'LazyData:' in the 'DESCRIPTION' should be set to false or 
+Added Harry's ORCID ID.
+- [x] REQUIRED: 'LazyData:' in the 'DESCRIPTION' should be set to false or 
 removed.
+LazyData is set to false.
 - [ ] REQUIRED: The 'Data:' field should be removed as this isn't usual practice
   for Bioconductor packages.
 - [ ] REQUIRED: The following packages should be added to 'Suggests:' since they
