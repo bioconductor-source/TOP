@@ -69,7 +69,8 @@ valid R code while dontrun does not.
 Changed all cases of sapply to vapply.
 - [ ] REQUIRED: Avoid `1:...`; use `seq_len()` or `seq_along()` if possible.
 - [ ] REQUIRED: Avoid 'cat' and 'print' outside of 'show' methods.
-- [ ] REQUIRED: Avoid using '=' for assignment and use '<-' instead.
+- [x] REQUIRED: Avoid using '=' for assignment and use '<-' instead.
+Changed all instances of this.
 - [x] REQUIRED: Avoid the use of 'paste' in condition signals.
 Removed stop(paste(...)) to stop(...)
 - [x] REQUIRED: Avoid 'suppressWarnings'/'Messages' if possible (found 1 times)
