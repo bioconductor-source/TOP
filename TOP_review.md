@@ -70,8 +70,10 @@ Changed all cases of sapply to vapply.
 - [ ] REQUIRED: Avoid `1:...`; use `seq_len()` or `seq_along()` if possible.
 - [ ] REQUIRED: Avoid 'cat' and 'print' outside of 'show' methods.
 - [ ] REQUIRED: Avoid using '=' for assignment and use '<-' instead.
-- [ ] REQUIRED: Avoid the use of 'paste' in condition signals.
-- [ ] REQUIRED: Avoid 'suppressWarnings'/'Messages' if possible (found 1 times)
+- [x] REQUIRED: Avoid the use of 'paste' in condition signals.
+Removed stop(paste(...)) to stop(...)
+- [x] REQUIRED: Avoid 'suppressWarnings'/'Messages' if possible (found 1 times)
+Removed this case.
 - [ ] SUGGESTION: For formating reasons, consider shorter lines. There are 110 
 lines that are > 80 characters long.
 - [ ] SUGGESTION: For formating reasons, consider multiples of 4 spaces for line
