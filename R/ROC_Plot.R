@@ -8,9 +8,9 @@
 #'
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
-#' x1 = TOP_data_binary$x1
-#' x2 = TOP_data_binary$x2
-#' x3 = TOP_data_binary$x3
+#' x1 <- TOP_data_binary$x1
+#' x2 <- TOP_data_binary$x2
+#' x3 <- TOP_data_binary$x3
 #' y1 <- TOP_data_binary$y1
 #' y2 <- TOP_data_binary$y2
 #' y3 <- TOP_data_binary$y3

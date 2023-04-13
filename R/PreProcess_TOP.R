@@ -9,9 +9,9 @@
 #' @details contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
-#' x1 = TOP_data_binary$x1
-#' x2 = TOP_data_binary$x2
-#' x3 = TOP_data_binary$x3
+#' x1 <- TOP_data_binary$x1
+#' x2 <- TOP_data_binary$x2
+#' x3 <- TOP_data_binary$x3
 #'
 #' x_list <- list(x1,x2,x3)
 #' y_list <- list(TOP_data_binary$y1, TOP_data_binary$y2, TOP_data_binary$y3)

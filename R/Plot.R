@@ -248,11 +248,11 @@ coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
         dplyr::mutate(score = abs(lambda.min)) %>%
         dplyr::top_n(score, n = nFeatures)
 
-    edges_tbl = ratio_df %>%
+    edges_tbl <- ratio_df %>%
         mutate(dir = ifelse(lambda.min > 0, "Pos", "Neg")) %>%
         tidyr::separate(col = "Features", into = c("from", "to"))
 
-    ig = igraph::graph_from_data_frame(edges_tbl, directed = FALSE)
+    ig <- igraph::graph_from_data_frame(edges_tbl, directed = FALSE)
 
     ggraph(ig, layout = "linear", circular = TRUE) +
         ggraph::geom_edge_arc(aes(
