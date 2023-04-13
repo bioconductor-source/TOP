@@ -91,7 +91,8 @@ TOP_model <- function(
         message("Modifing Fold Change of Ratios based on sample_weights")
         lfc <- do.call("cbind", lfc)
 
-        freq_samples <- sapply(x_list, dim)[1, ] |>
+        freq_samples <- x_list |>
+            vapply(dim, 1L, integer(1L)) |>
             tibble::enframe() |>
             dplyr::mutate(freq = value/sum(value)) |>
             dplyr::mutate(inv_freq = 1 / freq)

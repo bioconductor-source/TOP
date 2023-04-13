@@ -65,7 +65,8 @@ valid R code while dontrun does not.
 - [ ] REQUIRED: Undefined global functions or variables:
         . Feature Features Organ Pathways coef coef_abs freq from lambda.min n
         name offset score sd to value variable
-- [ ] REQUIRED: Avoid `sapply()`; use `vapply()` instead.
+- [x] REQUIRED: Avoid `sapply()`; use `vapply()` instead.
+Changed all cases of sapply to vapply.
 - [ ] REQUIRED: Avoid `1:...`; use `seq_len()` or `seq_along()` if possible.
 - [ ] REQUIRED: Avoid 'cat' and 'print' outside of 'show' methods.
 - [ ] REQUIRED: Avoid using '=' for assignment and use '<-' instead.
