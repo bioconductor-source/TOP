@@ -26,8 +26,9 @@ Added suggestions to the Description file.
 
 ## NAMESPACE
 
-- [ ] REQUIRED: The package 'statmod' is listed as a Depends but is not imported
+- [x] REQUIRED: The package 'statmod' is listed as a Depends but is not imported
   from in the NAMESPACE file. This should be added.
+Added statmod.
 - [x] SUGGESTION: Consider adding `importFrom("stats", "coef", "offset", "sd")`.
 Added importFrom("stats", "coef", "offset", "sd").
 - [x] REQUIRED: The '%>%' is has both internal and export listed in its
@@ -52,6 +53,7 @@ Added example.
   allowed; exceptions can be made with proper justification. If this option is
 used it is preferable to use donttest instead of dontrun. donttest requires
 valid R code while dontrun does not.
+? I don't know what this refers to.
 
 ## Unit tests
 
