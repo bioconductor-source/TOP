@@ -15,7 +15,7 @@
 #' x <- matrix(rep(1:p, n), nrow = n, ncol = p, byrow = TRUE)
 #' colnames(x) <- paste0("X", 1:p)
 #' pairwise_col_diff(x)
-pairwise_col_diff = function(x){
+pairwise_col_diff <- function(x){
   assertthat::assert_that(!is.null(colnames(x)))
   x <- x[,sort(colnames(x)), drop = FALSE]
 
