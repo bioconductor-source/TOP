@@ -9,24 +9,31 @@ next release.
 
 ## DESCRIPTION
 
-- [ ] SUGGESTION: Consider adding the maintainer's ORCID iD in 'Authors@R' with
+- [x] SUGGESTION: Consider adding the maintainer's ORCID iD in 'Authors@R' with
   'comment=c(ORCID-"...")'.
-- [ ] REQUIRED: 'LazyData:' in the 'DESCRIPTION' should be set to false or 
+Added Harry's ORCID ID.
+- [x] REQUIRED: 'LazyData:' in the 'DESCRIPTION' should be set to false or 
 removed.
-- [ ] REQUIRED: The 'Data:' field should be removed as this isn't usual practice
+LazyData is set to false.
+- [x] REQUIRED: The 'Data:' field should be removed as this isn't usual practice
   for Bioconductor packages.
-- [ ] REQUIRED: The following packages should be added to 'Suggests:' since they
+Removed Data.
+- [x] REQUIRED: The following packages should be added to 'Suggests:' since they
   are called/used in the vignette.
 	'Biobase', 'curatedOvarianData', 'ggbeeswarm', 'ggsci', 'survminer',
         'tidyverse'
+Added suggestions to the Description file.
 
 ## NAMESPACE
 
-- [ ] REQUIRED: The package 'statmod' is listed as a Depends but is not imported
+- [x] REQUIRED: The package 'statmod' is listed as a Depends but is not imported
   from in the NAMESPACE file. This should be added.
-- [ ] SUGGESTION: Consider adding `importFrom("stats", "coef", "offset", "sd")`.
-- [ ] REQUIRED: The '%>%' is has both internal and export listed in its
+Added statmod.
+- [x] SUGGESTION: Consider adding `importFrom("stats", "coef", "offset", "sd")`.
+Added importFrom("stats", "coef", "offset", "sd").
+- [x] REQUIRED: The '%>%' is has both internal and export listed in its
   documentation. I would not export this function.
+Removed export.
 
 ## NEWS
 
@@ -38,13 +45,15 @@ included in Bioconductor release announcements.
 - [ ] SUGGESTION: We encourage having a package man page with an overview of the
   package and links to the main functions. Users should be able to have a
 relevant page display with `?TOP`.
-- [ ] REQURIED: There should be runnable examples to man pages that document
+- [x] REQURIED: There should be runnable examples to man pages that document
   exported objects. The man page for calculateCCA does not have a runnable
 example.
-- [ ] REQUIRED: The use of donttest and dontrun is discouraged and generally not
+Added example.
+- [x] REQUIRED: The use of donttest and dontrun is discouraged and generally not
   allowed; exceptions can be made with proper justification. If this option is
 used it is preferable to use donttest instead of dontrun. donttest requires
 valid R code while dontrun does not.
+Removed all cases where donttest and dontrun appear.
 
 ## Unit tests
 
@@ -56,12 +65,16 @@ valid R code while dontrun does not.
 - [ ] REQUIRED: Undefined global functions or variables:
         . Feature Features Organ Pathways coef coef_abs freq from lambda.min n
         name offset score sd to value variable
-- [ ] REQUIRED: Avoid `sapply()`; use `vapply()` instead.
+- [x] REQUIRED: Avoid `sapply()`; use `vapply()` instead.
+Changed all cases of sapply to vapply.
 - [ ] REQUIRED: Avoid `1:...`; use `seq_len()` or `seq_along()` if possible.
 - [ ] REQUIRED: Avoid 'cat' and 'print' outside of 'show' methods.
-- [ ] REQUIRED: Avoid using '=' for assignment and use '<-' instead.
-- [ ] REQUIRED: Avoid the use of 'paste' in condition signals.
-- [ ] REQUIRED: Avoid 'suppressWarnings'/'Messages' if possible (found 1 times)
+- [x] REQUIRED: Avoid using '=' for assignment and use '<-' instead.
+Changed all instances of this.
+- [x] REQUIRED: Avoid the use of 'paste' in condition signals.
+Removed stop(paste(...)) to stop(...)
+- [x] REQUIRED: Avoid 'suppressWarnings'/'Messages' if possible (found 1 times)
+Removed this case.
 - [ ] SUGGESTION: For formating reasons, consider shorter lines. There are 110 
 lines that are > 80 characters long.
 - [ ] SUGGESTION: For formating reasons, consider multiples of 4 spaces for line

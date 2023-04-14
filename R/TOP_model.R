@@ -66,21 +66,23 @@ TOP_model <- function(
     if (!is.null(dataset_weights)) {
         # Sample weights
         message("Calculating Weights for each Dataset")
-        sample.weights <- unlist(dataset_weights) |>
-            tibble::enframe() |>
-            dplyr::mutate(Organ = as.character(value)) |>
-            dplyr::group_by(Organ) |>
+        sample.weights <- unlist(dataset_weights) |> tibble::enframe() |>
+            dplyr::mutate(SampleGroup = as.character(value)) |>
+            dplyr::group_by(SampleGroup) |>
             dplyr::summarise(n = dplyr::n()) |>
-            dplyr::mutate(freq = n / sum(n))
-        un_weights <- unlist(dataset_weights) |>
+            dplyr::mutate(freq = n / sum(n)) |>
+            dplyr::pull(freq)
+
+        un_weights <- unlist(dataset_weights) |> 
             tibble::enframe() |>
             dplyr::mutate(
-                Organ = as.character(value),
+                SampleGroup = as.character(value),
                 weight = 1
             )
+
         for (i in seq_len(nrow(un_weights))) {
-            idx <- which(un_weights$Organ[i] == sample.weights$Organ)
-            un_weights$weight[i] <- sample.weights$freq[idx]
+            idx <- which(un_weights$SampleGroup[i] == names(sample.weights))
+            un_weights$weight[i] <- sample.weights[idx]
         }
         sample.weights <- un_weights$weight
     }
@@ -91,7 +93,8 @@ TOP_model <- function(
         message("Modifing Fold Change of Ratios based on sample_weights")
         lfc <- do.call("cbind", lfc)
 
-        freq_samples <- sapply(x_list, dim)[1, ] |>
+        freq_samples <- x_list |>
+            vapply(dim, 1L, integer(1L)) |>
             tibble::enframe() |>
             dplyr::mutate(freq = value/sum(value)) |>
             dplyr::mutate(inv_freq = 1 / freq)

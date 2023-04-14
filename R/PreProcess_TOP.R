@@ -9,9 +9,9 @@
 #' @details contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
-#' x1 = TOP_data_binary$x1
-#' x2 = TOP_data_binary$x2
-#' x3 = TOP_data_binary$x3
+#' x1 <- TOP_data_binary$x1
+#' x2 <- TOP_data_binary$x2
+#' x3 <- TOP_data_binary$x3
 #'
 #' x_list <- list(x1,x2,x3)
 #' y_list <- list(TOP_data_binary$y1, TOP_data_binary$y2, TOP_data_binary$y3)
@@ -27,14 +27,14 @@
 #' @importFrom directPA geneStats
 filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, combinationMethod = "OSP") {
     if (!combinationMethod %in% c("Stouffer", "OSP", "Fisher", "maxP")) {
-        stop(print("Available methods are Stouffer, OSP, Fisher, or maxP"))
+        stop("Available methods are Stouffer, OSP, Fisher, or maxP")
     }
 
     # Transpose x_list
     x_list <- lapply(x_list, t)
 
     tT <- list()
-    for (i in 1:length(x_list)) {
+    for (i in seq_along(x_list)) {
         # Assign levels to y_list if contrasts are not given.
         if (is.null(contrast)) {
             level <- levels(y_list[[i]])
@@ -64,9 +64,7 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
         tT[[i]]$gene <- rownames(tT[[i]])
     }
     # merge a the tT list into a single data frame by gene
-    suppressWarnings(
-        tT <- Reduce(function(x, y) merge(x, y, by = "gene", all = TRUE), tT)
-    )
+    tT <- Reduce(function(x, y) merge(x, y, by = "gene", all = TRUE, no.dups = TRUE), tT)
 
     # Keep unique genes
     tT <- tT[!duplicated(tT$gene), ]
@@ -78,7 +76,6 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
     Z.Scores.All <- apply(tT, 2, function(x) {
         stats::qnorm(rank(x) / (nrow(tT) + 1))
     })
-    utils::data(Pathways, package = "directPA")
     gene.pvalues <- apply(Z.Scores.All, 1, function(x) {
         directPA::geneStats(x, method = combinationMethod)
     })

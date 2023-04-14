@@ -90,7 +90,6 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
     ZScore_output <- apply(outputs, 2, function(x) {
         stats::qnorm(rank(x) / (nrow(outputs) + 1))
     })
-    utils::data(Pathways, package = "directPA")
     comb.pvalues <- apply(ZScore_output, 1, directPA::geneStats)
     comb.zscores <- stats::qnorm(comb.pvalues, lower.tail = FALSE)
     pvalue2sided <- 2 * stats::pnorm(-abs(comb.zscores))
@@ -127,7 +126,6 @@ extractAUC <- function(roc_list){
 #' @export
 #'
 #' @examples
-#'  \dontrun{
 #'  data(TOP_data_binary, package = "TOP")
 #'
 #'  x1 = TOP_data_binary$x1
@@ -136,20 +134,20 @@ extractAUC <- function(roc_list){
 #'
 #'  x_list <- list(x1,x2,x3)
 #'  calculateCCA(x_list)
-#'  }
+#'
 #' @importFrom CCA cc
 calculateCCA <- function(x_list) {
   if (ncol(x_list[[1]]) > 1000) {
     warning("The number of features is > 1000, CCA will take a while to calculate.")
   }
-  # TODO: this needs to be parallelised
-  cor_mat <- sapply(seq_along(x_list), function(i){
-    sapply(seq_along(x_list), function(j){
+  cor_mat <- vapply(seq_along(x_list), function(i){
+    vapply(seq_along(x_list), function(j){
       CCA::cc(t(x_list[[i]]), t(x_list[[j]]))$cor[1]
-    })
-  })
+    }, numeric(length(x_list)))
+  }, numeric(length(x_list)))
   return(cor_mat)
 }
+
 
 #' @title The expit function
 #' @param x numeric
