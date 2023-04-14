@@ -1,6 +1,7 @@
 #' @title TOP_coefPlot
 #'
-#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
+#' @param TOP_model A Transferable Omics Prediction model. THe output from the
+#'   TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #'
@@ -32,9 +33,11 @@
 #' @importFrom dplyr filter top_n
 #' @importFrom magrittr %>%
 TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
-
     if (nFeatures > nrow(glmnet::coef.glmnet(TOP_model$models, s = s))) {
-        stop("nFeatures must be less than or equal to the number of features in the model.")
+        stop(
+            "nFeatures must be less than or equal to the number of ",
+            "features in the model."
+        )
     }
 
     as.matrix(glmnet::coef.glmnet(TOP_model$model, s = s)) %>%
@@ -44,23 +47,29 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
         dplyr::filter(Features != "(Intercept)") %>%
         dplyr::top_n(lambda.min, n = nFeatures) %>%
         ggplot(
-            aes(x = lambda.min, y = stats::reorder(Features, abs(lambda.min)),
-            fill = abs(lambda.min))
+            aes(
+                x = lambda.min, y = stats::reorder(Features, abs(lambda.min)),
+                fill = abs(lambda.min)
+            )
         ) +
-            geom_bar(stat = "identity") +
-            theme_bw() +
-            ylab("Features") +
-            xlab("") +
-            scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
+        geom_bar(stat = "identity") +
+        theme_bw() +
+        ylab("Features") +
+        xlab("") +
+        scale_fill_viridis_c(name = "Coefficient\nValue", option = "plasma")
 }
 
 #' TOP_lambdaPlot
 #'
-#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
-#' @param nFeatures The number of features to plot, features are ranked beta's for lambda.min. Default: 20
+#' @param TOP_model A Transferable Omics Prediction model. The output from the
+#'   TOP_model function.
+#' @param nFeatures The number of features to plot, features are ranked beta's
+#'   for lambda.min. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
-#' @param interactive A boolean indicaitng whether the plot should be interactive. Defaults to FALSE .
-#' @param label A boolean indicating whether the features should be labeled on the plot. Defaults to FALSE .
+#' @param interactive A boolean indicaitng whether the plot should be
+#'   interactive. Defaults to FALSE .
+#' @param label A boolean indicating whether the features should be labeled on
+#'   the plot. Defaults to FALSE .
 #'
 #' @return A TOP lambda plot
 #' @export
@@ -90,7 +99,9 @@ TOP_coefPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
 #' @importFrom plotly ggplotly
 #' @importFrom latex2exp TeX
 #' @importFrom magrittr %>%
-TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interactive = FALSE, label = FALSE) {
+TOP_lambdaPlot <- function(
+    TOP_model, nFeatures = 20, s = "lambda.min",
+    interactive = FALSE, label = FALSE) {
     model <- TOP_model
 
     lambda <- model$models$lambda
@@ -114,16 +125,16 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
 
     p <- df %>%
         dplyr::filter(Feature %in% topfeatures$Feature) %>%
-            ggplot(aes(x = log, y = value, color = Feature, text = Feature)) +
-            geom_line(size = 1.3) +
-            theme_bw() +
-            theme(legend.position = "none") +
-            geom_vline(xintercept = log(lambda.min), linetype = "dashed") +
-            geom_text(
-                aes(x = log(lambda.min), label = "lambda.min", y = max(c$value)),
-                angle = 0, color = "black", text = element_text(face = NULL),
-                size = 6, hjust = -0.1
-            )
+        ggplot(aes(x = log, y = value, color = Feature, text = Feature)) +
+        geom_line(size = 1.3) +
+        theme_bw() +
+        theme(legend.position = "none") +
+        geom_vline(xintercept = log(lambda.min), linetype = "dashed") +
+        geom_text(
+            aes(x = log(lambda.min), label = "lambda.min", y = max(c$value)),
+            angle = 0, color = "black", text = element_text(face = NULL),
+            size = 6, hjust = -0.1
+        )
 
     if (label) {
         p <- p + ggrepel::geom_label_repel(
@@ -145,7 +156,8 @@ TOP_lambdaPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min", interact
 # Network plot of the TOP model
 #' simplenetworkPlot
 #'
-#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
+#' @param TOP_model A Transferable Omics Prediction model. The output from the
+#'   TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
@@ -198,16 +210,18 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
     edges_tbl %>%
         dplyr::select(from, to, lambda.min) %>%
         tidygraph::as_tbl_graph(directed = TRUE) %>%
-        ggraph::ggraph(layout = "kk") + ggraph::geom_edge_link(color = "black") +
-            ggraph::geom_node_point(colour = "lightblue", size = 3) +
-            ggraph::geom_node_text(aes(label = name), repel = TRUE) + theme_void() +
-            ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
+        ggraph::ggraph(layout = "kk") +
+        ggraph::geom_edge_link(color = "black") +
+        ggraph::geom_node_point(colour = "lightblue", size = 3) +
+        ggraph::geom_node_text(aes(label = name), repel = TRUE) + theme_void() +
+        ggnewscale::new_scale_fill() + ggnewscale::new_scale_color()
 }
 
 # Network plot of the coefficients in the TOP model
 #' coefNetworkPlot
 #'
-#' @param TOP_model A Transferable Omics Prediction model. THe output from the TOP_model function.
+#' @param TOP_model A Transferable Omics Prediction model. THe output from the
+#'   TOP_model function.
 #' @param nFeatures The number of features that will be plotted. Default: 20
 #' @param s Lambda value for the lasso model. Default is "lambda.min"
 #'
@@ -239,9 +253,9 @@ simplenetworkPlot <- function(TOP_model, nFeatures = 50, s = "lambda.min") {
 #' @importFrom igraph graph_from_data_frame
 #' @importFrom magrittr %>%
 #' @importFrom ggraph label_rect
-coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
+coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min") {
     ratio_df <- glmnet::coef.glmnet(TOP_model$model, s = s) %>%
-        as.matrix %>%
+        as.matrix() %>%
         data.frame() %>%
         tibble::rownames_to_column("Features") %>%
         dplyr::filter(Features != "(Intercept)") %>%
@@ -259,9 +273,9 @@ coefNetworkPlot <- function(TOP_model, nFeatures = 20, s = "lambda.min"){
             start_cap = ggraph::label_rect(.data$node1.name),
             end_cap = ggraph::label_rect(.data$node2.name),
             width = .data$score,
-            color = .data$dir)) +
+            color = .data$dir
+        )) +
         theme_void() +
         ggraph::geom_node_text(aes(label = .data$name), size = 6) +
         ggraph::scale_edge_colour_brewer(palette = "Set1", direction = -1)
 }
-

@@ -4,8 +4,8 @@
 lfc_calculate <- function(df, y) {
     outcome <- levels(y)
     colSums(
-        df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ]
-    )
+        df[which(y == outcome[2]), ]
+    ) - colSums(df[which(y == outcome[1]), ])
 }
 
 # Loop through possible exponents of weights_lasso

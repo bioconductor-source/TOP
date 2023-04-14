@@ -1,5 +1,6 @@
 #' @title ROC_Plot
-#' @description A function visualizes the performance of a classifier by plotting the Receiver Operating Characteristic (ROC) curve.
+#' @description A function visualizes the performance of a classifier by
+#'   plotting the Receiver Operating Characteristic (ROC) curve.
 #' @param roc_list A list of roc objects from the pROC package
 #'
 #' @return A ROC Plot
@@ -40,8 +41,8 @@ ROC_Plot <- function(roc_list) {
             color = "grey50", linetype = "dashed"
         ) +
         theme(
-            legend.title = element_text(size = 14)) +
-            theme(legend.text = element_text(size = 12)
+            legend.title = element_text(size = 14)
         ) +
+        theme(legend.text = element_text(size = 12)) +
         ggtitle("")
 }

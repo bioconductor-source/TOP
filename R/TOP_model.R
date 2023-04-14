@@ -1,13 +1,25 @@
 #' @title TOP_model
-#' @description The main function of the TOP package. This function returns a glmnet model .
-#' @param x_list a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
-#' @param y_list a list of factors, each containing the labels for a single batch or dataset. The length of this list should be the same as the length of x_list.
-#' @param covariates a list of data frames with the covariates that should be included in the model, Default: NULL
-#' @param dataset_weights a list of data frames that refer to any grouping structure in the batches, Default: NULL
-#' @param sample_weights Should each batch we weighted equally? This is important in unequal sample sizes, Default: FALSE
-#' @param optimiseExponent Should the exponent used to modufy the lasso weights be optimised using resubstitution?, Default: FALSE
-#' @param nCores A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1
-#' @return Returns a list with the following elements: models, which is a glmnet object and features, which is a list of the features used in each model.
+#' @description The main function of the TOP package. This function returns a
+#'   glmnet model .
+#' @param x_list a list of data frames, each containing the data for a single
+#'   batch or dataset. Columns should be features and rows should be
+#'   observations.
+#' @param y_list a list of factors, each containing the labels for a single
+#'   batch or dataset. The length of this list should be the same as the length
+#'   of x_list.
+#' @param covariates a list of data frames with the covariates that should be
+#'   included in the model, Default: NULL
+#' @param dataset_weights a list of data frames that refer to any grouping
+#'   structure in the batches, Default: NULL
+#' @param sample_weights Should each batch we weighted equally? This is
+#'   important in unequal sample sizes, Default: FALSE
+#' @param optimiseExponent Should the exponent used to modufy the lasso weights
+#'   be optimised using resubstitution?, Default: FALSE
+#' @param nCores A numeric specifying the number of cores used if the user
+#'   wants to use parallelisation, Default: 1
+#' @return Returns a list with the following elements: models, which is a
+#'   glmnet object and features, which is a list of the features used in each
+#'   model.
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
 #'
@@ -34,8 +46,7 @@
 #' @importFrom doParallel registerDoParallel
 TOP_model <- function(
     x_list, y_list, covariates = NULL, dataset_weights = NULL,
-    sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1
-) {
+    sample_weights = FALSE, optimiseExponent = FALSE, nCores = 1) {
     # Catching some errors.
     # y must be a factor or else it will break.
     if (sum(!unlist(lapply(y_list, is.factor))) > 0) {
@@ -66,14 +77,15 @@ TOP_model <- function(
     if (!is.null(dataset_weights)) {
         # Sample weights
         message("Calculating Weights for each Dataset")
-        sample.weights <- unlist(dataset_weights) |> tibble::enframe() |>
+        sample.weights <- unlist(dataset_weights) |>
+            tibble::enframe() |>
             dplyr::mutate(SampleGroup = as.character(value)) |>
             dplyr::group_by(SampleGroup) |>
             dplyr::summarise(n = dplyr::n()) |>
             dplyr::mutate(freq = n / sum(n)) |>
             dplyr::pull(freq)
 
-        un_weights <- unlist(dataset_weights) |> 
+        un_weights <- unlist(dataset_weights) |>
             tibble::enframe() |>
             dplyr::mutate(
                 SampleGroup = as.character(value),
@@ -96,18 +108,23 @@ TOP_model <- function(
         freq_samples <- x_list |>
             vapply(dim, 1L, integer(1L)) |>
             tibble::enframe() |>
-            dplyr::mutate(freq = value/sum(value)) |>
+            dplyr::mutate(freq = value / sum(value)) |>
             dplyr::mutate(inv_freq = 1 / freq)
 
         aggregate_lfc <- abs(
-            apply(lfc, 1, function(x) stats::weighted.mean(x, freq_samples$inv_freq))
+            apply(
+                lfc, 1,
+                function(x) stats::weighted.mean(x, freq_samples$inv_freq)
+            )
         )
         variance_lfc <- sqrt(
-            apply(lfc, 1, function(x) Hmisc::wtd.var(x, freq_samples$inv_freq))
+            apply(
+                lfc, 1,
+                function(x) Hmisc::wtd.var(x, freq_samples$inv_freq)
+            )
         )
-    }
-    ## If there are none supplied.
-    else if (sample_weights == FALSE) {
+    } else if (sample_weights == FALSE) {
+        ## If there are none supplied.
         lfc <- do.call("cbind", lfc)
         aggregate_lfc <- abs(apply(lfc, 1, mean))
         variance_lfc <- apply(lfc, 1, sd)
@@ -147,7 +164,8 @@ TOP_model <- function(
     if (optimiseExponent == TRUE) {
         message("Determining Best Exponent")
         exponent <- selectExponent(
-            lasso_x, lasso_y, moderated_test, sample.weights = sample.weights
+            lasso_x, lasso_y, moderated_test,
+            sample.weights = sample.weights
         )
         weights_lasso <- 1 / (moderated_test)^(exponent)
         message(paste("The best exponent was: ", exponent))
@@ -188,10 +206,13 @@ TOP_model <- function(
 
 
 #' @title Prectict using the Trasferable Omics Prediction model.
-#' @description A prediction function for the Trasferable Omics Prediction model.
+#' @description A prediction function for the Trasferable Omics Prediction
+#'   model.
 #' @param TOP_model The output from the TOP_model function.
-#' @param newx A matrix of the new data to be predicted. The columns should be features and the rows should be samples.
-#' @param covariates A data frame of the same covariates that were used in the TOP model, Default: NULL
+#' @param newx A matrix of the new data to be predicted. The columns should be
+#'   features and the rows should be samples.
+#' @param covariates A data frame of the same covariates that were used in the
+#'   TOP model, Default: NULL
 #' @param s Lambda value for the lasso model, Default: 'lambda.min'
 #' @return A vector of predictions for the new data.
 #' @examples

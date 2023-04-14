@@ -1,9 +1,13 @@
 #' @title performance_TOP
-#' @description A function to calculate the external performance of the Tranferable Omics Prediction model.
+#' @description A function to calculate the external performance of the
+#'   Tranferable Omics Prediction model.
 #' @param TOP_model This is the output of the function TOP_model.
-#' @param newx A matrix of the new data to be predicted. With the same number of feature columns as the original data.
-#' @param newy A vector of the true labels that are being predicted. With the same number of samples as newx.
-#' @param covariates A data.frame of the same covariates as the original TOP model, Default: NULL
+#' @param newx A matrix of the new data to be predicted. With the same number
+#'   of feature columns as the original data.
+#' @param newy A vector of the true labels that are being predicted. With the
+#'   same number of samples as newx.
+#' @param covariates A data.frame of the same covariates as the original TOP
+#'   model, Default: NULL
 #' @param s Lambda used in the lasso model, Default: 'lambda.min'
 #' @return A confusion matrix that displays the performance of the classifier.
 #' @examples
