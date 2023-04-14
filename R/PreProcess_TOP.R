@@ -25,6 +25,7 @@
 #' @importFrom dplyr select
 #' @importFrom tibble remove_rownames column_to_rownames
 #' @importFrom directPA geneStats
+#' @import statmod
 filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, combinationMethod = "OSP") {
     if (!combinationMethod %in% c("Stouffer", "OSP", "Fisher", "maxP")) {
         stop("Available methods are Stouffer, OSP, Fisher, or maxP")
