@@ -134,7 +134,7 @@ extractAUC <- function(roc_list){
 #'
 #'  x_list <- list(x1,x2,x3)
 #'  calculateCCA(x_list)
-#' 
+#'
 #' @importFrom CCA cc
 calculateCCA <- function(x_list) {
   if (ncol(x_list[[1]]) > 1000) {

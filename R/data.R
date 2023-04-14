@@ -20,7 +20,7 @@
 #' y1 <- TOP_data_binary$y1
 #' y2 <- TOP_data_binary$y2
 #' y3 <- TOP_data_binary$y3
-#' \dontrun{
+#' 
 #' set.seed(13)
 #' n = 100
 #' p = 20
@@ -40,6 +40,6 @@
 #' y3 <- factor(rbinom(n, 1, prob = expit(z3 %*% beta)), levels = c("0", "1"))
 #' TOP_data_binary <- tibble::lst(x1, x2, x3, y1, y2, y3, beta)
 #' usethis::use_data(TOP_data_binary)
-#' }
+#' 
 #' @return The example data.
 "TOP_data_binary"

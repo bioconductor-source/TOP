@@ -49,11 +49,11 @@ relevant page display with `?TOP`.
   exported objects. The man page for calculateCCA does not have a runnable
 example.
 Added example.
-- [ ] REQUIRED: The use of donttest and dontrun is discouraged and generally not
+- [x] REQUIRED: The use of donttest and dontrun is discouraged and generally not
   allowed; exceptions can be made with proper justification. If this option is
 used it is preferable to use donttest instead of dontrun. donttest requires
 valid R code while dontrun does not.
-? I don't know what this refers to.
+Removed all cases where donttest and dontrun appear.
 
 ## Unit tests
 
