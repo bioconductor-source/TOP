@@ -1,6 +1,7 @@
 #' @title A simulated binary data
 #' @docType data
 #' @description A simulated binary data
+#' @usage data("TOP_data_binary")
 #' @format A list with columns:
 #' \describe{
 #'  \item{x1}{A matrix of size 100x20, each column has mean 1 and sd 1}
