@@ -15,25 +15,37 @@ TOP_model(
 )
 }
 \arguments{
-\item{x_list}{a list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.}
+\item{x_list}{a list of data frames, each containing the data for a single
+batch or dataset. Columns should be features and rows should be
+observations.}
 
-\item{y_list}{a list of factors, each containing the labels for a single batch or dataset. The length of this list should be the same as the length of x_list.}
+\item{y_list}{a list of factors, each containing the labels for a single
+batch or dataset. The length of this list should be the same as the length
+of x_list.}
 
-\item{covariates}{a list of data frames with the covariates that should be included in the model, Default: NULL}
+\item{covariates}{a list of data frames with the covariates that should be
+included in the model, Default: NULL}
 
-\item{dataset_weights}{a list of data frames that refer to any grouping structure in the batches, Default: NULL}
+\item{dataset_weights}{a list of data frames that refer to any grouping
+structure in the batches, Default: NULL}
 
-\item{sample_weights}{Should each batch we weighted equally? This is important in unequal sample sizes, Default: FALSE}
+\item{sample_weights}{Should each batch we weighted equally? This is
+important in unequal sample sizes, Default: FALSE}
 
-\item{optimiseExponent}{Should the exponent used to modufy the lasso weights be optimised using resubstitution?, Default: FALSE}
+\item{optimiseExponent}{Should the exponent used to modufy the lasso weights
+be optimised using resubstitution?, Default: FALSE}
 
-\item{nCores}{A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1}
+\item{nCores}{A numeric specifying the number of cores used if the user
+wants to use parallelisation, Default: 1}
 }
 \value{
-Returns a list with the following elements: models, which is a glmnet object and features, which is a list of the features used in each model.
+Returns a list with the following elements: models, which is a
+glmnet object and features, which is a list of the features used in each
+model.
 }
 \description{
-The main function of the TOP package. This function returns a glmnet model .
+The main function of the TOP package. This function returns a
+glmnet model .
 }
 \examples{
 data(TOP_data_binary, package = "TOP")

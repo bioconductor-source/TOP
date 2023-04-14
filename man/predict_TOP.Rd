@@ -9,9 +9,11 @@ predict_TOP(TOP_model, newx, covariates = NULL, s = "lambda.min")
 \arguments{
 \item{TOP_model}{The output from the TOP_model function.}
 
-\item{newx}{A matrix of the new data to be predicted. The columns should be features and the rows should be samples.}
+\item{newx}{A matrix of the new data to be predicted. The columns should be
+features and the rows should be samples.}
 
-\item{covariates}{A data frame of the same covariates that were used in the TOP model, Default: NULL}
+\item{covariates}{A data frame of the same covariates that were used in the
+TOP model, Default: NULL}
 
 \item{s}{Lambda value for the lasso model, Default: 'lambda.min'}
 }
@@ -19,7 +21,8 @@ predict_TOP(TOP_model, newx, covariates = NULL, s = "lambda.min")
 A vector of predictions for the new data.
 }
 \description{
-A prediction function for the Trasferable Omics Prediction model.
+A prediction function for the Trasferable Omics Prediction
+model.
 }
 \examples{
 data(TOP_data_binary, package = "TOP")

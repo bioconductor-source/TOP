@@ -13,7 +13,8 @@ ROC_Plot(roc_list)
 A ROC Plot
 }
 \description{
-A function visualizes the performance of a classifier by plotting the Receiver Operating Characteristic (ROC) curve.
+A function visualizes the performance of a classifier by
+plotting the Receiver Operating Characteristic (ROC) curve.
 }
 \examples{
 data(TOP_data_binary, package = "TOP")

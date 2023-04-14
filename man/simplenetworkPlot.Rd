@@ -7,7 +7,8 @@
 simplenetworkPlot(TOP_model, nFeatures = 50, s = "lambda.min")
 }
 \arguments{
-\item{TOP_model}{A Transferable Omics Prediction model. THe output from the TOP_model function.}
+\item{TOP_model}{A Transferable Omics Prediction model. The output from the
+TOP_model function.}
 
 \item{nFeatures}{The number of features that will be plotted. Default: 20}
 

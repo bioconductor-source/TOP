@@ -9,11 +9,14 @@ performance_TOP(TOP_model, newx, newy, covariates = NULL, s = "lambda.min")
 \arguments{
 \item{TOP_model}{This is the output of the function TOP_model.}
 
-\item{newx}{A matrix of the new data to be predicted. With the same number of feature columns as the original data.}
+\item{newx}{A matrix of the new data to be predicted. With the same number
+of feature columns as the original data.}
 
-\item{newy}{A vector of the true labels that are being predicted. With the same number of samples as newx.}
+\item{newy}{A vector of the true labels that are being predicted. With the
+same number of samples as newx.}
 
-\item{covariates}{A data.frame of the same covariates as the original TOP model, Default: NULL}
+\item{covariates}{A data.frame of the same covariates as the original TOP
+model, Default: NULL}
 
 \item{s}{Lambda used in the lasso model, Default: 'lambda.min'}
 }
@@ -21,7 +24,8 @@ performance_TOP(TOP_model, newx, newy, covariates = NULL, s = "lambda.min")
 A confusion matrix that displays the performance of the classifier.
 }
 \description{
-A function to calculate the external performance of the Tranferable Omics Prediction model.
+A function to calculate the external performance of the
+Tranferable Omics Prediction model.
 }
 \examples{
 

@@ -7,7 +7,8 @@
 TOP_coefPlot(TOP_model, nFeatures = 20, s = "lambda.min")
 }
 \arguments{
-\item{TOP_model}{A Transferable Omics Prediction model. THe output from the TOP_model function.}
+\item{TOP_model}{A Transferable Omics Prediction model. THe output from the
+TOP_model function.}
 
 \item{nFeatures}{The number of features that will be plotted. Default: 20}
 

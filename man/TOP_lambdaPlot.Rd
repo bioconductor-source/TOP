@@ -13,15 +13,19 @@ TOP_lambdaPlot(
 )
 }
 \arguments{
-\item{TOP_model}{A Transferable Omics Prediction model. THe output from the TOP_model function.}
+\item{TOP_model}{A Transferable Omics Prediction model. The output from the
+TOP_model function.}
 
-\item{nFeatures}{The number of features to plot, features are ranked beta's for lambda.min. Default: 20}
+\item{nFeatures}{The number of features to plot, features are ranked beta's
+for lambda.min. Default: 20}
 
 \item{s}{Lambda value for the lasso model. Default is "lambda.min"}
 
-\item{interactive}{A boolean indicaitng whether the plot should be interactive. Defaults to FALSE .}
+\item{interactive}{A boolean indicaitng whether the plot should be
+interactive. Defaults to FALSE .}
 
-\item{label}{A boolean indicating whether the features should be labeled on the plot. Defaults to FALSE .}
+\item{label}{A boolean indicating whether the features should be labeled on
+the plot. Defaults to FALSE .}
 }
 \value{
 A TOP lambda plot
