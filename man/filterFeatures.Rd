@@ -13,24 +13,30 @@ filterFeatures(
 )
 }
 \arguments{
-\item{x_list}{A list of data frames, with columns corresponding to features and rows corresponding to observations.}
+\item{x_list}{A list of data frames, with columns corresponding to features
+and rows corresponding to observations.}
 
 \item{y_list}{A list of factor labels.}
 
-\item{contrast}{A character vector describing which order of levels to contrast in y_list ("disease - control"), Default: NULL}
+\item{contrast}{A character vector describing which order of levels to
+contrast in y_list ("disease - control"), Default: NULL}
 
 \item{nFeatures}{Number of features to return, Default: 50}
 
-\item{combinationMethod}{Which p-value combination method to use, Default: 'OSP' Options are 'Stouffer', 'OSP', 'Fisher', 'maxP'.}
+\item{combinationMethod}{Which p-value combination method to use,
+Default: 'OSP' Options are 'Stouffer', 'OSP', 'Fisher', 'maxP'.}
 }
 \value{
 A vector of feature names.
 }
 \description{
-A function that implements feature selection, using limma, from a list of data frames with corresponding labels.
+A function that implements feature selection, using limma, from
+a list of data frames with corresponding labels.
 }
 \details{
-contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
+contrast must be a character vector of length 1. If contrast is
+NULL, the first level of the first factor in y_list will be used as the
+reference level.
 }
 \examples{
 data(TOP_data_binary, package = "TOP")
@@ -38,10 +44,15 @@ x1 <- TOP_data_binary$x1
 x2 <- TOP_data_binary$x2
 x3 <- TOP_data_binary$x3
 
-x_list <- list(x1,x2,x3)
+x_list <- list(x1, x2, x3)
 y_list <- list(TOP_data_binary$y1, TOP_data_binary$y2, TOP_data_binary$y3)
-y_list <- y_list <- lapply(y_list, function(x){x <- factor(x, levels = c("1", "0"), labels = c("Yes", "No"))})
+y_list <- y_list <- lapply(y_list, function(x) {
+    x <- factor(x, levels = c("1", "0"), labels = c("Yes", "No"))
+})
 
-filterFeatures(x_list, y_list, contrast = "Yes - No", nFeatures = 10, combinationMethod = "OSP")
+filterFeatures(
+    x_list, y_list,
+    contrast = "Yes - No", nFeatures = 10, combinationMethod = "OSP"
+)
 
 }
