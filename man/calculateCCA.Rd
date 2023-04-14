@@ -24,4 +24,5 @@ Returns a matrix of canonical correlation coefficients for a list of data.frames
 
  x_list <- list(x1,x2,x3)
  calculateCCA(x_list)
+
 }
