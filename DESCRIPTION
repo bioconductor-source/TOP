@@ -43,9 +43,8 @@ Imports:
     tibble,
     tidygraph,
     tidyr,
-    utils
-Depends: 
-    statmod
+    utils,
+    statmod 
 Suggests: knitr, rmarkdown, BiocStyle
 VignetteBuilder: knitr 
 LazyData: true
