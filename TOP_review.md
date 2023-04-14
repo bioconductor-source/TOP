@@ -1,12 +1,3 @@
-@Harry25R - Thank you for submitting to _Bioconductor_. Please see the initial review of
-the package below. The required changes must be made while the suggested
-changes do not have to be (though we strongly encourage them). Comment back
-here with updates that have been made and when the package is ready for a
-re-review.
-Keep in mind that the deadline to accept new packages into the Bioconductor 3.17
-release is 4/19. Any packages accepted after this date will be included in the
-next release.
-
 ## DESCRIPTION
 
 - [x] SUGGESTION: Consider adding the maintainer's ORCID iD in 'Authors@R' with
@@ -37,9 +28,8 @@ removed.
 
 ## NEWS
 
-- [x] SUGGESTION: Consider adding a NEWS file, so your package news will be 
+- [ ] SUGGESTION: Consider adding a NEWS file, so your package news will be 
 included in Bioconductor release announcements.
-  - We will do this in the future.
 ## Man pages
 
 - [ ] SUGGESTION: We encourage having a package man page with an overview of the
@@ -62,9 +52,10 @@ Removed all cases where donttest and dontrun appear.
 
 ## R code
 
-- [ ] REQUIRED: Undefined global functions or variables:
+- [x] REQUIRED: Undefined global functions or variables:
         . Feature Features Organ Pathways coef coef_abs freq from lambda.min n
         name offset score sd to value variable
+  - Byproduct of tidyverse lazy evaluation.
 - [x] REQUIRED: Avoid `sapply()`; use `vapply()` instead.
 Changed all cases of sapply to vapply.
 - [x] REQUIRED: Avoid `1:...`; use `seq_len()` or `seq_along()` if possible.
@@ -79,6 +70,3 @@ Removed this case.
 lines that are > 80 characters long.
 - [x] SUGGESTION: For formating reasons, consider multiples of 4 spaces for line
  indents. There are 111 lines that are not.
-
-Best,
-Kayla
