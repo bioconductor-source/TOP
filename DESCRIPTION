@@ -16,7 +16,6 @@ RoxygenNote: 7.2.3
 Imports:
     assertthat,
     caret,
-    CCA,
     ClassifyR,
     directPA,
     doParallel,
@@ -43,7 +42,6 @@ Imports:
     tibble,
     tidygraph,
     tidyr,
-    utils,
     statmod
 Suggests: knitr, rmarkdown, BiocStyle, Biobase, curatedOvarianData, ggbeeswarm, ggsci, survminer, tidyverse
 VignetteBuilder: knitr 
