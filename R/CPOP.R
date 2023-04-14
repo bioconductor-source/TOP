@@ -12,8 +12,8 @@
 #' @examples
 #' n = 1
 #' p = 4
-#' x <- matrix(rep(1:p, n), nrow = n, ncol = p, byrow = TRUE)
-#' colnames(x) <- paste0("X", 1:p)
+#' x <- matrix(rep(seq_len(p), n), nrow = n, ncol = p, byrow = TRUE)
+#' colnames(x) <- paste0("X", seq_len(p))
 #' pairwise_col_diff(x)
 pairwise_col_diff <- function(x){
   assertthat::assert_that(!is.null(colnames(x)))
