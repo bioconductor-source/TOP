@@ -43,8 +43,7 @@ Imports:
     tibble,
     tidygraph,
     tidyr,
-    utils
-Depends: 
+    utils,
     statmod
 Suggests: knitr, rmarkdown, BiocStyle, Biobase, curatedOvarianData, ggbeeswarm, ggsci, survminer, tidyverse
 VignetteBuilder: knitr 
