@@ -10,7 +10,8 @@
 #'  \item{y1}{A factor vector of 0's and 1's, created by beta and x1}
 #'  \item{y2}{A factor vector of 0's and 1's, created by beta and x2}
 #'  \item{y3}{A factor vector of 0's and 1's, created by beta and x3}
-#'  \item{beta}{A random vector with first 10 entries drawn from random unif(-1, 1), otherwise 0's.}
+#'  \item{beta}{
+#' A vector with first 10 entries drawn from random unif(-1, 1), otherwise 0's.}
 #' }
 #' @return The example data.
 "TOP_data_binary"

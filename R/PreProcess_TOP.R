@@ -1,23 +1,34 @@
 #' @title filterFeatures
-#' @description A function that implements feature selection, using limma, from a list of data frames with corresponding labels.
-#' @param x_list A list of data frames, with columns corresponding to features and rows corresponding to observations.
+#' @description A function that implements feature selection, using limma, from
+#'   a list of data frames with corresponding labels.
+#' @param x_list A list of data frames, with columns corresponding to features
+#'   and rows corresponding to observations.
 #' @param y_list A list of factor labels.
-#' @param contrast A character vector describing which order of levels to contrast in y_list ("disease - control"), Default: NULL
+#' @param contrast A character vector describing which order of levels to
+#'   contrast in y_list ("disease - control"), Default: NULL
 #' @param nFeatures Number of features to return, Default: 50
-#' @param combinationMethod Which p-value combination method to use, Default: 'OSP' Options are 'Stouffer', 'OSP', 'Fisher', 'maxP'.
+#' @param combinationMethod Which p-value combination method to use,
+#'   Default: 'OSP' Options are 'Stouffer', 'OSP', 'Fisher', 'maxP'.
 #' @return A vector of feature names.
-#' @details contrast must be a character vector of length 1. If contrast is NULL, the first level of the first factor in y_list will be used as the reference level.
+#' @details contrast must be a character vector of length 1. If contrast is
+#'   NULL, the first level of the first factor in y_list will be used as the
+#'   reference level.
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
 #' x1 <- TOP_data_binary$x1
 #' x2 <- TOP_data_binary$x2
 #' x3 <- TOP_data_binary$x3
 #'
-#' x_list <- list(x1,x2,x3)
+#' x_list <- list(x1, x2, x3)
 #' y_list <- list(TOP_data_binary$y1, TOP_data_binary$y2, TOP_data_binary$y3)
-#' y_list <- y_list <- lapply(y_list, function(x){x <- factor(x, levels = c("1", "0"), labels = c("Yes", "No"))})
+#' y_list <- y_list <- lapply(y_list, function(x) {
+#'     x <- factor(x, levels = c("1", "0"), labels = c("Yes", "No"))
+#' })
 #'
-#' filterFeatures(x_list, y_list, contrast = "Yes - No", nFeatures = 10, combinationMethod = "OSP")
+#' filterFeatures(
+#'     x_list, y_list,
+#'     contrast = "Yes - No", nFeatures = 10, combinationMethod = "OSP"
+#' )
 #'
 #' @rdname filterFeatures
 #' @export
@@ -26,7 +37,9 @@
 #' @importFrom tibble remove_rownames column_to_rownames
 #' @importFrom directPA geneStats
 #' @import statmod
-filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, combinationMethod = "OSP") {
+filterFeatures <- function(
+    x_list, y_list, contrast = NULL,
+    nFeatures = 50, combinationMethod = "OSP") {
     if (!combinationMethod %in% c("Stouffer", "OSP", "Fisher", "maxP")) {
         stop("Available methods are Stouffer, OSP, Fisher, or maxP")
     }
@@ -49,7 +62,8 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
 
         # Set up a design matrix according to y_list
         des <- stats::model.matrix(~ 0 + y_list[[i]])
-        # Make the names of the columns in the design matrix the same as the levels of y_list
+        # Make the names of the columns in the design matrix the same as
+        # the levels of y_list
         colnames(des) <- levels(y_list[[i]])
 
         # Run limma
@@ -65,7 +79,9 @@ filterFeatures <- function(x_list, y_list, contrast = NULL, nFeatures = 50, comb
         tT[[i]]$gene <- rownames(tT[[i]])
     }
     # merge a the tT list into a single data frame by gene
-    tT <- Reduce(function(x, y) merge(x, y, by = "gene", all = TRUE, no.dups = TRUE), tT)
+    tT <- Reduce(
+        function(x, y) merge(x, y, by = "gene", all = TRUE, no.dups = TRUE), tT
+    )
 
     # Keep unique genes
     tT <- tT[!duplicated(tT$gene), ]

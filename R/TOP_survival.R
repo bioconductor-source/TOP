@@ -1,20 +1,26 @@
 #' @title TOP_survival
 #' @description FUNCTION_DESCRIPTION
-#' @param x_list A list of data frames, each containing the data for a single batch or dataset. Columns should be features and rows should be observations.
-#' @param y_list A list of data frames, where the first columns in each data frame is the time and the second column is the event status. The length of this list should be the same as the length of x_list.
+#' @param x_list A list of data frames, each containing the data for a single
+#'   batch or dataset. Columns are features and rows are observations.
+#' @param y_list A list of data frames, where the first columns in each data
+#'   frame is the time and the second column is the event status. The length of
+#'   this list should be the same as the length of x_list.
 #' @param nFeatures Number of features to return, Default: 50
-#' @param dataset_weights a list of data frames that refer to any grouping structure in the batches, Default: NULL
-#' @param sample_weights Should each batch we weighted equally? This is important in unequal sample sizes, Default: FALSE
-#' @param nCores A numeric specifying the number of cores used if the user wants to use parallelisation, Default: 1
+#' @param dataset_weights a list of data frames that refer to any grouping
+#'   structure in the batches, Default: NULL
+#' @param sample_weights Should each batch we weighted equally? This is
+#'   important in unequal sample sizes, Default: FALSE
+#' @param nCores A numeric specifying the number of cores used if the user
+#'   wants to use parallelisation, Default: 1
 #' @return A cox net model
 #' @details DETAILS
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
-#' time <- rpois(300, c(600,1000))
-#' surv <- sample(c(0,1), 300, replace = TRUE)
+#' time <- rpois(300, c(600, 1000))
+#' surv <- sample(c(0, 1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
 #'
-#' batch <- rep(paste0("y", 1:3), c(100,100,100))
+#' batch <- rep(paste0("y", 1:3), c(100, 100, 100))
 #' y_list <- y %>% split(batch)
 #'
 #' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
@@ -34,9 +40,7 @@
 #' @importFrom doParallel registerDoParallel
 TOP_survival <- function(
     x_list, y_list, nFeatures = 50, dataset_weights = NULL,
-    sample_weights = FALSE, nCores = 1
-    ) {
-
+    sample_weights = FALSE, nCores = 1) {
     parallel <- FALSE
     # register parallel cluster
     if (nCores > 1) {
@@ -49,7 +53,8 @@ TOP_survival <- function(
     for (i in seq_along(x_list)) {
         # Perform colCoxTests on each dataset
         output[[i]] <- ClassifyR::colCoxTests(
-            as.matrix(x_list[[i]]), y_list[[i]], option = "fast"
+            as.matrix(x_list[[i]]), y_list[[i]],
+            option = "fast"
         )
     }
 
@@ -65,7 +70,8 @@ TOP_survival <- function(
 
         # Run colCoxTests on z_subset
         pairwise_coefficients[[i]] <- ClassifyR::colCoxTests(
-            z_subset, y_list[[i]], option = "fast"
+            z_subset, y_list[[i]],
+            option = "fast"
         ) |>
             dplyr::select(coef) |>
             data.frame() |>
@@ -78,27 +84,37 @@ TOP_survival <- function(
         tibble::column_to_rownames(var = "Gene")
 
     # If there are sample weights.
-    if (sample_weights == TRUE){
+    if (sample_weights == TRUE) {
         freq_samples <- x_list |>
             vapply(dim, 1L, integer(1L)) |>
             tibble::enframe() |>
-            dplyr::mutate(freq = value/sum(value)) |>
+            dplyr::mutate(freq = value / sum(value)) |>
             dplyr::mutate(inv_freq = 1 / freq)
 
         mean_coefficients <- abs(
-            apply(coefficients, 1, function(x) stats::weighted.mean(x, freq_samples$inv_freq))
+            apply(
+                coefficients, 1,
+                function(x) stats::weighted.mean(x, freq_samples$inv_freq)
+            )
         )
         sd_coefficients <- sqrt(
-            apply(coefficients, 1, function(x) Hmisc::wtd.var(x, freq_samples$inv_freq))
+            apply(
+                coefficients, 1,
+                function(x) Hmisc::wtd.var(x, freq_samples$inv_freq)
+            )
         )
-        fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
-    }
-
-    else if (sample_weights == FALSE) {
-         # Calculate the average & sd of the coefficients across Datasets
+        fudge <- stats::quantile(
+            sd_coefficients[sd_coefficients != 0], 0.05,
+            na.rm = TRUE
+        )
+    } else if (sample_weights == FALSE) {
+        # Calculate the average & sd of the coefficients across Datasets
         mean_coefficients <- abs(rowMeans(coefficients))
         sd_coefficients <- apply(coefficients, 1, sd)
-        fudge <- stats::quantile(sd_coefficients[sd_coefficients != 0], 0.05, na.rm = TRUE)
+        fudge <- stats::quantile(
+            sd_coefficients[sd_coefficients != 0], 0.05,
+            na.rm = TRUE
+        )
     }
 
     ## If there is some weights supplied
@@ -118,7 +134,9 @@ TOP_survival <- function(
                 weight = 1
             )
         for (i in seq_len(nrow(un_weights))) {
-            idx <- which(un_weights$SampleGroup[i] == sample.weights$SampleGroup)
+            idx <- which(
+                un_weights$SampleGroup[i] == sample.weights$SampleGroup
+            )
             un_weights$weight[i] <- sample.weights$freq[idx]
         }
         sample.weights <- un_weights$weight
@@ -159,11 +177,11 @@ TOP_survival <- function(
 #' @return A vector of predicted survival time.
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
-#' time <- rpois(300, c(600,1000))
-#' surv <- sample(c(0,1), 300, replace = TRUE)
+#' time <- rpois(300, c(600, 1000))
+#' surv <- sample(c(0, 1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
 #'
-#' batch <- rep(paste0("y", 1:3), c(100,100,100))
+#' batch <- rep(paste0("y", 1:3), c(100, 100, 100))
 #' y_list <- y %>% split(batch)
 #'
 #' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
@@ -179,7 +197,8 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 
     # Predict the survival time
     survScores <- stats::predict(
-        TOP_survival[[1]], as.matrix(z), type = "response", newoffset = offset
+        TOP_survival[[1]], as.matrix(z),
+        type = "response", newoffset = offset
     )
 
     return(survScores)
@@ -190,15 +209,16 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' @description FUNCTION_DESCRIPTION
 #' @param TOP_survival A TOP_survival model. See \code{\link{TOP_survival}}.
 #' @param newx A new data.frame to predict the survival time.
-#' @param newy A data.frame, where the first columns in each data frame is the time and the second column is the event status.
+#' @param newy A data.frame, where the first columns in each data frame is the
+#'   time and the second column is the event status.
 #' @return An object of class concordance
 #' @examples
 #' data(TOP_data_binary, package = "TOP")
-#' time <- rpois(300, c(600,1000))
-#' surv <- sample(c(0,1), 300, replace = TRUE)
+#' time <- rpois(300, c(600, 1000))
+#' surv <- sample(c(0, 1), 300, replace = TRUE)
 #' y <- data.frame(time, surv)
 #'
-#' batch <- rep(paste0("y", 1:3), c(100,100,100))
+#' batch <- rep(paste0("y", 1:3), c(100, 100, 100))
 #' y_list <- y %>% split(batch)
 #'
 #' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
@@ -214,10 +234,15 @@ Surv_TOP_CI <- function(TOP_survival, newx, newy) {
     z <- pairwise_col_diff(newx)
 
     # Predict the survival time
-    survScores <- stats::predict(TOP_survival[[1]], as.matrix(z), type = "response", newoffset = offset)
+    survScores <- stats::predict(
+        TOP_survival[[1]], as.matrix(z),
+        type = "response", newoffset = offset
+    )
 
     # Calculate the concordance index
-    CI <- survival::concordance(survival::Surv(newy[, 1], newy[, 2]) ~ survScores)
+    CI <- survival::concordance(
+        survival::Surv(newy[, 1], newy[, 2]) ~ survScores
+    )
 
     return(CI)
 }

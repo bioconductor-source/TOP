@@ -10,30 +10,31 @@
 #' @importFrom assertthat assert_that
 #' @export
 #' @examples
-#' n = 1
-#' p = 4
+#' n <- 1
+#' p <- 4
 #' x <- matrix(rep(seq_len(p), n), nrow = n, ncol = p, byrow = TRUE)
 #' colnames(x) <- paste0("X", seq_len(p))
 #' pairwise_col_diff(x)
-pairwise_col_diff <- function(x){
+pairwise_col_diff <- function(x) {
   assertthat::assert_that(!is.null(colnames(x)))
-  x <- x[,sort(colnames(x)), drop = FALSE]
+  x <- x[, sort(colnames(x)), drop = FALSE]
 
   p <- ncol(x)
   list_mat <- purrr::map(
-    .x = seq_len(p-1),
-    .f = ~ x[,.x] - x[,-c(seq_len(.x)), drop = FALSE]
+    .x = seq_len(p - 1),
+    .f = ~ x[, .x] - x[, -c(seq_len(.x)), drop = FALSE]
   )
 
   names(list_mat) <- colnames(x)[-length(colnames(x))]
 
   list_mat_named <- purrr::imap(
     .x = list_mat,
-    .f = function(x, y){
-      mat_name = paste0(y, "--", colnames(x))
-      colnames(x) = mat_name
+    .f = function(x, y) {
+      mat_name <- paste0(y, "--", colnames(x))
+      colnames(x) <- mat_name
       return(x)
-    })
+    }
+  )
 
   result <- do.call(cbind, list_mat_named)
 
