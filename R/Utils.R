@@ -117,38 +117,6 @@ extractAUC <- function(roc_list){
   auc$variable <- names(roc_list)
 }
 
-#' @title calculateCCA
-#' @description Returns a matrix of canonical correlation coefficients for a list of data.frames.
-#'
-#' @param x_list a list of data.frames with identical features as columns.
-#'
-#' @return A square matrix of canonical correlation coefficients.
-#' @export
-#'
-#' @examples
-#'  data(TOP_data_binary, package = "TOP")
-#'
-#'  x1 = TOP_data_binary$x1
-#'  x2 = TOP_data_binary$x2
-#'  x3 = TOP_data_binary$x3
-#'
-#'  x_list <- list(x1,x2,x3)
-#'  calculateCCA(x_list)
-#'
-#' @importFrom CCA cc
-calculateCCA <- function(x_list) {
-  if (ncol(x_list[[1]]) > 1000) {
-    warning("The number of features is > 1000, CCA will take a while to calculate.")
-  }
-  cor_mat <- vapply(seq_along(x_list), function(i){
-    vapply(seq_along(x_list), function(j){
-      CCA::cc(t(x_list[[i]]), t(x_list[[j]]))$cor[1]
-    }, numeric(length(x_list)))
-  }, numeric(length(x_list)))
-  return(cor_mat)
-}
-
-
 #' @title The expit function
 #' @param x numeric
 #' @rdname logit-expit
