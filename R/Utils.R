@@ -3,7 +3,9 @@
 #' @noRd
 lfc_calculate <- function(df, y) {
     outcome <- levels(y)
-    return(colSums(df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ]))
+    colSums(
+        df[which(y == outcome[2]), ]) - colSums(df[which(y == outcome[1]), ]
+    )
 }
 
 # Loop through possible exponents of weights_lasso
@@ -14,9 +16,7 @@ selectExponent <- function(
     lasso_y,
     sample.weights = NULL,
     moderated_test,
-    nCores = nCores
-) {
-
+    nCores = nCores) {
     parallel <- FALSE
     # register parallel cluster
     if (nCores > 1) {
@@ -102,19 +102,19 @@ colCoxTests_combine <- function(colCoxTests_list, nFeatures = 50) {
 #' @importFrom reshape2 melt
 #' @noRd
 
-extractAUC <- function(roc_list){
-  auc <- lapply(roc_list, function(x){
-    x$auc
-  })
-  auc <- auc |>
-    data.frame() |>
-    reshape2::melt() |>
+extractAUC <- function(roc_list) {
+    auc <- lapply(roc_list, function(x) {
+        x$auc
+    })
+    auc <- auc |>
+        data.frame() |>
+        reshape2::melt() |>
         dplyr::mutate(
             label_long = paste0(variable, " , AUC = ", paste(round(value, 2))),
             label_AUC = paste0("AUC = ", paste(round(value, 2)))
         )
-  return(auc)
-  auc$variable <- names(roc_list)
+    return(auc)
+    auc$variable <- names(roc_list)
 }
 
 #' @title The expit function
@@ -124,6 +124,6 @@ extractAUC <- function(roc_list){
 #' @examples
 #' curve(expit, from = -5, to = 5)
 #' @return The expit of x
-expit = function(x){
-  return(1/(1+exp(-x)))
+expit <- function(x) {
+    return(1 / (1 + exp(-x)))
 }
