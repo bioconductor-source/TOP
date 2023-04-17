@@ -21,7 +21,7 @@
 #' y <- data.frame(time, surv)
 #'
 #' batch <- rep(paste0("y", 1:3), c(100, 100, 100))
-#' y_list <- y %>% split(batch)
+#' y_list <- y |> split(batch)
 #'
 #' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 #'
@@ -182,7 +182,7 @@ TOP_survival <- function(
 #' y <- data.frame(time, surv)
 #'
 #' batch <- rep(paste0("y", 1:3), c(100, 100, 100))
-#' y_list <- y %>% split(batch)
+#' y_list <- y |> split(batch)
 #'
 #' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 #'
@@ -219,7 +219,7 @@ TOP_survivalPrediction <- function(TOP_survival, newx) {
 #' y <- data.frame(time, surv)
 #'
 #' batch <- rep(paste0("y", 1:3), c(100, 100, 100))
-#' y_list <- y %>% split(batch)
+#' y_list <- y |> split(batch)
 #'
 #' x_list <- list(TOP_data_binary$x1, TOP_data_binary$x2, TOP_data_binary$x3)
 #'
