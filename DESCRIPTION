@@ -1,6 +1,6 @@
 Package: TOP
 Title: TOP Constructs Transferable Model Across Gene Expression Platforms
-Version: 1.2.0
+Version: 1.3.0
 Date: 2022-11-09
 Authors@R: 
     c(
